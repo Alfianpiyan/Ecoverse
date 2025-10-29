@@ -9,11 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "framer-motion": "^12.23.24",
-=======
     "@supabase/supabase-js": "^2.77.0",
->>>>>>> 636820eceafda95833ecbe4d2007e9041883568c
     "lucide-react": "^0.548.0",
     "motion": "^12.23.24",
     "next": "16.0.0",
