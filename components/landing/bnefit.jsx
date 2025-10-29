@@ -46,7 +46,7 @@ export default function BenefitSection() {
   return (
     <section
       ref={ref}
-      className="relative bg-gradient-to-b from-white via-green-50 to-white py-24 overflow-hidden"
+      className="relative bg-gradient-to-b from-white via-green-50 to-white py-32 overflow-hidden"
     >
       {/* Judul Section */}
       <motion.div
