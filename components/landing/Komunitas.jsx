@@ -25,12 +25,12 @@ export default function Komunitas() {
 
   return (
     <section
-      className="relative bg-gradient-to-b from-white to-[#F9FAFB] overflow-hidden"
+      className="relative py-14 bg-gradient-to-b from-white to-[#F9FAFB] overflow-hidden"
     >
       {/* Background Wave lembut */}
       <div className="absolute inset-0">
         <svg
-          className="absolute bottom-0 w-full opacity-40 text-[#D1FAE5]"
+          className="absolute  w-full opacity-40 text-[#D1FAE5]"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
           fill="none"
@@ -42,7 +42,7 @@ export default function Komunitas() {
         </svg>
       </div>
 
-      <div className="relative top-12 z-10 max-w-6xl mx-auto px-6 text-center">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
         {/* Judul */}
         <h2
           className="text-3xl md:text-4xl font-bold text-gray-900 mb-16"
