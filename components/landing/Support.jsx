@@ -7,16 +7,15 @@ export default function DukungOleh() {
     { id: 1, name: 'Kurikulum Merdeka', logo: '/Dkurikulummerdeka.jpg' },
     { id: 2, name: 'Kementerian BUMN', logo: '/Dbumn.jpg' },
     { id: 3, name: 'Kementerian Kesehatan', logo: '/Dkesehatan.jpg' },
-    { id: 4, name: 'Kementerian Pendidikan', logo: '/Dpendidikan.jpg' },
-    { id: 5, name: 'BPJS Kesehatan', logo: '/Dbpjs.jpg' },
-    { id: 6, name: 'WHO', logo: '/Dwho.jpg' },
+    { id: 4, name: 'BPJS Kesehatan', logo: '/Dbpjs.jpg' },
+    { id: 5, name: 'WHO', logo: '/Dwho.jpg' },
   ]
 
   // Duplikasi partner 3 kali untuk memastikan animasi marquee yang mulus
   const marqueePartners = [...partners, ...partners, ...partners]
 
   // Durasi animasi yang lebih lambat agar lebih elegan
-  const animationDuration = partners.length * 4.5; // 6 partners * 4.5 detik = 27 detik
+  const animationDuration = partners.length * 2.5; // 6 partners * 4.5 detik = 27 detik
 
   return (
     <section className="w-full bg-white py-20 relative overflow-hidden"> {/* Ubah background ke putih dan padding lebih besar */}
