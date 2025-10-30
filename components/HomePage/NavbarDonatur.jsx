@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { User, ChevronDown, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
-import { supabase } from "../../../../lib/supabaseClient";
+import { supabase } from "../../lib/Supabaseclient";
 
 export default function NavbarDonatur({ user }) {
   const pathname = usePathname();
