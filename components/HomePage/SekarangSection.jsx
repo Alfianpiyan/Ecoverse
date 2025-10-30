@@ -6,21 +6,9 @@ import { motion } from "framer-motion";
 
 export default function SekarangSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-white overflow-hidden">
+    <section className="relative min-h-screen -mt-25 mb-16 flex items-center justify-center bg-white overflow-hidden pt-24 md:pt-28">
       {/* Latar gradasi lembut */}
       <div className="absolute inset-0 bg-gradient-to-b from-white via-green-50/30 to-white" />
-
-      {/* Blur dinamis hijau */}
-      <motion.div
-        className="absolute top-[-10%] left-[-15%] w-[450px] h-[450px] bg-[#047857]/20 rounded-full blur-[120px]"
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute bottom-[-10%] right-[-15%] w-[500px] h-[500px] bg-[#047857]/10 rounded-full blur-[100px]"
-        animate={{ scale: [1, 1.15, 1] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-      />
 
       {/* Konten utama */}
       <div className="relative z-10 flex flex-col md:flex-row items-center justify-between w-full max-w-7xl px-6 md:px-12 gap-12">
@@ -75,15 +63,8 @@ export default function SekarangSection() {
           transition={{ duration: 0.9, ease: "easeOut" }}
           className="flex-1 relative flex justify-center"
         >
-          {/* Efek lingkaran lembut */}
-          <motion.div
-            className="absolute inset-0 rounded-full bg-[#047857]/10 blur-3xl"
-            animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.05, 1] }}
-            transition={{ duration: 6, repeat: Infinity }}
-          />
-
-          {/* Gambar utama */}
-          <div className="relative w-[380px] h-[380px] md:w-[480px] md:h-[480px]">
+          {/* Gambar utama (diperbesar) */}
+          <div className="relative w-[450px] h-[450px] md:w-[550px] md:h-[550px]">
             <Image
               src="/Tanaman1.png"
               alt="Ilustrasi penghijauan"

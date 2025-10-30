@@ -14,6 +14,7 @@ export default function NavbarDonatur({ user }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [scrolled, setScrolled] = useState(false)
 
   const handleLogout = async () => {
     try {
@@ -26,7 +27,7 @@ export default function NavbarDonatur({ user }) {
   };
 
   const navItems = [
-    { name: "Beranda", path: "/user/home" },
+    { name: "Beranda", path: "/donatur/home" },
     { name: "Tanam", path: "/user/tanam" },
     { name: "Acara", path: "/user/acara" },
   ];
@@ -47,13 +48,21 @@ export default function NavbarDonatur({ user }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+    useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <nav className="w-full flex justify-center mt-10 z-50 sticky top-0 left-0 bg-transparent">
       {/* Navbar Container */}
       <div
-        className="flex items-center justify-between px-6 py-3 
-        rounded-full border border-gray-200 shadow-md 
-        w-[900px] max-w-[92%] bg-white transition-all duration-300"
+        className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center justify-between
+        px-6 py-3 rounded-full border border-gray-200 shadow-lg w-[90%] max-w-6xl
+        transition-all duration-300 ${
+          scrolled ? "bg-white/60 backdrop-blur-md" : "bg-white"
+        }`}
       >
         {/* Logo */}
         <div className="flex items-center gap-2">
