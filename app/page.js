@@ -5,11 +5,12 @@ import CaraKerja from "@/components/landing/caraKerja";
 import Footer from "@/components/landing/Footer";
 import HeroSection from "@/components/landing/Herosection";
 import Komunitas from "@/components/landing/Komunitas";
+import HubungiKami from "@/components/landing/KontakKami";
 import Navbar from "@/components/landing/Navbar";
 import DukungOleh from "@/components/landing/Support";
 import Image from "next/image";
 
-export default function Home() {
+export default function landing() {
   return (
    <>
    <Navbar/>
@@ -20,6 +21,7 @@ export default function Home() {
    <BenefitSection/>
    <AcaraHijau/>
    <DukungOleh/>
+   <HubungiKami/>
    <Footer/>
    </>
   );
