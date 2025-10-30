@@ -11,9 +11,9 @@ export default function AboutSection() {
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
         {/* === IMAGE SIDE === */}
         <div className="relative w-full md:w-1/2 flex justify-center">
-          <div className="relative w-[320px] h-[320px] rounded-3xl overflow-hidden shadow-xl">
+          <div className="relative w-[350px] h-[370px] rounded-3xl overflow-hidden shadow-xl">
             <Image
-              src="/images/forest.jpg"
+              src="/AcaraHijau2.png"
               alt="Reforesta - Alam Hijau"
               fill
               className="object-cover"
