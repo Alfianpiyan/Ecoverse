@@ -6,23 +6,26 @@ export default function Pembayaran() {
   const [metode, setMetode] = useState("?");
 
   return (
-    <section className="min-h-screen bg-gray-50 flex items-center justify-center py-16 px-6">
-      <div className="bg-white rounded-2xl shadow-lg max-w-6xl w-full flex flex-col md:flex-row gap-8 p-8">
-        {/*ini bagian kiri mas */}
-        <div className="flex-1 flex flex-col gap-6">
-          <div className="bg-gray-100 rounded-xl p-6 shadow-inner">
-            <h2 className="text-lg font-semibold mb-3 text-gray-800">
+    <section className="min-h-screen bg-white flex items-start justify-center py-16 px-10">
+      <div className="bg-white w-full grid grid-cols-1 md:grid-cols-2 gap-10">
+        {/*ini bagian kiri mas*/}
+        <div className="flex flex-col gap-6">
+          <div className="bg-white rounded-2xl p-8 shadow-md border border-emerald-100 hover:shadow-lg transition">
+            <h2 className="text-lg font-semibold mb-3 text-emerald-800 flex items-center gap-2">
               🌿 Detail Acara
             </h2>
-            <div className="w-full h-40 bg-gray-300 rounded-md mb-4"></div>
-            <p className="text-gray-700 leading-relaxed">
-              Acara penanaman pohon di wilayah Jawa Barat bersama komunitas
-              Reforestacia. Bergabunglah untuk menghijaukan bumi!
+            <div className="w-full h-40 bg-gray-100 rounded-xl mb-4 flex items-center justify-center text-emerald-700 font-semibold">
+              (Gambar Acara)
+            </div>
+            <p className="text-gray-700 leading-relaxed text-justify">
+              Acara penanaman pohon di wilayah <b>Jawa Barat</b> bersama komunitas
+              <span className="text-emerald-700 font-semibold"> Reforestacia</span>.  
+              Bergabunglah untuk menghijaukan bumi dan menanam harapan baru 🌱.
             </p>
           </div>
 
-          <div className="bg-gray-100 rounded-xl p-6 shadow-inner">
-            <h2 className="text-lg font-semibold mb-4 text-gray-800">
+          <div className="bg-white rounded-2xl p-8 shadow-md border border-emerald-100 hover:shadow-lg transition">
+            <h2 className="text-lg font-semibold mb-4 text-emerald-800 flex items-center gap-2">
               👤 Data Anda
             </h2>
             <div className="space-y-3">
@@ -32,9 +35,7 @@ export default function Pembayaran() {
               </div>
               <div>
                 <p className="text-sm text-gray-500">Email</p>
-                <p className="font-medium text-gray-800">
-                  alfian@example.com
-                </p>
+                <p className="font-medium text-gray-800">alfian@example.com</p>
               </div>
               <div>
                 <p className="text-sm text-gray-500">No. HP</p>
@@ -45,30 +46,32 @@ export default function Pembayaran() {
         </div>
 
         {/*bagian kanan y*/}
-        <div className="flex-1 flex flex-col gap-6">
-          <div className="bg-white border rounded-xl p-6 shadow-md">
-            <h3 className="text-lg font-semibold text-gray-800 mb-3">
-              Detail
+        <div className="flex flex-col gap-6">
+          <div className="bg-white border border-emerald-100 rounded-2xl p-8 shadow-md hover:shadow-lg transition">
+            <h3 className="text-lg font-semibold text-emerald-800 mb-3">
+              Detail Donasi
             </h3>
             <div className="space-y-2 text-gray-700">
               <p>
-                <span className="font-medium">Lokasi :</span> Jawa Barat
+                <span className="font-medium text-emerald-800">Lokasi:</span> Jawa Barat
               </p>
               <p>
-                <span className="font-medium">Jenis Bibit :</span> Pohon Sangon
+                <span className="font-medium text-emerald-800">Jenis Bibit:</span> Pohon Sangon
               </p>
               <p>
-                <span className="font-medium">Jumlah Bibit :</span> 1
+                <span className="font-medium text-emerald-800">Jumlah Bibit:</span> 1
               </p>
               <p>
-                <span className="font-medium">Total :</span>{" "}
-                <span className="text-green-700 font-semibold">Rp 25.000</span>
+                <span className="font-medium text-emerald-800">Total:</span>{" "}
+                <span className="text-emerald-700 font-bold text-lg">
+                  Rp 25.000
+                </span>
               </p>
             </div>
           </div>
 
-          <div className="bg-white border rounded-xl p-6 shadow-md">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
+          <div className="bg-white border border-emerald-100 rounded-2xl p-8 shadow-md hover:shadow-lg transition">
+            <h3 className="text-lg font-semibold text-emerald-800 mb-4">
               Metode Pembayaran
             </h3>
 
@@ -81,10 +84,10 @@ export default function Pembayaran() {
               ].map((item) => (
                 <label
                   key={item.id}
-                  className={`flex items-center gap-3 p-3 border rounded-lg cursor-pointer transition ${
+                  className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
                     metode === item.id
-                      ? "border-green-600 bg-green-50"
-                      : "border-gray-200 hover:bg-gray-50"
+                      ? "border-emerald-600 bg-emerald-50 shadow-md scale-[1.02]"
+                      : "border-gray-200 hover:bg-gray-50 hover:shadow-sm"
                   }`}
                   onClick={() => setMetode(item.id)}
                 >
@@ -92,7 +95,7 @@ export default function Pembayaran() {
                     type="radio"
                     checked={metode === item.id}
                     onChange={() => setMetode(item.id)}
-                    className="accent-green-700"
+                    className="accent-emerald-700"
                   />
                   <div className="flex items-center gap-2">
                     <Image
@@ -100,6 +103,7 @@ export default function Pembayaran() {
                       alt={item.name}
                       width={32}
                       height={32}
+                      className="rounded-md"
                     />
                     <span className="text-gray-800 font-medium">
                       {item.name}
@@ -109,7 +113,7 @@ export default function Pembayaran() {
               ))}
             </div>
 
-            <button className="w-full mt-6 bg-emerald-600 text-white font-semibold py-3 rounded-full hover:bg-emerald-800 transition">
+            <button className="w-full mt-8 bg-green-600 text-white font-semibold py-3 rounded-full hover:from-emerald-700 hover:to-green-600 shadow-lg transition-all active:scale-95">
               Bayar
             </button>
           </div>
