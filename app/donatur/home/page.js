@@ -13,7 +13,7 @@ export default function Home() {
         <Komunitas/>
         <AcaraHijau/>
         <DukungOleh/>
-
+        
         <Footer/>
         </>
     )
