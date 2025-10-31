@@ -3,7 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 
 // Simpan gambar di: public/Group271.png (tanpa spasi biar aman)
-const MAP_IMAGE_URL = '/DotWorld.png'; 
+const MAP_IMAGE_URL = '/World.png'; 
 
 const HeroSection = () => {
   return (
