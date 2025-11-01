@@ -5,9 +5,9 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 export default function MasukPage() {
-  const [accountType] = useState("Komunitas"); // ✅ Default: Komunitas
+  const [accountType] = useState("Komunitas");
   const [gender, setGender] = useState("");
-  const [userRole, setUserRole] = useState(""); // Donatur / Penanam
+  const [userRole, setUserRole] = useState(""); 
 
   const [form, setForm] = useState({
     nama_komunitas: "",
@@ -104,7 +104,6 @@ export default function MasukPage() {
     backgroundPosition: "center",
   };
 
-  // ✅ Gender tetap ada
   const SecondaryInput = () => (
     <div>
       <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -142,7 +141,6 @@ export default function MasukPage() {
     >
       <section className="bg-white shadow-2xl rounded-2xl overflow-hidden w-full max-w-6xl">
         <div className="flex flex-col lg:flex-row">
-          {/* KIRI */}
           <div
             className="hidden lg:flex flex-col justify-center items-center p-8 lg:w-2/5 text-white text-center relative"
             style={imagePanelStyle}
@@ -185,10 +183,8 @@ export default function MasukPage() {
             </div>
           </div>
 
-          {/* KANAN */}
           <div className="flex items-center bg-white justify-center w-full py-8 px-6 lg:px-8 lg:w-3/5">
             <div className="w-full">
-              {/* SVG Logo di Tengah */}
               <div className="flex justify-center mb-2 -mt-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -206,7 +202,6 @@ export default function MasukPage() {
                 </svg>
               </div>
 
-              {/* FORM */}
               <form
                 className="grid grid-cols-1 gap-4 mt-2 md:grid-cols-2"
                 onSubmit={handleRegister}
@@ -286,10 +281,10 @@ export default function MasukPage() {
                   />
                 </div>
 
-                {/* ✅ Gender Tetap */}
+     
                 <SecondaryInput />
 
-                {/* Jenis Akun */}
+
                 <div className="md:col-span-2 mt-4">
                   <label className="block mb-1 text-sm font-medium text-gray-700">
                     Jenis Akun

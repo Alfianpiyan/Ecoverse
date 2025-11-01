@@ -5,7 +5,7 @@ import { supabase } from "@/lib/Supabaseclient";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import bcrypt from "bcryptjs";
-import Swal from "sweetalert2"; // ✅ Tambahkan SweetAlert2
+import Swal from "sweetalert2"; 
 
 async function fetchUserRoleAndDetail(email) {
   const { data: komunitasData } = await supabase
@@ -162,7 +162,6 @@ export default function MasukPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg lg:max-w-4xl">
-        {/* LEFT PANEL */}
         <div className="w-full px-6 py-8 md:px-8 lg:w-1/2">
           <div className="flex justify-center mb-2 -mt-4">
             <svg
