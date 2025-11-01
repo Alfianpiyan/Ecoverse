@@ -11,8 +11,8 @@ import { supabase } from "../../lib/Supabaseclient";
 export default function TrackingAcara({ user }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false); // State untuk Dropdown Profile (Desktop)
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State untuk Mobile Menu
+  const [isOpen, setIsOpen] = useState(false); 
+  const [isMenuOpen, setIsMenuOpen] = useState(false); 
   const dropdownRef = useRef(null);
   const [scrolled, setScrolled] = useState(false)
 
@@ -73,7 +73,6 @@ export default function TrackingAcara({ user }) {
           </span>
         </div>
 
-        {/* Hamburger Icon for mobile */}
         <div className="md:hidden flex items-center">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -87,12 +86,10 @@ export default function TrackingAcara({ user }) {
           </button>
         </div>
 
-        {/* Navigasi (Desktop) */}
         <ul className="hidden md:flex items-center gap-6 font-medium relative">
           <h2 className="text-2xl font-bold text-emerald-700">Tracking Acara</h2>
         </ul>
 
-        {/* Dropdown Profile (Desktop) - Konsisten Looks-nya */}
         <div className="relative hidden md:block" ref={dropdownRef}>
           <div
             className="flex items-center gap-2 cursor-pointer px-3 py-1 hover:bg-green-50 rounded-full transition"
@@ -151,15 +148,13 @@ export default function TrackingAcara({ user }) {
         </div>
       </div>
 
-      {/* --- Mobile Menu (Drawer) - DIUBAH MENJADI LEBAR TETAP DI KANAN --- */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, x: 20 }} // Ubah initial agar masuk dari kanan
-            animate={{ opacity: 1, x: 0 }}   // Ubah animate agar berhenti di 0 (kanan)
-            exit={{ opacity: 0, x: 20 }}     // Ubah exit agar keluar ke kanan
+            initial={{ opacity: 0, x: 20 }} 
+            animate={{ opacity: 1, x: 0 }}  
+            exit={{ opacity: 0, x: 20 }}   
             transition={{ duration: 0.25 }}
-            // CLASSNAME BARU: Posisi tetap (fixed) di kanan (right-4) dengan lebar tetap (w-60)
             className="fixed top-20 right-4 w-40 bg-white shadow-xl rounded-2xl border border-gray-200 md:hidden z-40" 
           >
             <ul className="flex flex-col gap-1 p-4">
