@@ -1,12 +1,12 @@
 import DetailAcaraPian from "@/components/DetailAcaraPian/DetailPian";
 import Footer from "@/components/landing/Footer";
-import NamaAcara from "@/components/Navbar/NamaAcara";
+import TrackingAcara from "@/components/Navbar/TrackingAcara";
 
 
 export default function HalDetailAcara() {
     return (
         <>
-        <NamaAcara/>
+        <TrackingAcara/>
         <DetailAcaraPian/>
         <Footer/>
         </>

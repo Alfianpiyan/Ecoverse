@@ -89,7 +89,7 @@ export default function DetailAcaraNav({ user }) {
 
         {/* Navigasi (Desktop) */}
         <ul className="hidden md:flex items-center gap-6 font-medium relative">
-          <h2 className="text-2xl font-bold text-emerald-700">Detail Acara "Nama acara" </h2>
+          <h2 className="text-2xl font-bold text-emerald-700">Detail Acara</h2>
         </ul>
 
         {/* Dropdown Profile (Desktop) - Konsisten Looks-nya */}

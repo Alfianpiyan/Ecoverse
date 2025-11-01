@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { supabase } from "../../lib/Supabaseclient"; 
 
-export default function NamaAcara({ user }) {
+export default function TrackingAcara({ user }) {
   const pathname = usePathname();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false); // State untuk Dropdown Profile (Desktop)
