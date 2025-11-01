@@ -4,7 +4,7 @@ import { FiMail, FiAlertCircle, FiFileText, FiChevronRight, FiLock } from "react
 // Import Link dari Next.js untuk navigasi yang lebih baik
 import Link from "next/link"; 
 
-export default function AccountSettings() {
+export default function PengaturanAkun() {
   return (
     // Kontainer utama: Ukuran lebih ramping (max-w-2xl) dengan judul halaman
     <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10 md:py-16 space-y-10">

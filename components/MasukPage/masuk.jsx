@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "../../../../lib/supabaseClient";
+import { supabase } from "@/lib/Supabaseclient";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import bcrypt from "bcryptjs";
@@ -39,7 +39,7 @@ async function fetchUserRoleAndDetail(email) {
   throw new Error("Role pengguna tidak ditemukan di database.");
 }
 
-export default function Login() {
+export default function MasukPage() {
   const router = useRouter();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
@@ -253,7 +253,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full px-6 py-3 text-sm font-medium text-white bg-[#059669] rounded-lg hover:bg-[#037f58] transition"
+                className="w-full px-6 py-3 text-sm bg-emerald-700 text-white hover:bg-gray-100 text-emerald-600 hover:text-emerald-700 font-semibold rounded-full transition duration-500 shadow-md cursor-pointer"
               >
                 {loading ? "Memproses..." : "Masuk"}
               </button>
@@ -286,8 +286,8 @@ export default function Login() {
               Kita butuh kamu lagi. Bumi gak bisa nunggu.
             </p>
             <Link
-              href="/user/register"
-              className="inline-block mt-4 px-6 py-2 bg-white text-[#059669] font-medium rounded-lg hover:bg-gray-50 transition"
+              href="/Daftar"
+              className="inline-block mt-4 px-6 py-2 bg-white hover:bg-emerald-700 text-emerald-600 hover:text-white font-semibold rounded-full transition duration-500 shadow-md cursor-pointer"
             >
               Daftar Sekarang
             </Link>
