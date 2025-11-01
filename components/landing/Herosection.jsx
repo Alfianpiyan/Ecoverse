@@ -13,8 +13,7 @@ const HeroSection = () => {
       <div 
         className="absolute inset-0 z-0 bg-no-repeat bg-cover bg-center transition-all duration-500"
         style={{ 
-          backgroundImage: `url(${MAP_IMAGE_URL})`,
-          filter: 'blur(8px) brightness(1.4)',
+          backgroundImage: `url(${MAP_IMAGE_URL})`,          filter: 'blur(8px) brightness(1.4)',
           opacity: 0.35,
           transform: 'scale(1.1)',
         }} 

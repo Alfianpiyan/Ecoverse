@@ -1,6 +1,6 @@
 
 import NavbarDonatur from "@/components/HomePage/NavbarDonatur";
-import TanamPohonPage from "@/components/pilihBibitpage/pilihBibit";
+import TanamPohonPage from "@/components/pilihBibit/pilihBibit";
 import Footer from "@/components/landing/Footer";
 
 

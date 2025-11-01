@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, MapPin, Clock, Users, Leaf, Heart } from "lucide-react";
-import { supabase } from "../../lib/Supabaseclient"; // ✅ pastikan nama file cocok (huruf besar kecil penting)
+import Link from "next/link";
+import { supabase } from "@/lib/Supabaseclient";
 
 export default function AcaraDetail() {
   const { id } = useParams();
@@ -95,19 +96,21 @@ export default function AcaraDetail() {
     }
   }
 
-  const manfaatList = Array.isArray(manfaat) && manfaat.length
-    ? manfaat
-    : ["Menambah penghijauan", "Menjaga kelestarian alam"];
+  const manfaatList =
+    Array.isArray(manfaat) && manfaat.length
+      ? manfaat
+      : ["Menambah penghijauan", "Menjaga kelestarian alam"];
 
   const galeriList = galeri.length
     ? galeri.map((g) => g.foto_url)
-    : [(gambar && typeof gambar === "string" ? gambar : "/default.jpg")];
+    : [gambar && typeof gambar === "string" ? gambar : "/default.jpg"];
 
-  const timList = Array.isArray(tim) && tim.length
-    ? tim
-    : parsedPJ.length
-    ? parsedPJ
-    : [{ name: "Relawan", role: "Peserta Penanaman" }];
+  const timList =
+    Array.isArray(tim) && tim.length
+      ? tim
+      : parsedPJ.length
+      ? parsedPJ
+      : [{ name: "Relawan", role: "Peserta Penanaman" }];
 
   const statusColor =
     (status || "").toLowerCase() === "sedang berlangsung"
@@ -160,7 +163,8 @@ export default function AcaraDetail() {
                 )}
                 {tanggal && (
                   <p className="flex items-center gap-2 font-medium">
-                    <Clock size={18} className="text-green-600" /> {String(tanggal)}
+                    <Clock size={18} className="text-green-600" />{" "}
+                    {String(tanggal)}
                   </p>
                 )}
                 {lokasi && (
@@ -183,7 +187,9 @@ export default function AcaraDetail() {
               <ul className="list-none text-gray-700 space-y-3 pl-0">
                 {manfaatList.map((b, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <span className="text-green-600 text-xl mt-1 font-bold">•</span>
+                    <span className="text-green-600 text-xl mt-1 font-bold">
+                      •
+                    </span>
                     <span className="text-lg">{b}</span>
                   </li>
                 ))}
@@ -220,14 +226,18 @@ export default function AcaraDetail() {
                 {Array.isArray(timList) && timList.length > 0 ? (
                   timList.map((t, i) => {
                     const name =
-                      t?.name ?? t?.fullName ?? (typeof t === "string" ? t : "Relawan");
+                      t?.name ??
+                      t?.fullName ??
+                      (typeof t === "string" ? t : "Relawan");
                     const role = t?.role ?? t?.jabatan ?? "Peserta Penanaman";
                     return (
                       <div
                         key={i}
                         className="p-5 bg-green-50/50 border border-green-300 rounded-xl"
                       >
-                        <p className="font-bold text-lg text-[#064E3B]">{name}</p>
+                        <p className="font-bold text-lg text-[#064E3B]">
+                          {name}
+                        </p>
                         <p className="text-sm text-gray-600 mt-1">{role}</p>
                       </div>
                     );
@@ -252,14 +262,30 @@ export default function AcaraDetail() {
                 </p>
 
                 {/* 🟢 Tombol Donasi Sekarang */}
-                <button
-                  onClick={() => router.push(`/donatur/tanam?id_acara=${id}`)}
-                  className="w-full bg-[#15803D] hover:bg-[#065F46] text-white font-bold text-lg px-6 py-3 rounded-xl transition"
+                <Link
+                  href={`/donatur/PilihBibit?id=${event.id}`}
+                  className="
+    group relative w-full flex items-center justify-center gap-3
+    bg-gradient-to-r from-green-600 to-emerald-600
+    hover:from-green-700 hover:to-emerald-700
+    text-white font-semibold px-6 py-3 rounded-full
+    shadow-md hover:shadow-lg transition-all duration-300
+    active:scale-[0.97]
+  "
                 >
                   <div className="flex items-center justify-center gap-3">
-                    <Heart size={20} fill="white" stroke="none" /> Donasi Sekarang
+                    <Heart
+                      size={20}
+                      fill="white"
+                      stroke="none"
+                      className="group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <span className="tracking-wide">Donasi Sekarang</span>
                   </div>
-                </button>
+
+                  {/* Efek glow di belakang tombol */}
+                  <span className="absolute inset-0 rounded-full bg-green-500 opacity-0 group-hover:opacity-20 blur-md transition duration-500"></span>
+                </Link>
               </div>
             </div>
 

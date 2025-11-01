@@ -62,7 +62,7 @@ export default function CaraKerja() {
   };
 
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section className="py-24 bg-white relative overflow-x-hidden">
       <div className="container mx-auto px-6 md:px-12">
         <ScrollAnimate type="fade-down">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-20">

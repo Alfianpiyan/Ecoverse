@@ -1,3 +1,4 @@
+import AcarahHijau from "@/components/HomePage/acarah-hijau";
 import DukungOleh from "@/components/HomePage/DukunganOleh";
 import NavbarDonatur from "@/components/HomePage/NavbarDonatur";
 import SekarangSection from "@/components/HomePage/SekarangSection";
@@ -11,9 +12,8 @@ export default function Home() {
         <NavbarDonatur/>
         <SekarangSection/>
         <Komunitas/>
-        <AcaraHijau/>
         <DukungOleh/>
-        
+        <AcarahHijau/>
         <Footer/>
         </>
     )

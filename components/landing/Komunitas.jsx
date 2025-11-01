@@ -25,7 +25,7 @@ export default function Komunitas() {
 
   return (
     <section
-      className="relative py-14 bg-gradient-to-b from-white to-[#F9FAFB] overflow-hidden"
+      className="relative overflow-x-hidden py-14 bg-gradient-to-b from-white to-[#F9FAFB] overflow-hidden"
     >
       {/* Background Wave lembut */}
       <div className="absolute inset-0">

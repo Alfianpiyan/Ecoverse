@@ -1,39 +1,58 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
+import { supabase } from "../../lib/Supabaseclient";
 
 export default function TanamPohonPage() {
   const [acara, setAcara] = useState(null);
   const [bibit, setBibit] = useState([]);
   const [keranjang, setKeranjang] = useState({});
 
-  useEffect(() => {
+  const searchParams = useSearchParams();
+const acaraId = searchParams.get("id");
+
+useEffect(() => {
+    if (!acaraId) return; // 🔒 Pastikan ada id dulu baru fetch
+
     async function fetchData() {
-      const acaraDummy = {
-        id: 1,
-        nama: "Penanaman Pohon Mahoni",
-        lokasi: "Desa Hijau Lestari, Bandung",
-        tanggal: "10 November 2025",
-        terkumpul: 100,
-        target: 250,
-      };
+      // 🔹 Ambil data acara berdasarkan ID
+      const { data: acaraData, error: acaraError } = await supabase
+        .from("acara_penanaman")
+        .select("id, judul_acara, lokasi, tanggal")
+        .eq("id", acaraId)
+        .single();
 
-      const bibitDummy = [
-        { id: 1, nama: "Pohon Mahoni", harga: 15000, gambar: "/gambar-pohon.png" },
-        { id: 2, nama: "Pohon Trembesi", harga: 12000, gambar: "/pohon-trembesi.jpg" },
-      ];
+      if (acaraError) {
+        console.error("Gagal ambil acara:", acaraError);
+        Swal.fire("Error", "Gagal mengambil data acara dari server!", "error");
+        return;
+      }
 
-      setAcara(acaraDummy);
-      setBibit(bibitDummy);
+      // 🔹 Ambil data bibit pohon
+      const { data: bibitData, error: bibitError } = await supabase
+        .from("pohon")
+        .select("id, nama, harga, gambar");
+
+      if (bibitError) {
+        console.error("Gagal ambil bibit:", bibitError);
+        Swal.fire("Error", "Gagal mengambil data bibit dari server!", "error");
+        return;
+      }
+
+      setAcara(acaraData);
+      setBibit(bibitData);
     }
 
     fetchData();
-  }, []);
+  }, [acaraId]);
+
+
 
   const tambah = (item) => {
     setKeranjang((prev) => ({
@@ -92,7 +111,7 @@ export default function TanamPohonPage() {
       title: "Konfirmasi Pembayaran",
       html: `
         <div style="text-align:left">
-          <p><b>Nama Acara:</b> ${acara.nama}</p>
+          <p><b>Nama Acara:</b> ${acara.judul_acara}</p>
           <p><b>Lokasi:</b> ${acara.lokasi}</p>
           <p><b>Pesanan:</b><br>${detailPesanan}</p>
           <p><b>Total:</b> Rp ${totalHarga.toLocaleString("id-ID")}</p>

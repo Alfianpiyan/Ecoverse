@@ -34,8 +34,8 @@ export default function Navbar() {
     <>
       {/* === NAVBAR === */}
       <nav
-        className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center justify-between
-        px-6 py-3 rounded-full border border-gray-200 shadow-lg w-[90%] max-w-6xl
+        className={`fixed overflow-x-hidden top-4 left-1/2 -translate-x-1/2 z-50 flex items-center justify-between
+        px-6 py-3 rounded-full border border-gray-200 shadow-lg w-[80%] max-w-6xl
         transition-all duration-300 ${
           scrolled ? "bg-white/90 backdrop-blur-md" : "bg-white"
         }`}

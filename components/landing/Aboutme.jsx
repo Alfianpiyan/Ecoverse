@@ -6,7 +6,7 @@ export default function AboutSection() {
   return (
     <section
       id="about-section"
-      className="w-full py-20 bg-gradient-to-b from-white to-green-50"
+      className="w-full overflow-x-hidden py-20 bg-gradient-to-b from-white to-green-50"
     >
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
         {/* === IMAGE SIDE === */}

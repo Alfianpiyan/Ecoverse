@@ -19,7 +19,7 @@ export default function DukungOleh() {
 
   return (
     <section className="w-full bg-white py-20 relative overflow-hidden"> {/* Ubah background ke putih dan padding lebih besar */}
-      <div className="max-w-7xl mx-auto px-6 text-center">
+      <div className="max-w-7xl mx-auto text-center">
         <h2 className="text-sm tracking-widest uppercase font-semibold text-green-600 mb-2">
           Mitra Kami
         </h2>
