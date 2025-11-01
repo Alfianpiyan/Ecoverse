@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { motion } from "framer-motion";
 
 const dummyEvents = [
   {
@@ -67,29 +68,64 @@ const dummyEvents = [
 export default function DaftarAcara() {
   return (
     <div className="min-h-screen flex flex-col items-center bg-[#ffffff] pb-24">
-      <div className="w-full bg-white py-6 flex justify-center">
+      <motion.div
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="w-full bg-white py-6 flex justify-center"
+      >
         <h1 className="text-3xl font-semibold text-[#1B4332]">Daftar Acara</h1>
-      </div>
+      </motion.div>
 
-      <p className="text-center text-gray-500 mb-10 px-4 max-w-2xl">
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4, duration: 0.7 }}
+        className="text-center text-gray-500 mb-10 px-4 max-w-2xl"
+      >
         Gabung dalam gerakan hijau! Pilih acara yang kamu suka dan tanam pohon
         bersama.
-      </p>
-
-      {/* card */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 md:px-16 w-full max-w-7xl">
+      </motion.p>
+      
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 md:px-16 w-full max-w-7xl"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: 0.15,
+            },
+          },
+        }}
+      >
         {dummyEvents.map((event) => (
-          <div
+          <motion.div
             key={event.id}
+            variants={{
+              hidden: { opacity: 0, y: 40 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            whileHover={{
+              scale: 1.03,
+              boxShadow: "0 10px 20px rgba(0,0,0,0.15)",
+            }}
+            whileTap={{ scale: 0.98 }}
             className="relative bg-[#D8F3DC] rounded-2xl p-4 shadow-md hover:shadow-lg transition"
           >
-            <div className="h-36 bg-[#B7E4C7] rounded-xl mb-3 overflow-hidden">
+            <motion.div
+              className="h-36 bg-[#B7E4C7] rounded-xl mb-3 overflow-hidden"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.4 }}
+            >
               <img
                 src={event.image}
                 alt={event.title}
                 className="w-full h-full object-cover"
               />
-            </div>
+            </motion.div>
 
             <h2 className="font-semibold text-[#1B4332] text-lg mb-1">
               {event.title}
@@ -104,13 +140,18 @@ export default function DaftarAcara() {
             </p>
 
             <div className="absolute bottom-4 right-4">
-              <button className="bg-[#1B4332] text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-[#155d40] transition">
+              <motion.button
+                whileHover={{ scale: 1.05, backgroundColor: "#155d40" }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="bg-[#1B4332] text-white text-sm font-medium px-4 py-2 rounded-lg transition"
+              >
                 Lihat Detail
-              </button>
+              </motion.button>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }
