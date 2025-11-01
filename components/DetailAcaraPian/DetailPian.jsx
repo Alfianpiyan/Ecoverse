@@ -21,8 +21,7 @@ export default function DetailAcaraPian() {
     status: "Berhasil",
   };
 
-  const [garisWidth] = useState("78%");
-
+  // const [garisWidth] = useState("78%"); // Variabel ini tidak digunakan
 
   const tahap = [
     { label: "Menunggu Acara", icon: "/icons/tr1.png" },
@@ -40,33 +39,43 @@ export default function DetailAcaraPian() {
   }
 
   return (
-    <div className="min-h-screen flex justify-center py-10 px-4 bg-gray-50">
+    <div className="min-h-screen flex justify-center py-6 md:py-10 px-4 bg-gray-50">
       <div className="w-full space-y-6" style={{ maxWidth: "1200px" }}>
         
-       
-        <div className="bg-white p-10 rounded-2xl shadow-md flex flex-col md:flex-row gap-6 items-start relative">
-          <div className="w-full md:w-1/3 h-56 bg-gray-200 rounded-lg shrink-0" />
-          <div className="flex-grow space-y-1"> 
-            <h2 className="text-3xl font-bold text-green-800 mb-2">{dataAcara.nama}</h2>
-            <p className="text-lg text-green-800">
+        {/* --- 1. Detail Acara (Responsive) --- */}
+        <div className="bg-white p-6 md:p-10 rounded-2xl shadow-md flex flex-col md:flex-row gap-6 items-start relative">
+          
+          {/* Gambar */}
+          {/* Tinggi gambar lebih kecil di mobile, lebih besar di tablet/desktop */}
+          <div className="w-full md:w-1/3 h-48 md:h-56 bg-gray-200 rounded-lg shrink-0" />
+          
+          {/* Detail Teks */}
+          <div className="flex-grow space-y-1 md:mb-2"> 
+            {/* Judul: Lebih kecil di mobile, standar di tablet/desktop */}
+            <h2 className="text-2xl md:text-3xl font-bold text-green-800 mb-2">{dataAcara.nama}</h2>
+            
+            {/* Detail: Menggunakan text-base di mobile, text-lg di tablet/desktop */}
+            <p className="text-base md:text-lg text-green-800">
               Penyelenggara : <span className="text-gray-800">{dataAcara.namaInstansi}</span>
             </p>
-            <p className="text-lg text-green-800"> 
+            <p className="text-base md:text-lg text-green-800"> 
               Lokasi : <span className="text-gray-800">{dataAcara.lokasi}</span>
             </p>
-            <p className="text-lg text-green-800"> 
+            <p className="text-base md:text-lg text-green-800"> 
               Tanggal Acara : <span className="text-gray-800">{dataAcara.tanggal}</span>
             </p>
             
-            <p className="font-semibold text-green-700 text-lg pt-3">
+            {/* Status Acara */}
+            <p className="font-semibold text-green-700 text-base md:text-lg pt-3">
               Status Acara : {dataAcara.status}
             </p>
           </div>
           
-          <div className="absolute bottom-6 right-10">
+          {/* Tautan Profile Instansi (Posisi Disesuaikan) */}
+          <div className="absolute bottom-4 right-4 md:bottom-6 md:right-10 pt-2">
             <a 
               href="/profile-instansi" 
-              className="text-green-700 font-semibold text-lg hover:text-green-800 transition-colors"
+              className="text-green-700 font-semibold text-base md:text-lg md:mt-30 hover:text-green-800 transition-colors"
             >
               Lihat Profile Instansi &gt;
             </a>
@@ -74,13 +83,18 @@ export default function DetailAcaraPian() {
 
         </div>
     
+        {/* --- 2. Status & Riwayat (Responsive Grid) --- */}
         <div className="grid md:grid-cols-2 gap-6">
+          
+          {/* Status Bibit Kamu */}
           <div className="bg-white p-6 rounded-2xl shadow-md flex flex-col justify-between"> 
             <div> 
               <h3 className="text-xl md:text-2xl font-bold text-green-800 mb-8 text-center"> 
                 Status Bibit Kamu
               </h3>
-              <div className="relative flex items-start justify-between py-2 px-6"> 
+              
+              {/* Progress Bar Container */}
+              <div className="relative flex items-start justify-between py-2 px-3 sm:px-6"> 
                   <div
                       className="absolute top-[40px] left-1/2 h-1 bg-gray-200 transform -translate-x-1/2 rounded-full w-[80%]" 
                   ></div>
@@ -92,23 +106,23 @@ export default function DetailAcaraPian() {
                   {tahap.map((item, index) => (
                       <div
                           key={index}
-                          className="flex flex-col items-center text-center z-10 w-24"
+                          className="flex flex-col items-center text-center z-10 w-20 sm:w-24" // Lebar item lebih kecil di mobile
                       >
                           <div
-                              className={`w-16 h-16 flex items-center justify-center rounded-full transition-all duration-500 shadow-md mb-2 ${ 
+                              className={`w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center rounded-full transition-all duration-500 shadow-md mb-2 ${ 
                                   index <= statusIndex ? "bg-green-600" : "bg-gray-300" 
                               }`}
                           >
                               <Image
                                   src={item.icon}
                                   alt={item.label}
-                                  width={36} 
-                                  height={36} 
+                                  width={32} // Ukuran ikon lebih kecil di mobile
+                                  height={32} 
                                   className="object-contain"
                               />
                           </div>
                           <div
-                              className={`w-7 h-7 rounded-full flex items-center justify-center text-white mt-1 mb-2 text-base font-bold ${ 
+                              className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-white mt-1 mb-2 text-sm sm:text-base font-bold ${ 
                                   index === statusIndex
                                       ? "bg-green-600" 
                                       : index < statusIndex
@@ -118,13 +132,13 @@ export default function DetailAcaraPian() {
                           >
                               {index <= statusIndex ? "✓" : ""}
                           </div>
-                          <p className={`text-base font-semibold ${index === statusIndex ? 'text-green-700' : 'text-gray-500'}`}>{item.label}</p>
+                          <p className={`text-xs sm:text-base font-semibold ${index === statusIndex ? 'text-green-700' : 'text-gray-500'}`}>{item.label}</p>
                       </div>
                   ))}
               </div>
             </div> 
             <div className="mt-8 pt-4 border-t border-gray-200">
-                <p className="text-gray-600 text-base text-center italic">
+                <p className="text-gray-600 text-sm md:text-base text-center italic">
                     {statusAcara === "Menunggu Acara" &&
                         "Bibit kamu sedang menunggu hari acara. Terima kasih sudah berkontribusi."}
                     {statusAcara === "Sedang Ditanam" &&
@@ -134,33 +148,43 @@ export default function DetailAcaraPian() {
                 </p>
             </div>
           </div>
+          
+          {/* Riwayat Pembayaran */}
           <div className="bg-white p-6 rounded-2xl shadow-md flex flex-col justify-center"> 
-            <h3 className="text-2xl font-bold text-green-800 mb-4"> 
+            <h3 className="text-xl md:text-2xl font-bold text-green-800 mb-4"> 
               Riwayat Pembayaran
             </h3>
             <div className="space-y-2"> 
-              <div className="flex items-center text-lg"> 
-                <p className="w-[185px] min-w-[160px]">Tanggal Pembayaran</p> 
+              
+              {/* Baris Detail */}
+              <div className="flex items-center text-sm md:text-lg"> 
+                {/* Lebar label disesuaikan, menggunakan w-1/2 di mobile untuk menghindari tumpang tindih */}
+                <p className="w-1/2 md:w-[185px]">Tanggal Pembayaran</p> 
                 <p className="mx-2">:</p>
                 <p className="flex-grow text-right">{dataPembayaran.tanggal}</p>
               </div>
-              <div className="flex items-center text-lg"> 
-                <p className="w-[185px] min-w-[160px]">Jumlah Bibit</p> 
+              
+              <div className="flex items-center text-sm md:text-lg"> 
+                <p className="w-1/2 md:w-[185px]">Jumlah Bibit</p> 
                 <p className="mx-2">:</p>
                 <p className="flex-grow text-right">{dataPembayaran.jumlahBibit}</p>
               </div>
-              <div className="flex items-center text-lg"> 
-                <p className="w-[185px] min-w-[160px]">Jenis Bibit</p> 
+              
+              <div className="flex items-center text-sm md:text-lg"> 
+                <p className="w-1/2 md:w-[185px]">Jenis Bibit</p> 
                 <p className="mx-2">:</p>
                 <p className="flex-grow text-right">{dataPembayaran.jenisBibit}</p>
               </div>
-              <div className="flex items-center text-lg"> 
-                <p className="w-[185px] min-w-[160px]">Metode Pembayaran</p> 
+              
+              <div className="flex items-center text-sm md:text-lg"> 
+                <p className="w-1/2 md:w-[185px]">Metode Pembayaran</p> 
                 <p className="mx-2">:</p>
                 <p className="flex-grow text-right">{dataPembayaran.metode}</p>
               </div>
-              <div className="flex items-center text-xl pt-2 border-t mt-2"> 
-                <p className=" font-bold">Status Pembayaran</p>
+              
+              {/* Status Pembayaran */}
+              <div className="flex items-center text-base md:text-xl pt-2 border-t mt-2"> 
+                <p className="font-bold">Status Pembayaran</p>
                 <p className="mx-2 font-bold">:</p>
                 <p className="flex-grow text-green-600 font-bold text-right">
                   ✅ {dataPembayaran.status}

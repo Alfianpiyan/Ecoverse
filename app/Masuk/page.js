@@ -1,13 +1,12 @@
 import DetailAcaraPian from "@/components/DetailAcaraPian/DetailPian";
 import Footer from "@/components/landing/Footer";
 import TrackingAcara from "@/components/Navbar/TrackingAcara";
+import MasukPage from "@/components/MasukPage/masuk";
 
-
-export default function HalDetailAcara() {
+export default function Masuk() {
     return (
         <>
-        <TrackingAcara/>
-        <DetailAcaraPian/>
+        <MasukPage/>
         <Footer/>
         </>
     )

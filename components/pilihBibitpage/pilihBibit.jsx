@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { FaMinus, FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import { supabase } from "../../lib/Supabaseclient";
@@ -127,8 +126,28 @@ useEffect(() => {
 
   if (!acara) return <p className="text-center py-20 text-gray-500">Memuat data...</p>;
 
+  const testimonials = [
+    {
+      nama: "Jamilah",
+      teks: "Program ini sangat bermanfaat untuk lingkungan sekitar. Saya senang bisa berkontribusi.",
+    },
+    {
+      nama: "Andi",
+      teks: "Luar biasa! Melihat pohon tumbuh dari hasil donasi saya membuat saya bangga.",
+    },
+    {
+      nama: "Siti",
+      teks: "Aksi nyata untuk bumi! Semoga makin banyak yang ikut serta.",
+    },
+    {
+      nama: "Rizky",
+      teks: "Donasi mudah, dampak besar. Salut untuk tim penyelenggara!",
+    },
+  ];
+
   return (
     <section className="w-full max-w-[1000px] mx-auto px-4 py-10">
+      {/* === Info Acara === */}
       <div className="bg-white shadow-lg rounded-3xl p-8 flex flex-col md:flex-row items-center gap-8">
         <div className="bg-gray-200 w-full md:w-1/2 h-48 rounded-xl" />
         <div className="flex-1">
@@ -140,7 +159,7 @@ useEffect(() => {
             <span className="font-semibold">Tanggal Acara:</span> {acara.tanggal}
           </p>
           <p className="text-sm text-gray-600 mt-1">Bibit yang terkumpul</p>
-          <div className="w-20 bg-gray-200 h-3 overflow-hidden">
+          <div className="w-20 bg-gray-200 h-3 overflow-hidden rounded-full">
             <div
               className="bg-emerald-600 h-3"
               style={{ width: `${(acara.terkumpul / acara.target) * 100}%` }}
@@ -152,6 +171,7 @@ useEffect(() => {
         </div>
       </div>
 
+      {/* === Pilih Bibit === */}
       <div className="mt-16 flex flex-col lg:flex-row gap-10">
         <div className="flex-1 bg-white rounded-3xl shadow-lg p-8">
           <h3 className="text-xl font-bold text-emerald-700 mb-2">Pilih Jenis Bibit Pohon</h3>
@@ -161,54 +181,49 @@ useEffect(() => {
             {bibit.map((item) => {
               const jumlah = keranjang[item.id]?.jumlah || 0;
               return (
-              <motion.div
-                key={item.id}
-                className="rounded-3xl overflow-hidden shadow-md border-2 border-transparent "
-              >
-                <div className="relative w-full h-40 overflow-hidden rounded-b-[20px]">
-                  <Image
-                    src={item.gambar}
-                    alt={item.nama}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-
-                <div className="bg-emerald-700 text-white text-center py-4 -mt-4">
-                  <h4 className="font-semibold text-[16px]">{item.nama}</h4>
-                  <p className="text-sm mt-1">Harga RP {item.harga.toLocaleString("id-ID")}</p>
-                  
-                  <div className="flex justify-center items-center mt-3 gap-2">
-                    <button
-                      onClick={() => kurang(item)}
-                      className="bg-emerald-500 text-white text-xs px-3 py-1 rounded-full"
-                    >
-                      -
-                    </button>
-                    <span className="text-sm">{jumlah}</span>
-                    <button
-                      onClick={() => tambah(item)}
-                      className="bg-emerald-500 text-white text-xs px-3 py-1 rounded-full"
-                    >
-                      +
-                    </button>
-                    <button
-                      onClick={() => pilihTanaman(item)}
-                      className="bg-white text-emerald-700 font-semibold text-xs px-3 py-1 rounded-full  hover:text-white hover:bg-emerald-900 transition duration-500 shadow-md cursor-pointern"
-                    >
-                      Pilih Tanaman
-                    </button>
+                <motion.div
+                  key={item.id}
+                  whileHover={{ scale: 1.05 }}
+                  className="rounded-3xl overflow-hidden shadow-md border border-emerald-200"
+                >
+                  <div className="relative w-full h-40 overflow-hidden rounded-b-[20px]">
+                    <Image
+                      src={item.gambar}
+                      alt={item.nama}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
-                </div>
-              </motion.div>
 
+                  <div className="bg-emerald-700 text-white text-center py-4 -mt-4">
+                    <h4 className="font-semibold text-[16px]">{item.nama}</h4>
+                    <p className="text-sm mt-1">
+                      Harga Rp {item.harga.toLocaleString("id-ID")}
+                    </p>
 
+                    <div className="flex justify-center items-center mt-3 gap-2">
+                      <button
+                        onClick={() => kurang(item)}
+                        className="bg-emerald-500 text-white text-xs px-3 py-1 rounded-full"
+                      >
+                        -
+                      </button>
+                      <span className="text-sm">{jumlah}</span>
+                      <button
+                        onClick={() => tambah(item)}
+                        className="bg-emerald-500 text-white text-xs px-3 py-1 rounded-full"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
               );
             })}
           </div>
         </div>
 
-
+        
         <div className="w-full lg:w-[380px]">
           <div className="bg-white rounded-3xl shadow-lg p-8">
             <h3 className="text-lg font-bold text-gray-800 mb-4">Ringkasan Kontribusi</h3>
@@ -244,6 +259,51 @@ useEffect(() => {
           </div>
         </div>
       </div>
+
+      {/* komen */}
+      <div className="relative mt-24 py-20 bg-green-50 overflow-hidden rounded-2xl">
+        <h3 className="text-center text-3xl font-semibold text-emerald-800 mb-14">
+          Cerita Para Kontributor 🌿
+        </h3>
+
+        <motion.div
+          className="flex gap-10 items-center"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ repeat: Infinity, duration: 35, ease: "linear" }}
+        >
+          {[...testimonials, ...testimonials].map((t, i) => (
+            <motion.div
+              key={i}
+              className="min-w-[280px] bg-white rounded-[2rem] shadow-md p-6 border border-emerald-50"
+              style={{
+                transform: `rotateY(${(i % 6) * 15 - 45}deg)`,
+              }}
+              whileHover={{
+                scale: 1.05,
+                rotateY: 0,
+                transition: { duration: 0.4 },
+              }}
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center shadow-inner mb-3">
+                  <Image
+                    src="/profile-icon.png"
+                    alt="profile"
+                    width={36}
+                    height={36}
+                    className="rounded-full"
+                  />
+                </div>
+                <h4 className="font-semibold text-emerald-700 mb-2">{t.nama}</h4>
+                <p className="text-gray-600 italic text-sm leading-relaxed">
+                  “{t.teks}”
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+
     </section>
   );
 }
