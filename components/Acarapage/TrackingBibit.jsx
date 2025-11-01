@@ -79,7 +79,6 @@ export default function TrackingBibit() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#e9fbee] to-[#f8fdf8] pt-10 pb-20">
       <div className="max-w-5xl mx-auto px-5">
-        {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-2xl font-bold text-green-800 mb-2">
             🌱 Kegiatan Anda
@@ -89,7 +88,7 @@ export default function TrackingBibit() {
           </p>
         </div>
 
-        {/* Status line */}
+        {/* statusnya */}
         <div className="flex justify-between items-center max-w-3xl mx-auto relative mb-10">
           <div className="absolute top-5 left-0 w-full h-[2px] bg-gray-200 z-0"></div>
 
@@ -100,7 +99,7 @@ export default function TrackingBibit() {
           ))}
         </div>
 
-        {/* Daftar Acara */}
+        {/* acaranya */}
         <AnimatePresence mode="wait">
           <motion.div
             key={filter}
