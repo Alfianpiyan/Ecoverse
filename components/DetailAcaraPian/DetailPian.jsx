@@ -4,8 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 
 export default function DetailAcaraPian() {
-  const [statusAcara] = useState("Menunggu Acara"); // ubah: "Menunggu Acara", "Sedang Ditanam", "Sudah Ditanam"
-
+  const [statusAcara] = useState("Menunggu Acara");
   const dataAcara = {
     nama: "Acara Penanaman Pohon",
     lokasi: "Taman Hutan Raya Bandung",
@@ -41,39 +40,29 @@ export default function DetailAcaraPian() {
   }
 
   return (
-    <div className="min-h-screen flex justify-center py-10 px-4 bg-gray-50"> {/* Menambahkan bg-gray-50 untuk latar belakang */}
+    <div className="min-h-screen flex justify-center py-10 px-4 bg-gray-50">
       <div className="w-full space-y-6" style={{ maxWidth: "1200px" }}>
         
-        {/* --- Detail Acara (Sesuai Desain Gambar d56a17.png) --- */}
-        <div className="bg-white p-10 rounded-2xl shadow-md flex flex-col md:flex-row gap-6 items-start relative"> {/* Kontainer harus RELATIVE */}
-          
-          {/* Bagian Gambar */}
+       
+        <div className="bg-white p-10 rounded-2xl shadow-md flex flex-col md:flex-row gap-6 items-start relative">
           <div className="w-full md:w-1/3 h-56 bg-gray-200 rounded-lg shrink-0" />
-          
-          {/* Bagian Teks Detail */}
           <div className="flex-grow space-y-1"> 
-            
-            {/* Nama Acara */}
             <h2 className="text-3xl font-bold text-green-800 mb-2">{dataAcara.nama}</h2>
-            
-            {/* Detail Acara lainnya */}
-            <p className="text-lg text-green-800"> {/* Menggunakan warna hijau untuk label Penyelenggara */}
+            <p className="text-lg text-green-800">
               Penyelenggara : <span className="text-gray-800">{dataAcara.namaInstansi}</span>
             </p>
-            <p className="text-lg text-green-800"> {/* Menggunakan warna hijau untuk label Lokasi */}
+            <p className="text-lg text-green-800"> 
               Lokasi : <span className="text-gray-800">{dataAcara.lokasi}</span>
             </p>
-            <p className="text-lg text-green-800"> {/* Menggunakan warna hijau untuk label Tanggal */}
+            <p className="text-lg text-green-800"> 
               Tanggal Acara : <span className="text-gray-800">{dataAcara.tanggal}</span>
             </p>
             
-            {/* Status Acara */}
             <p className="font-semibold text-green-700 text-lg pt-3">
               Status Acara : {dataAcara.status}
             </p>
           </div>
           
-          {/* Tautan Profile Instansi - Posisi ABSOLUTE di Pojok Kanan Bawah */}
           <div className="absolute bottom-6 right-10">
             <a 
               href="/profile-instansi" 
@@ -84,24 +73,17 @@ export default function DetailAcaraPian() {
           </div>
 
         </div>
-        
-        {/* --- Konten 2 Kolom (Status Bibit & Riwayat Pembayaran) --- */}
+    
         <div className="grid md:grid-cols-2 gap-6">
-          
-          {/* 1. Status Bibit Kamu (SUDAH DIPERBESAR) */}
           <div className="bg-white p-6 rounded-2xl shadow-md flex flex-col justify-between"> 
             <div> 
               <h3 className="text-xl md:text-2xl font-bold text-green-800 mb-8 text-center"> 
                 Status Bibit Kamu
               </h3>
-
-              {/* Progress Bar Container */}
               <div className="relative flex items-start justify-between py-2 px-6"> 
-                  {/* Garis Abu-abu (Background) */}
                   <div
                       className="absolute top-[40px] left-1/2 h-1 bg-gray-200 transform -translate-x-1/2 rounded-full w-[80%]" 
                   ></div>
-                  {/* Garis Hijau (Progress) */}
                   <div
                       className={`absolute top-[40px] left-[10%] h-1 bg-green-500 transform transition-all duration-700`} 
                       style={{ width: progressWidth }}
@@ -112,7 +94,6 @@ export default function DetailAcaraPian() {
                           key={index}
                           className="flex flex-col items-center text-center z-10 w-24"
                       >
-                          {/* Ikon */}
                           <div
                               className={`w-16 h-16 flex items-center justify-center rounded-full transition-all duration-500 shadow-md mb-2 ${ 
                                   index <= statusIndex ? "bg-green-600" : "bg-gray-300" 
@@ -126,8 +107,6 @@ export default function DetailAcaraPian() {
                                   className="object-contain"
                               />
                           </div>
-
-                          {/* Checklist kecil/Indikator Aktif */}
                           <div
                               className={`w-7 h-7 rounded-full flex items-center justify-center text-white mt-1 mb-2 text-base font-bold ${ 
                                   index === statusIndex
@@ -139,15 +118,11 @@ export default function DetailAcaraPian() {
                           >
                               {index <= statusIndex ? "✓" : ""}
                           </div>
-
-                          {/* Label */}
                           <p className={`text-base font-semibold ${index === statusIndex ? 'text-green-700' : 'text-gray-500'}`}>{item.label}</p>
                       </div>
                   ))}
               </div>
             </div> 
-
-            {/* Deskripsi Status */}
             <div className="mt-8 pt-4 border-t border-gray-200">
                 <p className="text-gray-600 text-base text-center italic">
                     {statusAcara === "Menunggu Acara" &&
@@ -159,8 +134,6 @@ export default function DetailAcaraPian() {
                 </p>
             </div>
           </div>
-
-          {/* 2. Riwayat Pembayaran (DIKECILKAN) */}
           <div className="bg-white p-6 rounded-2xl shadow-md flex flex-col justify-center"> 
             <h3 className="text-2xl font-bold text-green-800 mb-4"> 
               Riwayat Pembayaran
