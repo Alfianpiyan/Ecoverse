@@ -10,27 +10,26 @@ export default function CaraKerja() {
     {
       nama: "Pilih Tanaman",
       icon: "/LPilih.png",
-      deskripsi: "Kamu memilih jenis tanaman yang ingin didonasikan sesuai preferensi.",
+      deskripsi: "Pilih jenis tanaman yang ingin kamu donasikan sesuai preferensi dan lokasi penanaman.",
     },
     {
       nama: "Tunggu Disalurkan",
       icon: "/LSalurkan.png",
-      deskripsi: "Bibit tanaman akan disalurkan oleh tim ke lokasi penghijauan.",
+      deskripsi: "Tim kami akan menyalurkan bibit ke area penghijauan sesuai jadwal kegiatan.",
     },
     {
       nama: "Ditanam",
       icon: "/LTanam.png",
-      deskripsi: "Tanaman ditanam langsung oleh relawan atau komunitas kami.",
+      deskripsi: "Bibit ditanam oleh relawan atau komunitas mitra kami dengan perawatan berkelanjutan.",
     },
     {
       nama: "Dokumentasi",
       icon: "/LDokumentasi.png",
-      deskripsi: "Kamu menerima laporan dokumentasi hasil penanaman.",
+      deskripsi: "Kamu akan menerima laporan foto & data lokasi penanaman untuk transparansi.",
     },
   ];
 
-  // --- fungsi reusable untuk animasi scroll
-  const ScrollAnimate = ({ children, type = "fade-up", delay = 0 }) => {
+  const ScrollAnimate = ({ children, delay = 0 }) => {
     const controls = useAnimation();
     const [ref, inView] = useInView({ threshold: 0.2, triggerOnce: false });
 
@@ -40,21 +39,17 @@ export default function CaraKerja() {
     }, [inView, controls]);
 
     const variants = {
-      "fade-up": { hidden: { opacity: 0, y: 60 }, visible: { opacity: 1, y: 0 } },
-      "fade-down": { hidden: { opacity: 0, y: -60 }, visible: { opacity: 1, y: 0 } },
-      "slide-left": { hidden: { opacity: 0, x: -100 }, visible: { opacity: 1, x: 0 } },
-      "slide-right": { hidden: { opacity: 0, x: 100 }, visible: { opacity: 1, x: 0 } },
-      "zoom": { hidden: { opacity: 0, scale: 0.7 }, visible: { opacity: 1, scale: 1 } },
-      "rotate": { hidden: { opacity: 0, rotate: -10, scale: 0.9 }, visible: { opacity: 1, rotate: 0, scale: 1 } },
+      hidden: { opacity: 0, y: 50 },
+      visible: { opacity: 1, y: 0 },
     };
 
     return (
       <motion.div
         ref={ref}
-        variants={variants[type]}
+        variants={variants}
         initial="hidden"
         animate={controls}
-        transition={{ duration: 0.8, delay, ease: "easeOut" }}
+        transition={{ duration: 0.7, delay, ease: "easeOut" }}
       >
         {children}
       </motion.div>
@@ -62,43 +57,79 @@ export default function CaraKerja() {
   };
 
   return (
-    <section className="py-24 bg-white relative overflow-x-hidden">
+    <section className="relative py-28 bg-gradient-to-br from-green-50 via-white to-emerald-50 overflow-hidden">
+      {/* Background dekoratif */}
+      <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-green-200/30 blur-[120px] rounded-full -z-10"></div>
+      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-emerald-300/20 blur-[140px] rounded-full -z-10"></div>
+
       <div className="container mx-auto px-6 md:px-12">
-        <ScrollAnimate type="fade-down">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-20">
+        <ScrollAnimate>
+          <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16">
             Bagaimana Website Kami Bekerja
           </h2>
         </ScrollAnimate>
 
-        <div className="relative flex flex-col md:flex-row items-center justify-between md:gap-10">
-          <div className="hidden md:block absolute top-[95px] left-0 w-full h-[3px] bg-gray-200 rounded-full"></div>
+        {/* Timeline Container */}
+        <div className="relative flex flex-col md:flex-row md:justify-center md:items-center md:space-x-16 space-y-12 md:space-y-0">
+          {/* Garis timeline (desktop) */}
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: "90%" }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="hidden md:block absolute top-1/2 left-[5%] w-0 h-[4px] bg-gradient-to-r from-emerald-300 via-green-500 to-emerald-300 rounded-full shadow-sm"
+          ></motion.div>
 
           {langkah.map((item, index) => (
-            <ScrollAnimate
-              key={index}
-              type={index % 2 === 0 ? "slide-up" : "zoom"}
-              delay={index * 0.15}
-            >
-              <div className="relative flex flex-col items-center text-center bg-white shadow-md rounded-2xl p-6 w-full md:w-[220px] hover:shadow-xl transition-all duration-300">
-                <div className="w-20 h-20 flex items-center justify-center bg-green-100 rounded-full mb-4 shadow-inner">
+            <ScrollAnimate key={index} delay={index * 0.2}>
+              <motion.div
+                whileHover={{
+                  y: -8,
+                  scale: 1.04,
+                  boxShadow:
+                    "0 8px 25px rgba(72,187,120,0.25), 0 0 10px rgba(34,197,94,0.1)",
+                }}
+                transition={{ type: "spring", stiffness: 200, damping: 12 }}
+                className={`
+                  relative bg-white/70 backdrop-blur-xl border border-green-100 rounded-3xl shadow-md
+                  p-8 w-full md:w-[280px] flex flex-col items-center text-center transition-all duration-300
+                  ${index % 2 === 0 ? "md:translate-y-8" : "md:-translate-y-8"}
+                `}
+              >
+                <motion.div
+                  animate={{
+                    y: [0, -6, 0],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: index * 0.4,
+                  }}
+                  className="w-20 h-20 flex items-center justify-center bg-gradient-to-tr from-green-200 to-green-400 rounded-full mb-5 shadow-inner"
+                >
                   <Image
                     src={item.icon}
                     alt={item.nama}
-                    width={45}
-                    height={45}
+                    width={50}
+                    height={50}
                     className="object-contain"
                   />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                </motion.div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">
                   {item.nama}
                 </h3>
                 <p className="text-sm text-gray-600 leading-relaxed">
                   {item.deskripsi}
                 </p>
+
+                {/* Titik konektor */}
+                <div className="hidden md:block absolute top-1/2 -translate-y-1/2 -left-[38px] w-6 h-6 bg-green-400 border-4 border-white rounded-full shadow"></div>
+
+                {/* Garis vertikal di mobile */}
                 {index !== langkah.length - 1 && (
-                  <div className="md:hidden w-[2px] h-10 bg-green-400 mt-6"></div>
+                  <div className="md:hidden w-[2px] h-10 bg-green-400/70 mt-6"></div>
                 )}
-              </div>
+              </motion.div>
             </ScrollAnimate>
           ))}
         </div>
