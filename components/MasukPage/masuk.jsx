@@ -122,7 +122,7 @@ export default function MasukPage() {
       if (userDetail.role === "donatur") {
         router.push("/donatur/home");
       } else if (userDetail.role === "penanam") {
-        router.push("/penanam/home");
+        router.push("/penanam/Home");
       } else {
         router.push("/");
       }
