@@ -5,7 +5,7 @@ import MasukPage from "@/components/MasukPage/masuk";
 import BuatAcaraTanam from "@/components/Navbar/BuatAcaraTanam";
 import FormAcara from "@/components/AcaraPenanam/FormAcara";
 
-export default function Masuk() {
+export default function FormAcara() {
     return (
         <>
         <BuatAcaraTanam/>

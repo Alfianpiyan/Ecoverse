@@ -1,4 +1,4 @@
-import DetailAcaraPian from "@/components/TrackingDetailAcara/TrackingDetailAcara";
+import DetailAcaraPian from "@/components/DetailAcaraPian/DetailPian";
 import Footer from "@/components/landing/Footer";
 import TrackingAcara from "@/components/Navbar/TrackingAcara";
 
