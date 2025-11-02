@@ -21,8 +21,6 @@ export default function DetailAcaraPian() {
     status: "Berhasil",
   };
 
-  // const [garisWidth] = useState("78%"); // Variabel ini tidak digunakan
-
   const tahap = [
     { label: "Menunggu Acara", icon: "/icons/tr1.png" },
     { label: "Sedang Ditanam", icon: "/icons/tr2.png" },
@@ -41,20 +39,12 @@ export default function DetailAcaraPian() {
   return (
     <div className="min-h-screen flex justify-center py-6 md:py-10 px-4 bg-gray-50">
       <div className="w-full space-y-6" style={{ maxWidth: "1200px" }}>
-        
-        {/* --- 1. Detail Acara (Responsive) --- */}
         <div className="bg-white p-6 md:p-10 rounded-2xl shadow-md flex flex-col md:flex-row gap-6 items-start relative">
-          
-          {/* Gambar */}
-          {/* Tinggi gambar lebih kecil di mobile, lebih besar di tablet/desktop */}
+
           <div className="w-full md:w-1/3 h-48 md:h-56 bg-gray-200 rounded-lg shrink-0" />
           
-          {/* Detail Teks */}
           <div className="flex-grow space-y-1 md:mb-2"> 
-            {/* Judul: Lebih kecil di mobile, standar di tablet/desktop */}
             <h2 className="text-2xl md:text-3xl font-bold text-green-800 mb-2">{dataAcara.nama}</h2>
-            
-            {/* Detail: Menggunakan text-base di mobile, text-lg di tablet/desktop */}
             <p className="text-base md:text-lg text-green-800">
               Penyelenggara : <span className="text-gray-800">{dataAcara.namaInstansi}</span>
             </p>
@@ -64,14 +54,12 @@ export default function DetailAcaraPian() {
             <p className="text-base md:text-lg text-green-800"> 
               Tanggal Acara : <span className="text-gray-800">{dataAcara.tanggal}</span>
             </p>
-            
-            {/* Status Acara */}
+
             <p className="font-semibold text-green-700 text-base md:text-lg pt-3">
               Status Acara : {dataAcara.status}
             </p>
           </div>
-          
-          {/* Tautan Profile Instansi (Posisi Disesuaikan) */}
+
           <div className="absolute bottom-4 right-4 md:bottom-6 md:right-10 pt-2">
             <a 
               href="/profile-instansi" 
@@ -82,18 +70,13 @@ export default function DetailAcaraPian() {
           </div>
 
         </div>
-    
-        {/* --- 2. Status & Riwayat (Responsive Grid) --- */}
+ 
         <div className="grid md:grid-cols-2 gap-6">
-          
-          {/* Status Bibit Kamu */}
           <div className="bg-white p-6 rounded-2xl shadow-md flex flex-col justify-between"> 
             <div> 
               <h3 className="text-xl md:text-2xl font-bold text-green-800 mb-8 text-center"> 
                 Status Bibit Kamu
               </h3>
-              
-              {/* Progress Bar Container */}
               <div className="relative flex items-start justify-between py-2 px-3 sm:px-6"> 
                   <div
                       className="absolute top-[40px] left-1/2 h-1 bg-gray-200 transform -translate-x-1/2 rounded-full w-[80%]" 
@@ -116,7 +99,7 @@ export default function DetailAcaraPian() {
                               <Image
                                   src={item.icon}
                                   alt={item.label}
-                                  width={32} // Ukuran ikon lebih kecil di mobile
+                                  width={32} 
                                   height={32} 
                                   className="object-contain"
                               />
@@ -149,16 +132,13 @@ export default function DetailAcaraPian() {
             </div>
           </div>
           
-          {/* Riwayat Pembayaran */}
           <div className="bg-white p-6 rounded-2xl shadow-md flex flex-col justify-center"> 
             <h3 className="text-xl md:text-2xl font-bold text-green-800 mb-4"> 
               Riwayat Pembayaran
             </h3>
             <div className="space-y-2"> 
-              
-              {/* Baris Detail */}
+
               <div className="flex items-center text-sm md:text-lg"> 
-                {/* Lebar label disesuaikan, menggunakan w-1/2 di mobile untuk menghindari tumpang tindih */}
                 <p className="w-1/2 md:w-[185px]">Tanggal Pembayaran</p> 
                 <p className="mx-2">:</p>
                 <p className="flex-grow text-right">{dataPembayaran.tanggal}</p>
@@ -181,8 +161,7 @@ export default function DetailAcaraPian() {
                 <p className="mx-2">:</p>
                 <p className="flex-grow text-right">{dataPembayaran.metode}</p>
               </div>
-              
-              {/* Status Pembayaran */}
+
               <div className="flex items-center text-base md:text-xl pt-2 border-t mt-2"> 
                 <p className="font-bold">Status Pembayaran</p>
                 <p className="mx-2 font-bold">:</p>
