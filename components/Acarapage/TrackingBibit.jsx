@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function TrackingBibit() {
   const router = useRouter();
-
   const [filter, setFilter] = useState("semua");
 
   const [data] = useState([
@@ -17,6 +16,7 @@ export default function TrackingBibit() {
       location: "Bogor, Jawa Barat",
       image: "https://i.ibb.co/sP7CqYz/forest.jpg",
       status: "menunggu",
+      documentation: [],
     },
     {
       id: 2,
@@ -25,6 +25,10 @@ export default function TrackingBibit() {
       location: "Taman Nasional Ujung Kulon",
       image: "https://i.ibb.co/34JYQ3t/mangrove.jpg",
       status: "ditanam",
+      documentation: [
+        "https://i.ibb.co/34JYQ3t/mangrove.jpg",
+        "https://i.ibb.co/sP7CqYz/forest.jpg",
+      ],
     },
     {
       id: 3,
@@ -33,6 +37,10 @@ export default function TrackingBibit() {
       location: "Bogor, Jawa Barat",
       image: "https://i.ibb.co/jZ2QvDn/tree.jpg",
       status: "selesai",
+      documentation: [
+        "https://i.ibb.co/jZ2QvDn/tree.jpg",
+        "https://i.ibb.co/sP7CqYz/forest.jpg",
+      ],
     },
   ]);
 
@@ -88,10 +96,8 @@ export default function TrackingBibit() {
           </p>
         </div>
 
-        {/* statusnya */}
         <div className="flex justify-between items-center max-w-3xl mx-auto relative mb-10">
           <div className="absolute top-5 left-0 w-full h-[2px] bg-gray-200 z-0"></div>
-
           {steps.map((step, i) => (
             <div key={i} className="relative z-10 flex-1 flex justify-center">
               {renderStatusIcon(step)}
@@ -99,7 +105,6 @@ export default function TrackingBibit() {
           ))}
         </div>
 
-        {/* acaranya */}
         <AnimatePresence mode="wait">
           <motion.div
             key={filter}
@@ -141,7 +146,9 @@ export default function TrackingBibit() {
                       />
                     </motion.div>
                     <button
-                      onClick={() => router.push("/")}
+                      onClick={() =>
+                        router.push(`/donatur/detailStatusAcara/${item.id}`)
+                      }
                       className="bg-gradient-to-r from-green-700 to-green-900 text-white text-sm px-5 py-2 rounded-lg hover:opacity-90 transition-all shadow-sm"
                     >
                       Lihat Detail
