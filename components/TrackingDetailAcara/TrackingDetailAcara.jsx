@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 
-export default function DetailAcaraPian() {
+export default function TrackingDetailAcara() {
   const [statusAcara] = useState("Menunggu Acara");
   const dataAcara = {
     nama: "Acara Penanaman Pohon",

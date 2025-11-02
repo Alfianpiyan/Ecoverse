@@ -24,14 +24,12 @@ export default function BenefitSection() {
     },
   ];
 
-  // Animasi umum
   const fadeVariant = {
     hiddenDown: { opacity: 0, y: 50 },
     hiddenUp: { opacity: 0, y: -50 },
     visible: { opacity: 1, y: 0 },
   };
 
-  // Hook untuk memantau apakah section terlihat
   const [ref, inView] = useInView({ triggerOnce: false, threshold: 0.2 });
   const controls = useAnimation();
 
@@ -39,7 +37,7 @@ export default function BenefitSection() {
     if (inView) {
       controls.start("visible");
     } else {
-      controls.start("hiddenDown"); // Saat discroll keluar, sembunyikan lagi
+      controls.start("hiddenDown"); 
     }
   }, [inView, controls]);
 
@@ -48,7 +46,6 @@ export default function BenefitSection() {
       ref={ref}
       className="relative bg-gradient-to-b from-white via-green-50 to-white py-32 overflow-hidden"
     >
-      {/* Judul Section */}
       <motion.div
         variants={fadeVariant}
         initial="hiddenUp"
@@ -65,7 +62,6 @@ export default function BenefitSection() {
         </p>
       </motion.div>
 
-      {/* Konten Benefit */}
       <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-8 md:px-16">
         {benefits.map((item, index) => (
           <motion.div
@@ -80,17 +76,14 @@ export default function BenefitSection() {
             }}
             className="group bg-white border border-green-100 hover:border-green-400 shadow-md hover:shadow-xl rounded-2xl p-8 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-2"
           >
-            {/* Icon */}
             <div className="bg-green-100 group-hover:bg-green-200 transition-colors duration-300 rounded-full p-4 mb-4 shadow-sm">
               {item.icon}
             </div>
 
-            {/* Title */}
             <h3 className="text-xl font-semibold text-gray-800 mb-2">
               {item.title}
             </h3>
 
-            {/* Text */}
             <p className="text-gray-600 text-sm leading-relaxed">
               {item.text}
             </p>
@@ -98,7 +91,6 @@ export default function BenefitSection() {
         ))}
       </div>
 
-      {/* Background Decorative Element */}
       <div className="absolute inset-0 -z-10 flex justify-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"

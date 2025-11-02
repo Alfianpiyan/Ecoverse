@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-
+import { motion } from "framer-motion"; 
 
 export default function Komunitas() {
   const komunitas = [
@@ -22,15 +22,42 @@ export default function Komunitas() {
     },
   ];
 
+  const titleVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30 }, 
+    visible: { 
+        opacity: 1, 
+        y: 0,
+        transition: { 
+            duration: 0.6, 
+            ease: "easeOut"
+        } 
+    },
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.1,
+        staggerChildren: 0.15, 
+      },
+    },
+  };
+
 
   return (
     <section
       className="relative overflow-x-hidden py-14 bg-gradient-to-b from-white to-[#F9FAFB] overflow-hidden"
     >
-      {/* Background Wave lembut */}
       <div className="absolute inset-0">
         <svg
-          className="absolute  w-full opacity-40 text-[#D1FAE5]"
+          className="absolute w-full opacity-40 text-[#D1FAE5]"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
           fill="none"
@@ -43,34 +70,41 @@ export default function Komunitas() {
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-        {/* Judul */}
-        <h2
+        <motion.h2
           className="text-3xl md:text-4xl font-bold text-gray-900 mb-16"
+          variants={titleVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.5 }}
         >
           Kami Bekerja Sama Dengan Komunitas Terkenal
-        </h2>
+        </motion.h2>
 
-        {/* Grid Komunitas */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16">
+        <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.4 }}
+        >
           {komunitas.map((item, index) => (
-            <div
+            <motion.div
               key={index}
-              data-aos="zoom-in"
-              data-aos-delay={index * 200} // efek muncul berurutan
-              className="group flex flex-col items-center transition-transform duration-500 hover:scale-[1.08]"
+              variants={cardVariants} 
+              className="group flex flex-col items-center"
+              whileHover={{ scale: 1.08, y: -5 }} 
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
-              {/* Logo */}
-              <div className="relative w-28 h-28 md:w-32 md:h-32 rounded-full flex items-center justify-center bg-gradient-to-tr from-[#10B981]/20 to-[#34D399]/20">
+              <div className="relative w-28 h-28 md:w-32 md:h-32 rounded-full flex items-center justify-center bg-gradient-to-tr from-[#10B981]/20 to-[#34D399]/20 shadow-lg">
                 <Image
                   src={item.logo}
                   alt={item.nama}
                   width={120}
                   height={120}
-                  className="object-contain transition-transform duration-500 group-hover:scale-110"
+                  className="object-contain transition-transform duration-500 "
                 />
               </div>
 
-              {/* Nama & Pengikut */}
               <div className="mt-5">
                 <h3 className="text-lg md:text-xl font-semibold text-gray-800 group-hover:text-[#059669] transition-colors duration-300">
                   {item.nama}
@@ -79,9 +113,9 @@ export default function Komunitas() {
                   {item.pengikut}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
