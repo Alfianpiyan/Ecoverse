@@ -8,33 +8,30 @@ import bcrypt from "bcryptjs";
 import Swal from "sweetalert2"; 
 
 async function fetchUserRoleAndDetail(email) {
-  const { data: komunitasData } = await supabase
-    .from("Komunitas")
-    .select("jenis_akun, nama_komunitas")
-    .eq("email_komunitas", email)
-    .limit(1)
-    .maybeSingle();
+  const router = useRouter();
+  const { data: instansi } = await supabase
+  .from("users")
+  .select("jenis_akun, nama_instansi")
+  .eq("email", email)
+  .limit(1)
+  
+  .maybeSingle();
+  
+  if (instansi) {
+  const subRole = instansi.jenis_akun?.toLowerCase();
+  const nama = instansi.nama_instansi;
+  const role = subRole === "donatur" ? "donatur" : "penanam";
 
-  if (komunitasData) {
-    const subRole = komunitasData.jenis_akun?.toLowerCase();
-    return {
-      role: subRole === "donatur" ? "donatur" : "penanam",
-      nama: komunitasData.nama_komunitas || "Komunitas",
-    };
+  if (subRole === "donatur") {
+    router.push("/donatur/home");
+  } else {
+    router.push("/penanam/dashboard");
   }
 
-  const { data: sekolahData } = await supabase
-    .from("Sekolah")
-    .select("nama_sekolah")
-    .eq("email", email)
-    .single();
+  // kalau kamu butuh return datanya juga
+  return { nama, role };
+}
 
-  if (sekolahData) {
-    return {
-      role: "sekolah",
-      nama: sekolahData.nama_sekolah || "Sekolah",
-    };
-  }
 
   throw new Error("Role pengguna tidak ditemukan di database.");
 }

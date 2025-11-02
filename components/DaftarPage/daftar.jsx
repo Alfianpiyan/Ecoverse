@@ -1,29 +1,20 @@
 "use client";
 
 import { supabase } from "@/lib/Supabaseclient";
+import { hash } from "bcryptjs";
 import Link from "next/link";
 import React, { useState } from "react";
 
-export default function MasukPage() {
-  const [accountType] = useState("Komunitas");
+export default function DaftarPage() {
   const [gender, setGender] = useState("");
-  const [userRole, setUserRole] = useState(""); 
+  const [userRole, setUserRole] = useState("");
 
   const [form, setForm] = useState({
-    nama_komunitas: "",
-    email_komunitas: "",
-    password_komunitas: "",
-    no_telepon_komunitas: "",
-    pic: "",
-    jenis_kelamin: "",
-    jenis_akun: "",
-    instansi: "",
-    nama: "",
+    nama_instansi: "",
     email: "",
     password: "",
     no_telepon: "",
-    nama_sekolah: "",
-    nuptk: "",
+    pic: "",
   });
 
   const handleChange = (e) => {
@@ -33,11 +24,11 @@ export default function MasukPage() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    const isSekolah = accountType === "Sekolah";
 
+    // --- 1️⃣ Register akun di Supabase Auth ---
     const { data, error } = await supabase.auth.signUp({
-      email: isSekolah ? form.email : form.email_komunitas,
-      password: isSekolah ? form.password : form.password_komunitas,
+      email: form.email,
+      password: form.password,
     });
 
     if (error) {
@@ -46,58 +37,40 @@ export default function MasukPage() {
     }
 
     const user = data.user;
-    if (!user) return;
+    if (!user) {
+      alert("Gagal mendapatkan data user dari Supabase Auth");
+      return;
+    }
 
-    if (isSekolah) {
-      const { error: sekolahError } = await supabase.from("Sekolah").insert([
-        {
-          no: user.id,
-          nama: form.nama,
-          email: form.email,
-          password: form.password,
-          no_telepon: form.no_telepon,
-          nama_sekolah: form.nama_sekolah,
-          nuptk: form.nuptk,
-        },
-      ]);
+    // --- 2️⃣ Simpan data ke tabel `users` ---
+    const { error: insertError } = await supabase.from("users").insert([
+      {
+        id: user.id,
+        nama_pic: form.pic,
+        nama_instansi: form.nama_instansi,
+        password: form.password,
+        email: form.email,
+        jenis_kelamin: gender,
+        jenis_akun: userRole, // enum donatur / penanam
+        no_telepon: form.no_telepon,
+      },
+    ]);
 
-      if (sekolahError) {
-        alert("Gagal menyimpan data sekolah: " + sekolahError.message);
-        return;
-      }
-    } else {
-      const { error: insertError } = await supabase.from("Komunitas").insert([
-        {
-          id: user.id,
-          nama_komunitas: form.nama_komunitas,
-          email_komunitas: form.email_komunitas,
-          password_komunitas: form.password_komunitas,
-          jenis_kelamin: gender,
-          jenis_akun: userRole,
-          no_telepon_komunitas: form.no_telepon_komunitas,
-          pic: form.pic,
-          instansi: accountType,
-        },
-      ]);
-
-      if (insertError) {
-        alert("Gagal menyimpan data komunitas: " + insertError.message);
-        return;
-      }
+    if (insertError) {
+      alert("Gagal menyimpan data user: " + insertError.message);
+      return;
     }
 
     alert("✅ Register berhasil! Silakan konfirmasi email Anda.");
   };
 
+  // Style tombol aktif/pasif
   const getButtonClass = (type, currentType, base = "bg-[#059669]") =>
     currentType === type
       ? `${base} text-white shadow-md font-semibold focus:ring-[#059669] focus:ring focus:ring-opacity-50`
       : "text-[#059669] border border-[#059669] bg-white hover:bg-green-50 font-medium hover:shadow-sm";
 
-  const backgroundStyle = {
-    background: "#ffffff",
-  };
-
+  const backgroundStyle = { background: "#ffffff" };
   const imagePanelStyle = {
     backgroundImage: "url('/gambar-pohon.png')",
     backgroundSize: "cover",
@@ -136,11 +109,12 @@ export default function MasukPage() {
 
   return (
     <div
-      className="flex justify-center items-center min-h-screen py-10 px-4 sm:px-8 font-sans "
+      className="flex justify-center items-center min-h-screen py-10 px-4 sm:px-8 font-sans"
       style={backgroundStyle}
     >
       <section className="bg-white shadow-2xl rounded-2xl overflow-hidden w-full max-w-6xl">
         <div className="flex flex-col lg:flex-row">
+          {/* Panel kiri */}
           <div
             className="hidden lg:flex flex-col justify-center items-center p-8 lg:w-2/5 text-white text-center relative"
             style={imagePanelStyle}
@@ -162,16 +136,14 @@ export default function MasukPage() {
                 />
               </svg>
 
-              <h1 className="text-2xl font-bold mt-3">
-                Buat Akun Anda Sekarang
-              </h1>
+              <h1 className="text-2xl font-bold mt-3">Buat Akun Anda</h1>
               <p className="mt-1 text-sm font-light text-gray-200">
-                Mari bantu kami menjadikan bumi hijau kembali.
+                Mari bantu kami menjadikan bumi hijau kembali 🌱
               </p>
 
               <div className="mt-8">
                 <h2 className="text-sm font-medium">
-                  Sudah punya <span className="font-bold">Akun?</span>
+                  Sudah punya <span className="font-bold">akun?</span>
                 </h2>
                 <Link
                   href="/Masuk"
@@ -183,6 +155,7 @@ export default function MasukPage() {
             </div>
           </div>
 
+          {/* Form kanan */}
           <div className="flex items-center bg-white justify-center w-full py-8 px-6 lg:px-8 lg:w-3/5">
             <div className="w-full">
               <div className="flex justify-center mb-2 -mt-4">
@@ -223,14 +196,14 @@ export default function MasukPage() {
 
                 <div>
                   <label className="block mb-1 text-sm font-medium text-gray-700">
-                    Nama Komunitas
+                    Nama Instansi
                   </label>
                   <input
                     type="text"
-                    name="nama_komunitas"
-                    value={form.nama_komunitas}
+                    name="nama_instansi"
+                    value={form.nama_instansi}
                     onChange={handleChange}
-                    placeholder="Masukkan Nama Komunitas"
+                    placeholder="Masukkan Nama Instansi"
                     className="block w-full px-4 py-2 text-black border border-[#059669] rounded-lg focus:border-[#059669] focus:ring-0 hover:border-2 transition-all"
                     required
                   />
@@ -242,8 +215,8 @@ export default function MasukPage() {
                   </label>
                   <input
                     type="email"
-                    name="email_komunitas"
-                    value={form.email_komunitas}
+                    name="email"
+                    value={form.email}
                     onChange={handleChange}
                     placeholder="Masukkan Email"
                     className="block w-full px-4 py-2 text-black border border-[#059669] rounded-lg focus:border-[#059669] focus:ring-0 hover:border-2 transition-all"
@@ -257,8 +230,8 @@ export default function MasukPage() {
                   </label>
                   <input
                     type="password"
-                    name="password_komunitas"
-                    value={form.password_komunitas}
+                    name="password"
+                    value={form.password}
                     onChange={handleChange}
                     placeholder="Masukkan Password"
                     className="block w-full px-4 py-2 text-black border border-[#059669] rounded-lg focus:border-[#059669] focus:ring-0 hover:border-2 transition-all"
@@ -272,8 +245,8 @@ export default function MasukPage() {
                   </label>
                   <input
                     type="tel"
-                    name="no_telepon_komunitas"
-                    value={form.no_telepon_komunitas}
+                    name="no_telepon"
+                    value={form.no_telepon}
                     onChange={handleChange}
                     placeholder="Masukkan No. Telepon"
                     className="block w-full px-4 py-2 text-black border border-[#059669] rounded-lg focus:border-[#059669] focus:ring-0 hover:border-2 transition-all"
@@ -281,9 +254,7 @@ export default function MasukPage() {
                   />
                 </div>
 
-     
                 <SecondaryInput />
-
 
                 <div className="md:col-span-2 mt-4">
                   <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -316,7 +287,7 @@ export default function MasukPage() {
                 <div className="md:col-span-2 mt-6">
                   <button
                     type="submit"
-                    className="flex items-center justify-center w-full px-6 py-3 text-sm bg-emerald-700 text-white hover:bg-gray-100 text-emerald-600 hover:text-emerald-700 font-semibold rounded-[10px] transition duration-500 shadow-md cursor-pointer"
+                    className="flex items-center justify-center w-full px-6 py-3 text-sm bg-emerald-700 text-white hover:bg-emerald-800 font-semibold rounded-[10px] transition duration-500 shadow-md cursor-pointer"
                   >
                     Daftar
                   </button>
