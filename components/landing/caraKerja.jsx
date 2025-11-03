@@ -10,22 +10,26 @@ export default function CaraKerja() {
     {
       nama: "Pilih Tanaman",
       icon: "/LPilih.png",
-      deskripsi: "Pilih jenis tanaman yang ingin kamu donasikan sesuai preferensi dan lokasi penanaman.",
+      deskripsi:
+        "Pilih jenis tanaman yang ingin kamu donasikan sesuai preferensi dan lokasi penanaman.",
     },
     {
       nama: "Tunggu Disalurkan",
       icon: "/LSalurkan.png",
-      deskripsi: "Tim kami akan menyalurkan bibit ke area penghijauan sesuai jadwal kegiatan.",
+      deskripsi:
+        "Tim kami akan menyalurkan bibit ke area penghijauan sesuai jadwal kegiatan.",
     },
     {
       nama: "Ditanam",
       icon: "/LTanam.png",
-      deskripsi: "Bibit ditanam oleh relawan atau komunitas mitra kami dengan perawatan berkelanjutan.",
+      deskripsi:
+        "Bibit ditanam oleh relawan atau komunitas mitra kami dengan perawatan berkelanjutan.",
     },
     {
       nama: "Dokumentasi",
       icon: "/LDokumentasi.png",
-      deskripsi: "Kamu akan menerima laporan foto & data lokasi penanaman untuk transparansi.",
+      deskripsi:
+        "Kamu akan menerima laporan foto & data lokasi penanaman untuk transparansi.",
     },
   ];
 
@@ -58,27 +62,19 @@ export default function CaraKerja() {
 
   return (
     <section className="relative py-28 bg-gradient-to-br from-green-50 via-white to-emerald-50 overflow-hidden">
-      {/* Background dekoratif */}
-      <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-green-200/30 blur-[120px] rounded-full -z-10"></div>
-      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-emerald-300/20 blur-[140px] rounded-full -z-10"></div>
+      {/* Background soft blobs */}
+      <div className="absolute top-0 left-0 w-[380px] h-[380px] bg-green-200/30 blur-[120px] rounded-full -z-10"></div>
+      <div className="absolute bottom-0 right-0 w-[380px] h-[380px] bg-emerald-300/20 blur-[140px] rounded-full -z-10"></div>
 
-      <div className="container mx-auto px-6 md:px-12">
+      <div className="max-w-4xl mx-auto px-6 md:px-8">
         <ScrollAnimate>
-          <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-14">
             Bagaimana Website Kami Bekerja
           </h2>
         </ScrollAnimate>
 
-        {/* Timeline Container */}
-        <div className="relative flex flex-col md:flex-row md:justify-center md:items-center md:space-x-16 space-y-12 md:space-y-0">
-          {/* Garis timeline (desktop) */}
-          <motion.div
-            initial={{ width: 0 }}
-            whileInView={{ width: "90%" }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            className="hidden md:block absolute top-1/2 left-[5%] w-0 h-[4px] bg-gradient-to-r from-emerald-300 via-green-500 to-emerald-300 rounded-full shadow-sm"
-          ></motion.div>
-
+        {/* TIMELINE TANPA GARIS */}
+        <div className="relative flex flex-col md:flex-row md:justify-center md:items-center md:space-x-16 space-y-14 md:space-y-0">
           {langkah.map((item, index) => (
             <ScrollAnimate key={index} delay={index * 0.2}>
               <motion.div
@@ -89,45 +85,48 @@ export default function CaraKerja() {
                     "0 8px 25px rgba(72,187,120,0.25), 0 0 10px rgba(34,197,94,0.1)",
                 }}
                 transition={{ type: "spring", stiffness: 200, damping: 12 }}
-                className={`
-                  relative bg-white/70 backdrop-blur-xl border border-green-100 rounded-3xl shadow-md
-                  p-8 w-full md:w-[280px] flex flex-col items-center text-center transition-all duration-300
-                  ${index % 2 === 0 ? "md:translate-y-8" : "md:-translate-y-8"}
-                `}
+                className={`relative bg-white/70 backdrop-blur-xl border border-green-100 rounded-3xl shadow-md
+                  p-7 w-full md:w-[230px] flex flex-col items-center text-center transition-all duration-300
+                  ${index % 2 === 0 ? "md:translate-y-8" : "md:-translate-y-8"}`}
               >
+                {/* Floating Icon */}
                 <motion.div
-                  animate={{
-                    y: [0, -6, 0],
-                  }}
+                  animate={{ y: [0, -6, 0] }}
                   transition={{
                     duration: 3,
                     repeat: Infinity,
                     ease: "easeInOut",
                     delay: index * 0.4,
                   }}
-                  className="w-20 h-20 flex items-center justify-center bg-gradient-to-tr from-green-200 to-green-400 rounded-full mb-5 shadow-inner"
+                  className="w-18 h-18 flex items-center justify-center bg-gradient-to-tr from-green-200 to-green-400 rounded-full mb-5 shadow-inner"
                 >
                   <Image
                     src={item.icon}
                     alt={item.nama}
-                    width={50}
-                    height={50}
+                    width={45}
+                    height={45}
                     className="object-contain"
                   />
                 </motion.div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">
+
+                <h3 className="text-base font-semibold text-gray-800 mb-3">
                   {item.nama}
                 </h3>
                 <p className="text-sm text-gray-600 leading-relaxed">
                   {item.deskripsi}
                 </p>
 
-                {/* Titik konektor */}
-                <div className="hidden md:block absolute top-1/2 -translate-y-1/2 -left-[38px] w-6 h-6 bg-green-400 border-4 border-white rounded-full shadow"></div>
-
-                {/* Garis vertikal di mobile */}
+                {/* ✅ DOT CONNECTOR SAJA (tanpa garis) */}
                 {index !== langkah.length - 1 && (
-                  <div className="md:hidden w-[2px] h-10 bg-green-400/70 mt-6"></div>
+                  <>
+                    {/* Desktop: dot di kanan */}
+                    <div className="hidden md:block absolute top-1/2 -translate-y-1/2 -right-[34px] w-[14px] h-[14px] bg-emerald-600 rounded-full shadow-md z-10"></div>
+
+                    {/* Mobile: dot di bawah */}
+                    <div className="md:hidden flex flex-col items-center mt-6">
+                      <div className="w-[12px] h-[12px] bg-emerald-600 rounded-full mt-2"></div>
+                    </div>
+                  </>
                 )}
               </motion.div>
             </ScrollAnimate>
