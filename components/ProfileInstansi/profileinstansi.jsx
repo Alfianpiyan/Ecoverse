@@ -4,28 +4,32 @@ import React, { useState } from "react";
 import { MapPin, X } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function ProfilInstansi() {
+export default function ProfilInstansi({ slug }) {
   const [selectedAcara, setSelectedAcara] = useState(null);
 
+  // Decode slug dari URL → ex: "Green%20Earth%20Foundation" → "Green Earth Foundation"
+  const namaInstansi = decodeURIComponent(slug);
+
+  // Dummy data dulu (nanti bisa diganti API fetch)
   const data = {
-    namaInstansi: "Nama Instansi",
-    tagline: "Tagline Instansi",
+    namaInstansi,
+    tagline: "Peduli Lingkungan, Menanam Masa Depan",
     totalAcara: 12,
     totalPohon: 850,
     totalDonatur: 850,
     tentang:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Kami adalah instansi yang bergerak di bidang pelestarian lingkungan melalui gerakan penanaman pohon yang melibatkan masyarakat, donatur, dan relawan.",
     acara: [
-      { id: 1, nama: "Nama Acara 1", lokasi: "Bandung", tanggal: "15 Desember 2025", status: "Selesai" },
-      { id: 2, nama: "Nama Acara 2", lokasi: "Jakarta", tanggal: "20 Januari 2026", status: "Selesai" },
-      { id: 3, nama: "Nama Acara 3", lokasi: "Bogor", tanggal: "12 Februari 2026", status: "Selesai" },
+      { id: 1, nama: "Green Forest Day", lokasi: "Bandung", tanggal: "15 Desember 2025", status: "Selesai" },
+      { id: 2, nama: "Jakarta Re-Leaf", lokasi: "Jakarta", tanggal: "20 Januari 2026", status: "Selesai" },
+      { id: 3, nama: "Bogor Tree Drive", lokasi: "Bogor", tanggal: "12 Februari 2026", status: "Selesai" },
     ],
     testimoni: [
-      { id: 1, nama: "Jamilah", acara: "Nama Acara 1", isi: "Saya sangat senang ikut program ini. Sangat bermanfaat!" },
-      { id: 2, nama: "Dimas", acara: "Nama Acara 2", isi: "Kegiatannya seru banget dan penuh makna." },
-      { id: 3, nama: "Rani", acara: "Nama Acara 3", isi: "Rasanya bangga bisa ikut menanam pohon di acara ini!" },
-      { id: 4, nama: "Fikri", acara: "Nama Acara 1", isi: "Sangat inspiratif dan membantu lingkungan kita!" },
-      { id: 5, nama: "Alya", acara: "Nama Acara 2", isi: "Tempatnya nyaman, panitianya ramah banget!" },
+      { id: 1, nama: "Jamilah", acara: "Green Forest Day", isi: "Saya sangat senang ikut program ini. Sangat bermanfaat!" },
+      { id: 2, nama: "Dimas", acara: "Jakarta Re-Leaf", isi: "Kegiatannya seru banget dan penuh makna." },
+      { id: 3, nama: "Rani", acara: "Bogor Tree Drive", isi: "Rasanya bangga bisa ikut menanam pohon di acara ini!" },
+      { id: 4, nama: "Fikri", acara: "Green Forest Day", isi: "Sangat inspiratif dan membantu lingkungan kita!" },
+      { id: 5, nama: "Alya", acara: "Jakarta Re-Leaf", isi: "Tempatnya nyaman, panitianya ramah banget!" },
     ],
   };
 
@@ -57,7 +61,7 @@ export default function ProfilInstansi() {
           <p className="text-sm font-medium">
             <span className="font-semibold">{data.totalAcara}</span> Acara |{" "}
             <span className="font-semibold">{data.totalPohon}+</span> Pohon |{" "}
-            <span className="font-semibold">{data.totalDonatur}+</span> Instansi lain berdonasi{" "}
+            <span className="font-semibold">{data.totalDonatur}+</span> Donatur
           </p>
         </div>
       </motion.div>
@@ -131,7 +135,6 @@ export default function ProfilInstansi() {
           Kata Mereka yang Pernah Berdonasi
         </h3>
 
-        {/* Container scroll horizontal */}
         <div className="relative w-full overflow-hidden">
           <motion.div
             className="flex gap-8 px-6"

@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function HeaderCard({ data }) {
   return (
@@ -21,6 +22,7 @@ export default function HeaderCard({ data }) {
           <p className="text-sm text-gray-600 mt-2">
             📍 {data.lokasi} • 📅 {data.tanggal}
           </p>
+
           <span
             className={`inline-block mt-3 px-3 py-1 text-sm font-semibold rounded-full ${
               data.status === "selesai"
@@ -33,9 +35,14 @@ export default function HeaderCard({ data }) {
             {data.status.toUpperCase()}
           </span>
         </div>
-        <a href="#" className="text-green-700 text-sm font-medium hover:underline">
+
+        {/* ✅ Link dinamis pakai slug */}
+        <Link
+          href={`/donatur/profile-instansi/${encodeURIComponent(data.penyelenggara)}`}
+          className="text-green-700 text-sm font-medium hover:underline"
+        >
           Lihat Profil Instansi →
-        </a>
+        </Link>
       </div>
     </motion.div>
   );
