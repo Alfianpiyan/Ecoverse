@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { supabase } from "@/lib/Supabaseclient";
+import { supabase } from "../../lib/Supabaseclient";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Swal from "sweetalert2";

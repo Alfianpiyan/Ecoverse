@@ -7,15 +7,45 @@ import { User, ChevronDown, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { supabase } from "../../lib/Supabaseclient";
+import { useSession } from "next-auth/react";
 
-export default function NavbarDonatur({ user }) {
+export default function NavbarPnanam() {
   const pathname = usePathname();
   const router = useRouter();
+  const dropdownRef = useRef(null);
+
+  const { data: session } = useSession();
+
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const dropdownRef = useRef(null);
-  const [scrolled, setScrolled] = useState(false)
+  const [scrolled, setScrolled] = useState(false);
+  const [userName, setUserName] = useState("User");
 
+  // ✅ Ambil data user dari Supabase berdasarkan email login
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!session?.user?.email) return;
+
+      const { data, error } = await supabase
+        .from("users")
+        .select("nama_pic")
+        .eq("email", session.user.email)
+        .single();
+
+      if (error) {
+        console.error("Gagal mengambil nama user:", error.message);
+        return;
+      }
+
+      if (data?.nama_pic) {
+        setUserName(data.nama_pic);
+      }
+    };
+
+    fetchUserData();
+  }, [session]);
+
+  // Logout
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
@@ -27,16 +57,18 @@ export default function NavbarDonatur({ user }) {
   };
 
   const navItems = [
-    { name: "Beranda", path: "/donatur/home" },
-    { name: "Acara", path: "/donatur/acara" },
+    { name: "Beranda", path: "/penanam/Home" },
+    { name: "Acara", path: "/penanam/AcaraPenanam" },
+    { name: "Langganan", path: "/penanam/Langganan" },
   ];
 
   const profileItems = [
-    { name: "Profile", path: "/user/home/profile" },
-    { name: "Riwayat", path: "/user/home/riwayat" },
-    { name: "Setting", path: "/user/home/setting" },
+    { name: "Profile", path: "/penanam/Profile" },
+    { name: "Riwayat", path: "/penanam/riwayat" },
+    { name: "Setting", path: "/penanam/setting" },
   ];
 
+  // Tutup dropdown saat klik di luar
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -47,7 +79,8 @@ export default function NavbarDonatur({ user }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-    useEffect(() => {
+  // Efek blur saat scroll
+  useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -55,7 +88,6 @@ export default function NavbarDonatur({ user }) {
 
   return (
     <nav className="w-full flex justify-center mt-10 z-50 sticky top-0 left-0 bg-transparent">
-      {/* Navbar Container */}
       <div
         className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center justify-between
         px-6 py-3 rounded-full border border-gray-200 shadow-lg w-[90%] max-w-6xl
@@ -83,11 +115,7 @@ export default function NavbarDonatur({ user }) {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="text-green-700 focus:outline-none"
           >
-            {isMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
+            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
 
@@ -126,17 +154,9 @@ export default function NavbarDonatur({ user }) {
             className="flex items-center gap-2 cursor-pointer px-3 py-1 hover:bg-green-50 rounded-full transition"
             onClick={() => setIsOpen(!isOpen)}
           >
-            {user?.photo ? (
-              <img
-                src={user.photo}
-                alt="Avatar"
-                className="w-6 h-6 rounded-full object-cover"
-              />
-            ) : (
-              <User className="text-green-700 w-5 h-5" />
-            )}
+            <User className="text-green-700 w-5 h-5" />
             <span className="text-green-700 font-medium">
-              {user?.name || "User"}
+              {userName || "User"}
             </span>
             <ChevronDown
               className={`text-green-700 w-4 h-4 transition-transform ${
@@ -196,9 +216,7 @@ export default function NavbarDonatur({ user }) {
                   href={item.path}
                   onClick={() => setIsMenuOpen(false)}
                   className={`block px-4 py-2 rounded-md text-green-700 font-medium ${
-                    pathname === item.path
-                      ? "bg-green-100"
-                      : "hover:bg-green-50"
+                    pathname === item.path ? "bg-green-100" : "hover:bg-green-50"
                   }`}
                 >
                   {item.name}
