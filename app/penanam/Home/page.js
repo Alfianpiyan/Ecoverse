@@ -1,4 +1,4 @@
-// import NavbarAll from "@/components/HomePage/NavbarAll";
+import NavbarAll from "@/components/HomePage/NavbarAll";
 
 import NavbarPenanam from "@/components/NavbarPenanam/navbarpenanam";
 import AcarahHijau from "../../../components/HomePage/acarah-hijau";
