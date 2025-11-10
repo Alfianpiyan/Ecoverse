@@ -5,46 +5,36 @@ import { supabase } from "@/lib/Supabaseclient";
 import { BibitTagInput } from "./BibitTagInput/BibitTagInput";
 
 export default function FormAcara() {
-  // 🔹 State utama form
   const [form, setForm] = useState({
     judul_acara: "",
     lokasi: "",
     tanggal: "",
+    waktu: "", // 🔹 Tambahan waktu
     jenis_bibit: [],
     jumlah_bibit: "",
     deskripsi: "",
     gambar: null,
-    penanggung_jawab: [], // array of string
+    penanggung_jawab: [],
   });
 
   const [preview, setPreview] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fileName, setFileName] = useState("Tidak ada gambar yang dipilih");
 
-  // 🔹 Handler umum
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 🔹 Handler jenis bibit (tag input)
   const handleBibitTagsChange = useCallback((tagsArray) => {
-    setForm((prev) => ({
-      ...prev,
-      jenis_bibit: tagsArray,
-    }));
+    setForm((prev) => ({ ...prev, jenis_bibit: tagsArray }));
   }, []);
 
-  // 🔹 Handler gambar (upload preview)
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       setForm((prev) => ({ ...prev, gambar: file }));
       setFileName(file.name);
-
       const reader = new FileReader();
       reader.onloadend = () => setPreview(reader.result);
       reader.readAsDataURL(file);
@@ -55,30 +45,20 @@ export default function FormAcara() {
     }
   };
 
-  // 🔹 Handler penanggung jawab (string → array)
   const handlePenanggungJawabChange = (e) => {
     const { value } = e.target;
-    const namaArray = value
-      .split(",")
-      .map((n) => n.trim())
-      .filter(Boolean);
-    setForm((prev) => ({
-      ...prev,
-      penanggung_jawab: namaArray,
-    }));
+    const namaArray = value.split(",").map((n) => n.trim()).filter(Boolean);
+    setForm((prev) => ({ ...prev, penanggung_jawab: namaArray }));
   };
 
-  // 🔹 Submit ke Supabase
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      // 1️⃣ Ambil user aktif
       const { data: { user }, error: userError } = await supabase.auth.getUser();
       if (userError || !user) throw new Error("Gagal ambil data user");
 
-      // 2️⃣ Upload gambar ke bucket Supabase
       let imageUrl = null;
       if (form.gambar) {
         const fileExt = form.gambar.name.split(".").pop();
@@ -98,14 +78,14 @@ export default function FormAcara() {
         imageUrl = publicUrlData?.publicUrl ?? null;
       }
 
-      // 3️⃣ Siapkan data untuk insert
       const payload = {
         judul_acara: form.judul_acara,
         lokasi: form.lokasi,
         tanggal: form.tanggal,
+        waktu: form.waktu, // 🔹 waktu disimpan
         jumlah_bibit:
           form.jumlah_bibit !== "" ? parseInt(form.jumlah_bibit, 10) : null,
-        jenis_bibit: form.jenis_bibit, // JSON / text[]
+        jenis_bibit: form.jenis_bibit,
         deskripsi: form.deskripsi,
         gambar: imageUrl,
         status: "akan datang",
@@ -114,7 +94,6 @@ export default function FormAcara() {
         created_at: new Date(),
       };
 
-      // 4️⃣ Insert ke tabel
       const { error: insertError } = await supabase
         .from("acara_penanaman")
         .insert([payload]);
@@ -123,11 +102,11 @@ export default function FormAcara() {
 
       alert("✅ Acara berhasil disimpan ke Supabase!");
 
-      // 5️⃣ Reset form
       setForm({
         judul_acara: "",
         lokasi: "",
         tanggal: "",
+        waktu: "",
         jenis_bibit: [],
         jumlah_bibit: "",
         deskripsi: "",
@@ -144,9 +123,8 @@ export default function FormAcara() {
     }
   };
 
-  // 🔹 JSX
   return (
-    <div className="h-screen bg-[#F0FDF4] py-8 flex items-center justify-center px-4 overflow-y-auto">
+    <div className="h-screen  py-8 flex items-center justify-center px-4 overflow-y-auto">
       <div className="w-[1100px] mx-auto">
         <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-xl space-y-5">
           <div className="text-center mb-2">
@@ -159,7 +137,7 @@ export default function FormAcara() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* JUDUL */}
+            {/* Nama Acara */}
             <div>
               <label
                 htmlFor="judul_acara"
@@ -173,18 +151,15 @@ export default function FormAcara() {
                 value={form.judul_acara}
                 onChange={handleChange}
                 placeholder="Penanaman Pohon di Gunung Salak"
-                className="w-full border border-[#D1D5DB] rounded-lg px-4 py-3 text-base text-gray-800 focus:border-[#10B981] focus:ring-[#10B981]"
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base focus:border-[#10B981] focus:ring-[#10B981]"
                 required
               />
             </div>
 
-            {/* LOKASI & TANGGAL */}
-            <div className="grid grid-cols-2 gap-4">
+            {/* Lokasi, Tanggal, Waktu */}
+            <div className="grid grid-cols-3 gap-4">
               <div>
-                <label
-                  htmlFor="lokasi"
-                  className="block text-sm font-semibold text-[#064E3B] mb-2"
-                >
+                <label className="block text-sm font-semibold text-[#064E3B] mb-2">
                   Lokasi
                 </label>
                 <input
@@ -193,16 +168,13 @@ export default function FormAcara() {
                   value={form.lokasi}
                   onChange={handleChange}
                   placeholder="Kota/Kabupaten"
-                  className="w-full border border-[#D1D5DB] rounded-lg px-4 py-3 text-base text-gray-800 focus:border-[#10B981] focus:ring-[#10B981]"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base focus:border-[#10B981] focus:ring-[#10B981]"
                   required
                 />
               </div>
 
               <div>
-                <label
-                  htmlFor="tanggal"
-                  className="block text-sm font-semibold text-[#064E3B] mb-2"
-                >
+                <label className="block text-sm font-semibold text-[#064E3B] mb-2">
                   Tanggal Acara
                 </label>
                 <input
@@ -211,19 +183,31 @@ export default function FormAcara() {
                   name="tanggal"
                   value={form.tanggal}
                   onChange={handleChange}
-                  className="w-full border border-[#D1D5DB] rounded-lg px-4 py-3 text-base text-gray-800 focus:border-[#10B981] focus:ring-[#10B981]"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base focus:border-[#10B981] focus:ring-[#10B981]"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-[#064E3B] mb-2">
+                  Waktu Acara
+                </label>
+                <input
+                  type="time"
+                  id="waktu"
+                  name="waktu"
+                  value={form.waktu}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base focus:border-[#10B981] focus:ring-[#10B981]"
                   required
                 />
               </div>
             </div>
 
-            {/* JENIS & JUMLAH BIBIT */}
+            {/* Jenis & Jumlah Bibit */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label
-                  htmlFor="jenis_bibit"
-                  className="block text-sm font-semibold text-[#064E3B] mb-2"
-                >
+                <label className="block text-sm font-semibold text-[#064E3B] mb-2">
                   Jenis Bibit (Pilih 1+)
                 </label>
                 <BibitTagInput
@@ -231,51 +215,38 @@ export default function FormAcara() {
                   initialTags={form.jenis_bibit}
                 />
               </div>
-
               <div>
-                <label
-                  htmlFor="jumlah_bibit"
-                  className="block text-sm font-semibold text-[#064E3B] mb-2"
-                >
+                <label className="block text-sm font-semibold text-[#064E3B] mb-2">
                   Jumlah Target Bibit
                 </label>
                 <input
                   type="number"
-                  id="jumlah_bibit"
                   name="jumlah_bibit"
                   value={form.jumlah_bibit}
                   onChange={handleChange}
-                  placeholder="Contoh : 100"
-                  className="w-full border border-[#D1D5DB] rounded-lg px-4 py-3 text-base text-gray-800 focus:border-[#10B981] focus:ring-[#10B981]"
+                  placeholder="Contoh: 100"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base focus:border-[#10B981] focus:ring-[#10B981]"
                   required
                 />
               </div>
             </div>
 
-            {/* PENANGGUNG JAWAB */}
+            {/* Penanggung Jawab */}
             <div>
-              <label
-                htmlFor="penanggung_jawab"
-                className="block text-sm font-semibold text-[#064E3B] mb-2"
-              >
+              <label className="block text-sm font-semibold text-[#064E3B] mb-2">
                 Penanggung Jawab (pisahkan dengan koma)
               </label>
               <input
                 type="text"
-                id="penanggung_jawab"
-                name="penanggung_jawab"
                 onChange={handlePenanggungJawabChange}
                 placeholder="Contoh: Budi, Rina, Andi"
-                className="w-full border border-[#D1D5DB] rounded-lg px-4 py-3 text-base text-gray-800 focus:border-[#10B981] focus:ring-[#10B981]"
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base focus:border-[#10B981] focus:ring-[#10B981]"
               />
             </div>
 
-            {/* DESKRIPSI */}
+            {/* Deskripsi */}
             <div>
-              <label
-                htmlFor="deskripsi"
-                className="block text-sm font-semibold text-[#064E3B] mb-2"
-              >
+              <label className="block text-sm font-semibold text-[#064E3B] mb-2">
                 Deskripsi Acara
               </label>
               <textarea
@@ -284,24 +255,20 @@ export default function FormAcara() {
                 value={form.deskripsi}
                 onChange={handleChange}
                 rows={3}
-                placeholder="Tuliskan detail kegiatan, siapa yang terlibat, dan tujuan acara..."
-                className="w-full border border-[#D1D5DB] rounded-lg px-4 py-3 text-base text-gray-800 focus:border-[#10B981] focus:ring-[#10B981]"
+                placeholder="Tuliskan detail kegiatan..."
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base focus:border-[#10B981] focus:ring-[#10B981]"
                 required
               />
             </div>
 
-            {/* UPLOAD GAMBAR */}
+            {/* Upload Gambar */}
             <div>
-              <label
-                htmlFor="gambar"
-                className="block text-sm font-semibold text-[#064E3B] mb-2"
-              >
+              <label className="block text-sm font-semibold text-[#064E3B] mb-2">
                 Upload Gambar Acara
               </label>
-              <div className="relative w-full border border-[#D1D5DB] rounded-lg px-4 py-3 text-gray-500 overflow-hidden">
+              <div className="relative w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-500 overflow-hidden">
                 <input
                   type="file"
-                  id="gambar"
                   accept="image/*"
                   onChange={handleImageChange}
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
@@ -317,7 +284,6 @@ export default function FormAcara() {
               </div>
             </div>
 
-            {/* SUBMIT BUTTON */}
             <button
               type="submit"
               className={`w-full bg-[#064E3B] hover:bg-[#047857] text-white font-bold py-3 rounded-lg transition duration-200 ease-in-out text-base ${

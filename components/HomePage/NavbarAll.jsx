@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { User, ChevronDown, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
-import { supabase } from "../../../../lib/supabaseClient";
+import { supabase } from "@/lib/Supabaseclient";
 
 export default function NavbarAll({ user }) {
   const router = useRouter();
@@ -14,11 +14,11 @@ export default function NavbarAll({ user }) {
   const [isOpen, setIsOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const [scrolle, setScrolled] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   const navItems = [
     { name: "Beranda", path: "/user/home" },
-    { name: "Acara", path: "/user/acarapage" },
+    { name: "Acara", path: "/penanam/AcaraPenanam" },
     { name: "Langganan", path: "/user/langganan" },
   ];
 

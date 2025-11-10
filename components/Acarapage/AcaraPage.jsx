@@ -106,7 +106,7 @@ export default function AcaraPage() {
                 <p className="text-sm text-gray-700 mb-1">
                   📅 {formatDate(event.date)}
                 </p>
-                <p className="text-sm text-gray-700 mb-1">
+                <p className="text-sm text-gray-700 mb-1"> 
                   🕒 {event.time}
                 </p>
                 <p className="text-sm text-gray-700">📍 {event.location}</p>

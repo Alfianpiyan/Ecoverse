@@ -1,4 +1,4 @@
-// import NavbarAll from "@/components/HomePage/NavbarAll";
+import NavbarAll from "@/components/HomePage/NavbarAll";
 
 import AcarahHijau from "../../../components/HomePage/acarah-hijau";
 import AjakTanam from "../../../components/HomePage/AjakTanam";
@@ -10,7 +10,7 @@ import LanggananSection from "../../../components/langgananpage/LanggananHome";
 export default function HomePenanam () {
     return (
         <>
-            {/* <NavbarAll /> */}
+            <NavbarAll />
             <AjakTanam />
             <Komunitas />
             <LanggananSection />
