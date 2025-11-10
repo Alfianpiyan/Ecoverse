@@ -1,23 +1,38 @@
 "use client";
-import React, { useState, useEffect } from "react";
+
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/lib/Supabaseclient";
-import { useSession } from "next-auth/react";
 
 export default function ProfileHeader() {
-  const { data: session } = useSession();
-  const [isEditing, setIsEditing] = useState(false);
+  const [session, setSession] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const [profile, setProfile] = useState({
-    nama_pic: "",
-    nama_instans: "",
-    email: "",
-    no_telepon: "",
-    badges: [],
-  });
+  // 🔹 Ambil session Supabase
+  useEffect(() => {
+    const getSession = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) console.error("Gagal ambil session:", error);
+      console.log("SESSION SEKARANG 👉", data?.session);
+      setSession(data?.session);
+    };
 
-  // Fetch profil user
+    getSession();
+
+    // Listener kalau user login/logout
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      console.log("SESSION BERUBAH 👉", session);
+      setSession(session);
+    });
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
+
+  // 🔹 Ambil data user dari tabel `users`
   useEffect(() => {
     if (!session?.user?.email) return;
 
@@ -26,7 +41,7 @@ export default function ProfileHeader() {
       try {
         const { data: userData, error } = await supabase
           .from("users")
-          .select("id, nama_pic, nama_instans, jenis_akun, no_telepon, email")
+          .select("id, nama_pic, nama_instansi, jenis_akun, no_telepon, email")
           .eq("email", session.user.email)
           .single();
 
@@ -45,9 +60,8 @@ export default function ProfileHeader() {
         if (langganan) badges.push("Langganan");
 
         setProfile({
-          nama_pic: userData.nama_pic,
-          nama_instans: userData.nama_instans || "Belum terdaftar",
-          email: userData.email,
+          ...userData,
+          nama_instansi: userData.nama_instansi || "Belum terdaftar",
           no_telepon: userData.no_telepon || "Belum diisi",
           badges,
         });
@@ -61,20 +75,14 @@ export default function ProfileHeader() {
     fetchProfile();
   }, [session]);
 
-  // Handle input change
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProfile((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // Simpan ke DB
+  // 🔹 Update data user
   const handleSave = async () => {
     try {
       const { error } = await supabase
         .from("users")
         .update({
           nama_pic: profile.nama_pic,
-          nama_instans: profile.nama_instans,
+          nama_instansi: profile.nama_instansi,
           no_telepon: profile.no_telepon,
         })
         .eq("email", profile.email);
@@ -88,26 +96,18 @@ export default function ProfileHeader() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="p-8 text-center text-gray-500 animate-pulse">
-        Memuat profil...
-      </div>
-    );
-  }
+  if (loading) return <p className="p-8 text-center text-gray-500">Memuat profil...</p>;
+  if (!profile) return <p className="p-8 text-center text-gray-500">Belum login.</p>;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="bg-white p-6 md:p-10 rounded-3xl shadow-xl border border-green-50 relative"
+      className="bg-white p-6 md:p-10 rounded-3xl shadow-xl border border-green-50"
     >
-      {/* HEADER */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-        <h2 className="text-green-900 font-extrabold text-3xl tracking-tight">
-          Profil Anda
-        </h2>
+        <h2 className="text-green-900 font-extrabold text-3xl">Profil Anda</h2>
         <button
           onClick={() => setIsEditing(true)}
           className="bg-green-600 text-white px-5 py-2 rounded-full shadow hover:bg-green-700 transition-all mt-4 md:mt-0"
@@ -120,12 +120,9 @@ export default function ProfileHeader() {
       <div className="flex flex-col md:flex-row items-start gap-8 border-t border-green-100 pt-6">
         {/* FOTO */}
         <div className="relative group mx-auto md:mx-0 shrink-0">
-          <div className="w-32 h-32 bg-green-50 rounded-full flex items-center justify-center text-green-700 font-bold text-2xl shadow-inner border-4 border-white transition-all duration-300 group-hover:ring-4 ring-green-200">
+          <div className="w-32 h-32 bg-green-50 rounded-full flex items-center justify-center text-green-700 font-bold text-2xl shadow-inner border-4 border-white">
             {profile.nama_pic ? profile.nama_pic.charAt(0).toUpperCase() : "U"}
           </div>
-          <button className="absolute bottom-0 right-0 bg-green-600 text-white text-xs px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-md">
-            Ubah Foto
-          </button>
         </div>
 
         {/* DETAIL */}
@@ -149,25 +146,19 @@ export default function ProfileHeader() {
               {profile.nama_pic}
             </p>
             <p className="text-base text-gray-500 font-light mt-0.5">
-              {profile.nama_instans}
+              {profile.nama_instansi}
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {/* Description placeholder */}
             <div className="bg-white border border-green-100 p-5 rounded-xl shadow-sm">
               <h3 className="font-bold text-green-700 text-lg">Deskripsi</h3>
-              <p className="text-sm text-gray-600 mt-2 leading-relaxed">
-                Belum ada deskripsi. Tambahkan nanti untuk menjelaskan komunitas
-                atau tujuan Anda.
+              <p className="text-sm text-gray-600 mt-2">
+                Belum ada deskripsi. Tambahkan nanti untuk menjelaskan komunitas Anda.
               </p>
             </div>
-
-            {/* Contact info */}
             <div className="bg-white border border-green-100 p-5 rounded-xl shadow-sm">
-              <h3 className="font-bold text-green-700 text-lg">
-                Informasi Kontak
-              </h3>
+              <h3 className="font-bold text-green-700 text-lg">Informasi Kontak</h3>
               <p className="text-sm text-gray-600 mt-2">
                 <span className="font-medium">Email:</span> {profile.email}
               </p>
@@ -204,15 +195,19 @@ export default function ProfileHeader() {
                   type="text"
                   name="nama_pic"
                   value={profile.nama_pic}
-                  onChange={handleChange}
+                  onChange={(e) =>
+                    setProfile({ ...profile, nama_pic: e.target.value })
+                  }
                   placeholder="Nama PIC"
                   className="w-full border border-green-200 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-400"
                 />
                 <input
                   type="text"
-                  name="nama_instans"
-                  value={profile.nama_instans}
-                  onChange={handleChange}
+                  name="nama_instansi"
+                  value={profile.nama_instansi}
+                  onChange={(e) =>
+                    setProfile({ ...profile, nama_instansi: e.target.value })
+                  }
                   placeholder="Nama Komunitas / Instansi"
                   className="w-full border border-green-200 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-400"
                 />
@@ -220,7 +215,9 @@ export default function ProfileHeader() {
                   type="text"
                   name="no_telepon"
                   value={profile.no_telepon}
-                  onChange={handleChange}
+                  onChange={(e) =>
+                    setProfile({ ...profile, no_telepon: e.target.value })
+                  }
                   placeholder="Nomor Telepon"
                   className="w-full border border-green-200 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-400"
                 />

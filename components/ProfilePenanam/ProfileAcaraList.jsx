@@ -1,30 +1,61 @@
 "use client";
-import React from "react";
-import AcaraCard from "./ProfileCard";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { supabase } from "@/lib/Supabaseclient";
+import AcaraCard from "./ProfileCard";
 
 export default function ProfileAcaraList() {
-  const acaraList = [
-    {
-      title: "Penanaman Hutan Kota Bogor",
-      date: "10 November 2025 – 08:00 WIB s/d Selesai",
-      description: "Kegiatan penanaman 100 pohon bersama komunitas Cintai Bumi",
-      status: "Menunggu Acara",
-    },
-    {
-      title: "Aksi Hijau di Puncak",
-      date: "05 November 2025 – 09:00 WIB s/d 14:00 WIB",
-      description: "Reboisasi lahan kritis di kawasan Puncak bersama relawan",
-      status: "Sedang Berlangsung",
-    },
-    {
-      title: "Bersihkan Pantai Anyer",
-      date: "28 Oktober 2025 – 07:00 WIB s/d Selesai",
-      description: "Penanaman pohon bakau sekaligus bersih-bersih pantai",
-      status: "Selesai",
-    },
-  ];
+  const [acaraList, setAcaraList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
+  // 🔹 ambil session user (biar gak null pas refresh)
+  useEffect(() => {
+    const getSession = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) console.error("Gagal ambil session:", error.message);
+      setUser(data?.session?.user || null);
+    };
+
+    getSession();
+
+    // listener untuk update kalau login/logout
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  // 🔹 ambil data acara user
+  useEffect(() => {
+    const fetchAcara = async () => {
+      if (!user) {
+        setAcaraList([]);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from("acara_penanaman")
+          .select("*")
+          .eq("id_user", user.id)
+          .order("tanggal", { ascending: false });
+
+        if (error) throw error;
+        setAcaraList(data || []);
+      } catch (err) {
+        console.error("Gagal ambil acara:", err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAcara();
+  }, [user]);
+
+  // 🔹 UI
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -41,11 +72,17 @@ export default function ProfileAcaraList() {
         </button>
       </div>
 
-      <div className="flex flex-col gap-6">
-        {acaraList.map((item, index) => (
-          <AcaraCard key={index} {...item} />
-        ))}
-      </div>
+      {loading ? (
+        <p className="text-gray-500 text-sm animate-pulse">Memuat data acara...</p>
+      ) : acaraList.length > 0 ? (
+        <div className="flex flex-col gap-6">
+          {acaraList.map((item, index) => (
+            <AcaraCard key={index} {...item} />
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-500 text-sm">Belum ada acara yang dibuat.</p>
+      )}
     </motion.div>
   );
 }
