@@ -14,7 +14,7 @@ export default function NavbarDonatur({ user }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const [scrolled, setScrolled] = useState(false)
+  const [scrolled, setScrolled] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -28,7 +28,7 @@ export default function NavbarDonatur({ user }) {
 
   const navItems = [
     { name: "Beranda", path: "/donatur/home" },
-    { name: "Acara", path: "/donatur/acara" },
+    { name: "Acara", path: "/donatur/daftar-acara" },
   ];
 
   const profileItems = [
@@ -44,10 +44,11 @@ export default function NavbarDonatur({ user }) {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-    useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -55,7 +56,6 @@ export default function NavbarDonatur({ user }) {
 
   return (
     <nav className="w-full flex justify-center mt-10 z-50 sticky top-0 left-0 bg-transparent">
-      {/* Navbar Container */}
       <div
         className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center justify-between
         px-6 py-3 rounded-full border border-gray-200 shadow-lg w-[90%] max-w-6xl
@@ -63,7 +63,6 @@ export default function NavbarDonatur({ user }) {
           scrolled ? "bg-white/60 backdrop-blur-md" : "bg-white"
         }`}
       >
-        {/* Logo */}
         <div className="flex items-center gap-2">
           <Image
             src="/Logo.png"
@@ -77,7 +76,7 @@ export default function NavbarDonatur({ user }) {
           </span>
         </div>
 
-        {/* Hamburger Icon for mobile */}
+        {/* burger mobile */}
         <div className="md:hidden flex items-center">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -91,8 +90,8 @@ export default function NavbarDonatur({ user }) {
           </button>
         </div>
 
-        {/* Navigasi (Desktop) */}
-        <ul className="hidden md:flex items-center gap-6 font-medium relative">
+        {/* nav desktop */}
+        <ul className="hidden md:flex items-center gap-12 font-medium relative">
           {navItems.map((item) => {
             const isActive = pathname === item.path;
             return (
@@ -120,7 +119,7 @@ export default function NavbarDonatur({ user }) {
           })}
         </ul>
 
-        {/* Dropdown Profile */}
+        {/* dropdown */}
         <div className="relative hidden md:block" ref={dropdownRef}>
           <div
             className="flex items-center gap-2 cursor-pointer px-3 py-1 hover:bg-green-50 rounded-full transition"
@@ -135,9 +134,11 @@ export default function NavbarDonatur({ user }) {
             ) : (
               <User className="text-green-700 w-5 h-5" />
             )}
+
             <span className="text-green-700 font-medium">
               {user?.name || "User"}
             </span>
+
             <ChevronDown
               className={`text-green-700 w-4 h-4 transition-transform ${
                 isOpen ? "rotate-180" : ""
@@ -164,6 +165,7 @@ export default function NavbarDonatur({ user }) {
                     {item.name}
                   </Link>
                 ))}
+
                 <button
                   onClick={() => {
                     setIsOpen(false);
@@ -179,7 +181,7 @@ export default function NavbarDonatur({ user }) {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* menu u mobile */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -204,7 +206,9 @@ export default function NavbarDonatur({ user }) {
                   {item.name}
                 </Link>
               ))}
+
               <hr className="my-2" />
+
               <button
                 onClick={() => {
                   setIsMenuOpen(false);
