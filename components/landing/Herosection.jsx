@@ -273,7 +273,7 @@ const HeroSection = () => {
         </motion.div>
         
         <motion.div 
-          className="flex flex-col sm:flex-row justify-center gap-4"
+          className="flex justify-center"
           variants={lineVariants}
           initial="hidden"
           animate="visible"
@@ -284,28 +284,12 @@ const HeroSection = () => {
               scale: 1.05,
             }} 
             whileTap={{ scale: 0.95 }}
-            className="block"
           >
             <Link 
               href="/Daftar" 
-              className="border-2 border-emerald-600 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 cursor-pointer block"
+              className="inline-block border-2 border-emerald-600 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 cursor-pointer"
             >
               Mulai Penghijauan
-            </Link>
-          </motion.div>
-          
-          <motion.div
-            whileHover={{ 
-              scale: 1.05,
-            }}
-            whileTap={{ scale: 0.95 }}
-            className="block"
-          >
-            <Link 
-              href="/tentang"
-              className="border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 cursor-pointer block"
-            >
-              Pelajari Misi Kami
             </Link>
           </motion.div>
         </motion.div>

@@ -23,9 +23,9 @@ export default function Footer() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-2xl font-bold tracking-tight">reforestacia</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Ecoverse</h2>
           <p className="text-gray-100 mt-3 leading-relaxed">
-            Platform kolaboratif untuk mendukung reforestasi dan penanaman pohon
+            Platform kolaboratif untuk mendukung Ecoverse dan penanaman pohon
             di wilayah rawan banjir & lahan gundul.  
             Bersama kita tumbuhkan kehidupan.
           </p>
@@ -65,7 +65,7 @@ export default function Footer() {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <h3 className="text-xl font-semibold mb-4">Terhubung</h3>
-          <p className="text-gray-100 mb-4">reforestacia@gmail.com</p>
+          <p className="text-gray-100 mb-4">ecoverse@gmail.com</p>
           <div className="flex space-x-5 text-2xl">
             {[
               { icon: <FaInstagram />, href: "#" },
@@ -94,7 +94,7 @@ export default function Footer() {
         transition={{ duration: 0.6, delay: 0.3 }}
         className="relative z-10 border-t border-green-500/40 py-6 text-center text-sm text-gray-100 tracking-wide"
       >
-        © 2025 <span className="font-semibold">Reforestacia</span>. All rights reserved.
+        © 2025 <span className="font-semibold">Ecoverse</span>. All rights reserved.
       </motion.div>
     </footer>
   );

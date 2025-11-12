@@ -59,7 +59,7 @@ export default function Navbar() {
             </svg>
           </div>
           <span className="text-lg font-semibold text-[#047857] tracking-tight">
-            reforesta
+            Ecoverse
           </span>
         </Link>
 
