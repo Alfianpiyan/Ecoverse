@@ -95,10 +95,10 @@ export default function HubungiKami() {
                 <div>
                   <h3 className="font-semibold text-gray-800">Email</h3>
                   <a
-                    href="mailto:reforestacia@gmail.com"
+                    href="mailto:ecoverse@gmail.com"
                     className="text-[#047857] text-xs"
                   >
-                    Reforestacia@gmail.com
+                    Ecoverse@gmail.com
                   </a>
                   <h3 className="font-semibold text-gray-800 mt-2">No.Telp</h3>
                   <p className="text-gray-600 text-xs">+62 123-4567-8910</p>

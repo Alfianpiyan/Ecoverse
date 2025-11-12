@@ -54,7 +54,7 @@ export default function BenefitSection() {
         className="text-center mb-16"
       >
         <h2 className="text-3xl md:text-4xl font-extrabold text-[#065f46]">
-          Kenapa Harus <span className="text-[#059669]">Reforestacia?</span>
+          Kenapa Harus <span className="text-[#059669]">Ecoverse?</span>
         </h2>
         <p className="text-gray-600 mt-3 text-base md:text-lg max-w-2xl mx-auto">
           Kami percaya penghijauan bisa dimulai dari langkah kecil.  
