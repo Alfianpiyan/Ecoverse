@@ -32,7 +32,7 @@ export default function NavbarDonatur({ user }) {
   ];
 
   const profileItems = [
-    { name: "Profile", path: "/user/home/profile" },
+    { name: "Profile", path: "/donatur/profile" },
     { name: "Riwayat", path: "/user/home/riwayat" },
     { name: "Setting", path: "/user/home/setting" },
   ];
