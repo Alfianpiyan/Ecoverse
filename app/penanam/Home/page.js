@@ -6,7 +6,7 @@ import AjakTanam from "../../../components/HomePage/AjakTanam";
 import Footer from "../../../components/landing/Footer";
 import Komunitas from "../../../components/landing/Komunitas";
 import DukungOleh from "../../../components/landing/Support";
-import LanggananSection from "../../../components/langgananpage/LanggananHome";
+import LanggananSection from "../../../components/langgananpage/LanggananPage";
 import NavbarPnanam from "@/components/NavbarPenanam/navbarpenanam";
 
 export default function HomePenanam () {

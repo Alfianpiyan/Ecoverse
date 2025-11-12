@@ -15,30 +15,27 @@ export default function ProfileHeader() {
     const getSession = async () => {
       const { data, error } = await supabase.auth.getSession();
       if (error) console.error("Gagal ambil session:", error);
-      console.log("SESSION SEKARANG 👉", data?.session);
       setSession(data?.session);
     };
 
     getSession();
 
-    // Listener kalau user login/logout
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      console.log("SESSION BERUBAH 👉", session);
-      setSession(session);
-    });
+    // Listener login/logout
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => setSession(session)
+    );
 
-    return () => {
-      listener.subscription.unsubscribe();
-    };
+    return () => listener.subscription.unsubscribe();
   }, []);
 
-  // 🔹 Ambil data user dari tabel `users`
+  // 🔹 Ambil data user dari Supabase + badge dari localStorage
   useEffect(() => {
     if (!session?.user?.email) return;
 
     const fetchProfile = async () => {
       setLoading(true);
       try {
+        // Ambil data user
         const { data: userData, error } = await supabase
           .from("users")
           .select("id, nama_pic, nama_instansi, jenis_akun, no_telepon, email")
@@ -47,6 +44,7 @@ export default function ProfileHeader() {
 
         if (error) throw error;
 
+        // Ambil status langganan dari Supabase (opsional)
         const { data: langganan } = await supabase
           .from("transaksi")
           .select("status")
@@ -54,11 +52,26 @@ export default function ProfileHeader() {
           .eq("status", "aktif")
           .maybeSingle();
 
+        // Ambil data langganan dari localStorage
+        const storedPlan = localStorage.getItem("selectedPlan");
+        let localPlanBadge = null;
+        if (storedPlan) {
+          try {
+            const plan = JSON.parse(storedPlan);
+            if (plan?.title) localPlanBadge = `${plan.title} Member`;
+          } catch (err) {
+            console.error("Gagal parse selectedPlan:", err);
+          }
+        }
+
+        // Buat array badge
         const badges = [];
         if (userData.jenis_akun === "donatur") badges.push("Donatur");
-        if (userData.jenis_akun === "penerima_donatur") badges.push("Penerima Donatur");
+        if (userData.jenis_akun === "Penanam") badges.push("Penanam");
         if (langganan) badges.push("Langganan");
+        if (localPlanBadge) badges.push(localPlanBadge);
 
+        // Set profil
         setProfile({
           ...userData,
           nama_instansi: userData.nama_instansi || "Belum terdaftar",
@@ -75,7 +88,7 @@ export default function ProfileHeader() {
     fetchProfile();
   }, [session]);
 
-  // 🔹 Update data user
+  // 🔹 Simpan perubahan profil
   const handleSave = async () => {
     try {
       const { error } = await supabase
@@ -96,8 +109,10 @@ export default function ProfileHeader() {
     }
   };
 
-  if (loading) return <p className="p-8 text-center text-gray-500">Memuat profil...</p>;
-  if (!profile) return <p className="p-8 text-center text-gray-500">Belum login.</p>;
+  if (loading)
+    return <p className="p-8 text-center text-gray-500">Memuat profil...</p>;
+  if (!profile)
+    return <p className="p-8 text-center text-gray-500">Belum login.</p>;
 
   return (
     <motion.div
@@ -106,6 +121,7 @@ export default function ProfileHeader() {
       transition={{ duration: 0.6 }}
       className="bg-white p-6 md:p-10 rounded-3xl shadow-xl border border-green-50"
     >
+      {/* HEADER */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <h2 className="text-green-900 font-extrabold text-3xl">Profil Anda</h2>
         <button
@@ -116,7 +132,7 @@ export default function ProfileHeader() {
         </button>
       </div>
 
-      {/* FOTO & DETAIL */}
+      {/* ISI PROFIL */}
       <div className="flex flex-col md:flex-row items-start gap-8 border-t border-green-100 pt-6">
         {/* FOTO */}
         <div className="relative group mx-auto md:mx-0 shrink-0">
@@ -128,20 +144,32 @@ export default function ProfileHeader() {
         {/* DETAIL */}
         <div className="flex-1 w-full space-y-6">
           <div className="pb-4 border-b border-green-50">
+            {/* BADGES */}
             <div className="flex flex-wrap gap-2 mb-2">
-              {profile.badges.map((badge, i) => (
-                <span
-                  key={i}
-                  className={`px-3 py-1 text-xs font-medium rounded-full ${
-                    badge === "Langganan"
-                      ? "bg-yellow-100 text-yellow-700"
-                      : "bg-green-100 text-green-700"
-                  }`}
-                >
-                  {badge}
-                </span>
-              ))}
+              {profile.badges && profile.badges.length > 0 ? (
+                profile.badges.map((badge, i) => (
+                  <span
+                    key={i}
+                    className={`px-3 py-1 text-sm rounded-full ${
+                      badge.includes("Premium")
+                        ? "bg-yellow-100 text-yellow-700"
+                        : badge === "Donatur"
+                        ? "bg-green-100 text-green-700"
+                        : badge === "Penanam"
+                        ? "bg-blue-100 text-blue-700"
+                        : badge === "Langganan"
+                        ? "bg-emerald-100 text-emerald-700"
+                        : "bg-gray-100 text-gray-600"
+                    }`}
+                  >
+                    {badge}
+                  </span>
+                ))
+              ) : (
+                <span className="text-gray-400 text-sm">Belum punya role</span>
+              )}
             </div>
+
             <p className="font-extrabold text-gray-900 text-2xl">
               {profile.nama_pic}
             </p>
@@ -150,15 +178,19 @@ export default function ProfileHeader() {
             </p>
           </div>
 
+          {/* INFO */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="bg-white border border-green-100 p-5 rounded-xl shadow-sm">
               <h3 className="font-bold text-green-700 text-lg">Deskripsi</h3>
               <p className="text-sm text-gray-600 mt-2">
-                Belum ada deskripsi. Tambahkan nanti untuk menjelaskan komunitas Anda.
+                Belum ada deskripsi. Tambahkan nanti untuk menjelaskan komunitas
+                Anda.
               </p>
             </div>
             <div className="bg-white border border-green-100 p-5 rounded-xl shadow-sm">
-              <h3 className="font-bold text-green-700 text-lg">Informasi Kontak</h3>
+              <h3 className="font-bold text-green-700 text-lg">
+                Informasi Kontak
+              </h3>
               <p className="text-sm text-gray-600 mt-2">
                 <span className="font-medium">Email:</span> {profile.email}
               </p>
