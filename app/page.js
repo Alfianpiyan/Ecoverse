@@ -8,7 +8,6 @@ import Komunitas from "@/components/landing/Komunitas";
 import HubungiKami from "@/components/landing/KontakKami";
 import Navbar from "@/components/landing/Navbar";
 import DukungOleh from "@/components/landing/Support";
-import Image from "next/image";
 
 export default function landing() {
   return (
