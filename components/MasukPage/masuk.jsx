@@ -7,10 +7,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import bcrypt from "bcryptjs";
+import { ArrowLeft } from "lucide-react"; // ← tambah ikon back dari lucide-react
 
-/**
- * Ambil role dan nama user dari tabel Supabase
- */
 async function fetchUserRoleAndDetail(email) {
   const { data, error } = await supabase
     .from("users")
@@ -56,7 +54,7 @@ export default function MasukPage() {
     setLoading(true);
 
     try {
-      // 1️⃣ Cek apakah user admin manual
+      // Admin manual login
       const { data: adminData } = await supabase
         .from("admin")
         .select("*")
@@ -70,7 +68,6 @@ export default function MasukPage() {
 
         if (!isMatch) throw new Error("Password salah!");
 
-        // Set session pakai NextAuth (manual signIn)
         await signIn("credentials", {
           email: adminData.email,
           role: "admin",
@@ -90,7 +87,7 @@ export default function MasukPage() {
         return;
       }
 
-      // 2️⃣ Login pakai Supabase Auth
+      // Supabase Auth
       const { data, error: authError } = await supabase.auth.signInWithPassword({
         email: form.email,
         password: form.password,
@@ -101,7 +98,6 @@ export default function MasukPage() {
       const sessionUser = data.user;
       const userDetail = await fetchUserRoleAndDetail(sessionUser.email);
 
-      // 3️⃣ Simpan session ke NextAuth (tanpa localStorage)
       await signIn("credentials", {
         email: sessionUser.email,
         role: userDetail.role,
@@ -118,7 +114,6 @@ export default function MasukPage() {
         showConfirmButton: false,
       });
 
-      // 4️⃣ Redirect berdasarkan role
       if (userDetail.role === "donatur") {
         router.push("/donatur/home");
       } else if (userDetail.role === "penanam") {
@@ -143,8 +138,18 @@ export default function MasukPage() {
     <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg lg:max-w-4xl">
         {/* LEFT PANEL */}
-        <div className="w-full px-6 py-8 md:px-8 lg:w-1/2">
-          <div className="flex justify-center mb-2 -mt-4">
+        <div className="relative w-full px-6 py-8 md:px-8 lg:w-1/2">
+          {/* 🔙 Tombol Back di pojok kiri atas form */}
+          <button
+            type="button"
+            onClick={() => router.push("/")}
+            className="absolute top-4 left-4 text-gray-600 hover:text-[#059669] flex items-center gap-1 transition"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span className="text-sm font-medium">Kembali</span>
+          </button>
+
+          <div className="flex justify-center mb-2 mt-6">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-20 h-20 text-[#059669]"
