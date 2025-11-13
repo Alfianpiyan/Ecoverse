@@ -1,36 +1,35 @@
 "use client";
+
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/Supabaseclient";
 import Swal from "sweetalert2";
 
 export default function PembayaranLangganan() {
-  const [metode, setMetode] = useState("");
   const [planData, setPlanData] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [metode, setMetode] = useState("");
   const [loading, setLoading] = useState(true);
 
   // 🔹 Ambil data paket dari localStorage
   useEffect(() => {
-    const storedPlan = localStorage.getItem("selectedPlan");
-    if (storedPlan) {
-      try {
-        setPlanData(JSON.parse(storedPlan));
-      } catch (error) {
-        console.error("Gagal parse data plan:", error);
-      }
+    try {
+      const storedPlan = localStorage.getItem("selectedPlan");
+      if (storedPlan) setPlanData(JSON.parse(storedPlan));
+    } catch (error) {
+      console.error("Gagal parsing plan:", error);
     }
   }, []);
 
   // 🔹 Ambil data user dari Supabase
   useEffect(() => {
-    const fetchUser = async () => {
+    (async () => {
       try {
         const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
         if (sessionError) throw sessionError;
 
         const email = sessionData?.session?.user?.email;
-        if (!email) return;
+        if (!email) return setLoading(false);
 
         const { data: user, error } = await supabase
           .from("users")
@@ -45,12 +44,10 @@ export default function PembayaranLangganan() {
       } finally {
         setLoading(false);
       }
-    };
-
-    fetchUser();
+    })();
   }, []);
 
-  // 🔹 Kalau belum ada plan data
+  // 🔹 Jika belum ada plan data
   if (!planData) {
     return (
       <div className="min-h-screen flex items-center justify-center text-gray-600">
@@ -59,33 +56,32 @@ export default function PembayaranLangganan() {
     );
   }
 
-  const TRANSACTION_DATA = {
+  const TRANSACTION = {
     title: planData.title,
-    description: planData.desc,
-    imagePlaceholder: `(Logo ${planData.title})`,
+    desc: planData.desc,
+    per: planData.per,
+    price: planData.price,
     details: [
       { label: "Paket", value: planData.title },
       { label: "Harga", value: planData.price },
       { label: "Periode", value: planData.per },
     ],
-    total: planData.price,
   };
 
-  // 🔹 Fungsi tombol bayar
+  // 🔹 Simpan transaksi
   const handlePayment = async () => {
     if (!metode) {
-      Swal.fire({
+      return Swal.fire({
         icon: "error",
         title: "Metode belum dipilih",
         text: "Pilih salah satu metode pembayaran sebelum lanjut ya!",
         confirmButtonColor: "#16a34a",
       });
-      return;
     }
 
-    const result = await Swal.fire({
+    const confirm = await Swal.fire({
       title: "Konfirmasi Pembayaran",
-      text: `Bayar ${TRANSACTION_DATA.total} untuk paket ${TRANSACTION_DATA.title}?`,
+      text: `Bayar ${TRANSACTION.price} untuk paket ${TRANSACTION.title}?`,
       icon: "question",
       showCancelButton: true,
       confirmButtonText: "Ya, bayar sekarang",
@@ -94,116 +90,87 @@ export default function PembayaranLangganan() {
       cancelButtonColor: "#d33",
     });
 
-    if (result.isConfirmed) {
-      // 🔸 Simpan ke localStorage
-      const transaksiBaru = {
-        id: Date.now(),
-        plan: TRANSACTION_DATA.title,
-        total: TRANSACTION_DATA.total,
-        metode,
-        tanggal: new Date().toLocaleString("id-ID"),
-        user: userData,
-      };
+    if (!confirm.isConfirmed) return;
 
-      const riwayat = JSON.parse(localStorage.getItem("riwayatLangganan")) || [];
-      riwayat.push(transaksiBaru);
-      localStorage.setItem("riwayatLangganan", JSON.stringify(riwayat));
+    const transaksi = {
+      id: Date.now(),
+      plan: TRANSACTION.title,
+      total: TRANSACTION.price,
+      metode,
+      tanggal: new Date().toLocaleString("id-ID"),
+      user: userData,
+    };
 
-      // 🔸 Alert sukses
-      Swal.fire({
-        icon: "success",
-        title: "Pembayaran Berhasil!",
-        text: `Transaksi kamu untuk paket ${TRANSACTION_DATA.title} sudah disimpan.`,
-        confirmButtonColor: "#16a34a",
-      });
-    }
+    const history = JSON.parse(localStorage.getItem("riwayatLangganan")) || [];
+    localStorage.setItem("riwayatLangganan", JSON.stringify([...history, transaksi]));
+
+    Swal.fire({
+      icon: "success",
+      title: "Pembayaran Berhasil!",
+      text: `Transaksi kamu untuk paket ${TRANSACTION.title} sudah disimpan.`,
+      confirmButtonColor: "#16a34a",
+    });
   };
+
+  const PAYMENT_METHODS = [
+    { id: "bca", name: "BCA Mobile", logo: "/bca.png" },
+    { id: "dana", name: "Dana", logo: "/dana.png" },
+    { id: "bri", name: "BRI Mobile", logo: "/bri.png" },
+    { id: "linkaja", name: "Link Aja", logo: "/linkaja.png" },
+  ];
 
   return (
     <section className="min-h-screen bg-white flex items-start justify-center py-16 px-10">
-      <div className="bg-white w-full grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl">
         {/* === KIRI === */}
         <div className="flex flex-col gap-6">
           {/* Detail Paket */}
-          <div className="bg-white rounded-2xl p-8 shadow-md border border-emerald-100 hover:shadow-lg transition">
-            <h2 className="text-lg font-semibold mb-3 text-emerald-800 flex items-center gap-2">
-              💎 Detail Paket
-            </h2>
+          <Card title="💎 Detail Paket">
             <div className="w-full h-40 bg-gray-100 rounded-xl mb-4 flex items-center justify-center text-emerald-700 font-semibold">
-              {TRANSACTION_DATA.imagePlaceholder}
+              Logo {TRANSACTION.title}
             </div>
             <p className="text-gray-700 leading-relaxed text-justify">
-              {TRANSACTION_DATA.description}
+              {TRANSACTION.desc}
             </p>
-          </div>
+          </Card>
 
           {/* Data Anda */}
-          <div className="bg-white rounded-2xl p-8 shadow-md border border-emerald-100 hover:shadow-lg transition">
-            <h2 className="text-lg font-semibold mb-4 text-emerald-800 flex items-center gap-2">
-              👤 Data Anda
-            </h2>
+          <Card title="👤 Data Anda">
             {loading ? (
               <p className="text-gray-500">Memuat data pengguna...</p>
             ) : userData ? (
               <div className="space-y-3">
-                <div>
-                  <p className="text-sm text-gray-500">nama_pic</p>
-                  <p className="font-medium text-gray-800">{userData.nama_pic}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Email</p>
-                  <p className="font-medium text-gray-800">{userData.email}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">No. HP</p>
-                  <p className="font-medium text-gray-800">
-                    {userData.no_telepon || "-"}
-                  </p>
-                </div>
+                <UserField label="Nama PIC" value={userData.nama_pic} />
+                <UserField label="Email" value={userData.email} />
+                <UserField label="No. HP" value={userData.no_telepon || "-"} />
               </div>
             ) : (
               <p className="text-gray-500">Data pengguna tidak ditemukan.</p>
             )}
-          </div>
+          </Card>
         </div>
 
         {/* === KANAN === */}
         <div className="flex flex-col gap-6">
           {/* Detail Langganan */}
-          <div className="bg-white border border-emerald-100 rounded-2xl p-8 shadow-md hover:shadow-lg transition">
-            <h3 className="text-lg font-semibold text-emerald-800 mb-3">
-              Detail Langganan
-            </h3>
+          <Card title="Detail Langganan">
             <div className="space-y-2 text-gray-700 pb-3 border-b border-gray-100">
-              {TRANSACTION_DATA.details.map((item, index) => (
-                <p key={index}>
-                  <span className="font-medium text-emerald-800">{item.label}:</span>{" "}
-                  {item.value}
+              {TRANSACTION.details.map((d, i) => (
+                <p key={i}>
+                  <span className="font-medium text-emerald-800">{d.label}:</span> {d.value}
                 </p>
               ))}
             </div>
-
             <div className="pt-3 flex justify-between items-center">
-              <span className="font-medium text-emerald-800">Total Pembayaran:</span>
-              <span className="text-emerald-700 font-bold text-xl">
-                {TRANSACTION_DATA.total}
-              </span>
+              <span className="font-medium text-emerald-800">Total:</span>
+              <span className="text-emerald-700 font-bold text-xl">{TRANSACTION.price}</span>
             </div>
-          </div>
+          </Card>
 
-          {/* Metode Pembayaran */}
-          <div className="bg-white border border-emerald-100 rounded-2xl p-8 shadow-md hover:shadow-lg transition">
-            <h3 className="text-lg font-semibold text-emerald-800 mb-4">
-              Pilih Metode Pembayaran
-            </h3>
-
+          {/* Pilih Metode */}
+          <Card title="Pilih Metode Pembayaran">
             <div className="space-y-3">
-              {[
-                { id: "bca", name: "BCA Mobile", logo: "/bca.png" },
-                { id: "dana", name: "Dana", logo: "/dana.png" },
-                { id: "bri", name: "BRI Mobile", logo: "/bri.png" },
-                { id: "linkaja", name: "Link Aja", logo: "/linkaja.png" },
-              ].map((item) => (
+              {PAYMENT_METHODS.map((item) => (
                 <label
                   key={item.id}
                   className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
@@ -220,16 +187,8 @@ export default function PembayaranLangganan() {
                     className="accent-emerald-700"
                   />
                   <div className="flex items-center gap-2">
-                    <Image
-                      src={item.logo}
-                      alt={item.name}
-                      width={32}
-                      height={32}
-                      className="rounded-md"
-                    />
-                    <span className="text-gray-800 font-medium">
-                      {item.name}
-                    </span>
+                    <Image src={item.logo} alt={item.name} width={32} height={32} className="rounded-md" />
+                    <span className="text-gray-800 font-medium">{item.name}</span>
                   </div>
                 </label>
               ))}
@@ -239,11 +198,32 @@ export default function PembayaranLangganan() {
               onClick={handlePayment}
               className="w-full mt-8 bg-green-600 text-white font-semibold py-3 rounded-full hover:bg-emerald-700 shadow-lg transition-all active:scale-95"
             >
-              Bayar {TRANSACTION_DATA.total}
+              Bayar {TRANSACTION.price}
             </button>
-          </div>
+          </Card>
         </div>
       </div>
     </section>
+  );
+}
+
+/* === COMPONENT MINI === */
+function Card({ title, children }) {
+  return (
+    <div className="bg-white rounded-2xl p-8 shadow-md border border-emerald-100 hover:shadow-lg transition">
+      <h2 className="text-lg font-semibold mb-4 text-emerald-800 flex items-center gap-2">
+        {title}
+      </h2>
+      {children}
+    </div>
+  );
+}
+
+function UserField({ label, value }) {
+  return (
+    <div>
+      <p className="text-sm text-gray-500">{label}</p>
+      <p className="font-medium text-gray-800">{value}</p>
+    </div>
   );
 }
