@@ -305,7 +305,7 @@ export default function AcaraDetail() {
 
                 {/* 🟢 Tombol Donasi Sekarang - Memastikan menggunakan id_acara sebagai query */}
                 <button
-                  onClick={() => router.push(`/donatur/PilihBibit?id_acara=${id}`)}
+                  onClick={() => router.push(`/donatur/pilihbibit?id_acara=${id}&judul=${encodeURIComponent(judul_acara)}&lokasi=${encodeURIComponent(lokasi)}`)}
                   className="w-full bg-[#15803D] hover:bg-[#065F46] text-white font-bold text-lg px-6 py-3 rounded-xl transition shadow-lg hover:shadow-xl"
                 >
                   <div className="flex items-center justify-center gap-3">
