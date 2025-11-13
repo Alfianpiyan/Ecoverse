@@ -48,7 +48,7 @@ export default function ProfileAndaPremium() {
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 120 }}
-        className={`bg-[${accentColor}] text-white font-bold text-xl px-10 py-3 rounded-xl shadow-lg mb-12`}
+        className={`bg-[${accentColor}] text-emerald-700 font-bold text-xl px-10 py-3 rounded-xl shadow-lg mb-12`}
       >
         🌿 Profile Anda
       </motion.div>
@@ -96,7 +96,7 @@ export default function ProfileAndaPremium() {
                                 onClick={handleSave}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className={`flex items-center gap-1 bg-[${accentColor}] text-white text-sm px-4 py-2 rounded-full shadow-md hover:bg-[${primaryColor}] transition`}
+                                className={`flex items-center gap-1 bg-[${accentColor}] text-emerald-700 text-sm px-4 py-2 rounded-full shadow-md hover:bg-[${primaryColor}] transition`}
                             >
                                 <Save className="w-4 h-4" /> Simpan
                             </motion.button>

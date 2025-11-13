@@ -6,15 +6,15 @@ import { usePathname, useRouter } from "next/navigation";
 import { User, ChevronDown, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
-import { supabase } from "../../lib/Supabaseclient"; 
+import { supabase } from "../../lib/Supabaseclient";
 
 export default function DetailAcaraNav({ user }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false); // State untuk Dropdown Profile (Desktop)
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State untuk Mobile Menu
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const [scrolled, setScrolled] = useState(false)
+  const [scrolled, setScrolled] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -25,7 +25,6 @@ export default function DetailAcaraNav({ user }) {
       console.error("Gagal logout:", error.message);
     }
   };
-
 
   const profileItems = [
     { name: "Profile", path: "/user/home/profile" },
@@ -43,7 +42,7 @@ export default function DetailAcaraNav({ user }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-    useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -58,19 +57,24 @@ export default function DetailAcaraNav({ user }) {
           scrolled ? "bg-white/60 backdrop-blur-md" : "bg-white"
         }`}
       >
+        {/* === LOGO (disamakan seperti BuatAcaraTanam) === */}
         <div className="flex items-center gap-2">
-          <Image
-            src="/Logo.png"
-            alt="Logo Reforesta"
-            width={28}
-            height={28}
-            className="object-contain"
-          />
-          <span className="font-semibold text-green-700 text-lg tracking-tight">
-            reforesta
-          </span>
+          <Link
+            href="/penanam/Home"
+            className="flex items-center gap-2 hover:opacity-80 transition"
+          >
+            <Image
+              src="/eco.png"
+              alt="Logo Ecoverse"
+              width={28}
+              height={28}
+              className="object-contain"
+            />
+            <span className="font-semibold text-green-700 text-lg tracking-tight">
+              Ecoverse
+            </span>
+          </Link>
         </div>
-
         <div className="md:hidden flex items-center">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -149,11 +153,11 @@ export default function DetailAcaraNav({ user }) {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, x: 20 }} 
-            animate={{ opacity: 1, x: 0 }} 
-            exit={{ opacity: 0, x: 20 }} 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
             transition={{ duration: 0.25 }}
-            className="fixed top-20 right-4 w-40 bg-white shadow-xl rounded-2xl border border-gray-200 md:hidden z-40" 
+            className="fixed top-20 right-4 w-40 bg-white shadow-xl rounded-2xl border border-gray-200 md:hidden z-40"
           >
             <ul className="flex flex-col gap-1 p-4">
               {profileItems.map((item) => (
@@ -170,9 +174,9 @@ export default function DetailAcaraNav({ user }) {
                   {item.name}
                 </Link>
               ))}
-              
+
               <hr className="my-2 border-gray-200" />
-              
+
               <button
                 onClick={() => {
                   setIsMenuOpen(false);

@@ -59,18 +59,22 @@ export default function TrackingAcara({ user }) {
           scrolled ? "bg-white/60 backdrop-blur-md" : "bg-white"
         }`}
       >
-        {/* Logo */}
         <div className="flex items-center gap-2">
-          <Image
-            src="/Logo.png"
-            alt="Logo Reforesta"
-            width={28}
-            height={28}
-            className="object-contain"
-          />
-          <span className="font-semibold text-green-700 text-lg tracking-tight">
-            reforesta
-          </span>
+          <Link
+            href="/penanam/Home"
+            className="flex items-center gap-2 hover:opacity-80 transition"
+          >
+            <Image
+              src="/eco.png"
+              alt="Logo Ecoverse"
+              width={28}
+              height={28}
+              className="object-contain"
+            />
+            <span className="font-semibold text-green-700 text-lg tracking-tight">
+              Ecoverse
+            </span>
+          </Link>
         </div>
 
         <div className="md:hidden flex items-center">

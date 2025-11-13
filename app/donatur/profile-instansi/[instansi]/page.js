@@ -9,6 +9,7 @@ export default function ProfilInstansiPage({ params }) {
 
   return (
     <>
+      
         <ProfilInstansi slug={instansi} />
         <Footer />
     </>

@@ -7,7 +7,7 @@ import { Star, Home, Users, CheckCircle } from "lucide-react";
 export default function LanggananSection() {
   const plans = [
     {
-      icon: <Star className="w-6 h-6 text-green-500" />,
+      icon: <Star className="w-6 h-6 text-emerald-500" />,
       title: "Trial",
       desc: "Coba layanan kami selama 3 bulan",
       price: "GRATIS",
@@ -32,7 +32,7 @@ export default function LanggananSection() {
       isPopular: true,
     },
     {
-      icon: <Users className="w-6 h-6 text-green-500" />,
+      icon: <Users className="w-6 h-6 text-emerald-500" />,
       title: "Premium",
       desc: "Paket hemat 3 bulan",
       price: "RP 400.000",
@@ -97,20 +97,20 @@ export default function LanggananSection() {
   const baseCardStyle =
     "bg-white p-6 rounded-xl shadow-lg border border-gray-100 w-full md:w-[280px] transition-all duration-300 ease-in-out hover:shadow-xl hover:translate-y-[-4px]";
   const popularCardStyle =
-    "bg-green-700 text-white p-7 rounded-xl shadow-2xl w-full md:w-[300px] transform scale-[1.03] z-10 transition-all duration-300 ease-in-out hover:scale-[1.05]";
+    "bg-emerald-700 text-white p-7 rounded-xl shadow-2xl w-full md:w-[300px] transform scale-[1.03] z-10 transition-all duration-300 ease-in-out hover:scale-[1.05]";
   const baseButtonStyle =
     "block w-full text-center px-5 py-2.5 text-sm rounded-lg font-semibold border-2 transition-all duration-300";
   const popularButtonStyle =
-    "bg-white text-green-700 border-white hover:bg-gray-100";
+    "bg-white text-emerald-700 border-white hover:bg-gray-100";
   const regularButtonStyle =
-    "bg-green-600 text-white border-green-600 hover:bg-green-700";
+    "bg-emerald-600 text-white border-emerald-600 hover:bg-emerald-700";
 
   return (
     <motion.section
       ref={ref}
       animate={controls}
       initial={{ opacity: 0, y: 70 }}
-      className="relative py-16 bg-gray-50 overflow-hidden"
+      className="relative py-16 -mt-10 bg-gray-50 overflow-hidden"
     >
       <div className="max-w-6xl mx-auto px-4 relative z-10">
         {/* === Judul === */}
@@ -148,14 +148,14 @@ export default function LanggananSection() {
             >
               <div className="text-center relative">
                 {plan.isPopular && (
-                  <div className="absolute top-0 right-0 -mt-6 -mr-6 bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-bl-lg">
+                  <div className="absolute top-0 right-0 -mt-6 -mr-6 bg-emerald-500 text-white text-xs font-bold px-2 py-0.5 rounded-bl-lg">
                     POPULER
                   </div>
                 )}
 
                 <div
                   className={`flex justify-center mb-3 ${
-                    plan.isPopular ? "text-white" : "text-green-600"
+                    plan.isPopular ? "text-white" : "text-emerald-600"
                   }`}
                 >
                   {plan.icon}
@@ -170,7 +170,7 @@ export default function LanggananSection() {
                 </h3>
                 <p
                   className={`text-xs mb-5 ${
-                    plan.isPopular ? "text-green-200" : "text-gray-500"
+                    plan.isPopular ? "text-emerald-200" : "text-gray-500"
                   }`}
                 >
                   {plan.desc}
@@ -186,7 +186,7 @@ export default function LanggananSection() {
                   </h4>
                   <p
                     className={`text-sm font-medium ${
-                      plan.isPopular ? "text-green-300" : "text-gray-500"
+                      plan.isPopular ? "text-emerald-300" : "text-gray-500"
                     }`}
                   >
                     {plan.per}
@@ -196,14 +196,14 @@ export default function LanggananSection() {
 
               <ul
                 className={`text-left mb-6 space-y-2 text-sm ${
-                  plan.isPopular ? "text-green-100" : "text-gray-700"
+                  plan.isPopular ? "text-emerald-100" : "text-gray-700"
                 }`}
               >
                 {plan.features.map((feature, i) => (
                   <li key={i} className="flex items-start">
                     <CheckCircle
                       className={`w-3.5 h-3.5 mt-1 mr-2.5 shrink-0 ${
-                        plan.isPopular ? "text-green-300" : "text-green-500"
+                        plan.isPopular ? "text-emerald-300" : "text-emerald-500"
                       }`}
                     />
                     {feature}

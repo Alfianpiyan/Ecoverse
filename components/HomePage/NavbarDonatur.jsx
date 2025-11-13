@@ -181,15 +181,15 @@ export default function NavbarDonatur({ user }) {
         </div>
       </div>
 
-      {/* menu u mobile */}
+      {/* mobile menu */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.25 }}
-            className="absolute top-20 left-0 w-full bg-white shadow-lg rounded-b-2xl border-t border-gray-200 md:hidden z-40"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 50 }}
+            transition={{ duration: 0.30 }}
+            className="absolute top-10 right-4 w-[50%] bg-white shadow-xl rounded-2xl border border-gray-200 md:hidden z-40"
           >
             <ul className="flex flex-col gap-2 p-4">
               {navItems.map((item) => (

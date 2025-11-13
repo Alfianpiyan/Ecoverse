@@ -124,7 +124,7 @@ export default function FormAcara() {
   };
 
   return (
-    <div className="h-screen  py-8 flex items-center justify-center px-4 overflow-y-auto">
+    <div className="h-screen  py-8 flex mt-15 pt-24 items-center justify-center px-4 mb-20">
       <div className="w-[1100px] mx-auto">
         <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-xl space-y-5">
           <div className="text-center mb-2">
