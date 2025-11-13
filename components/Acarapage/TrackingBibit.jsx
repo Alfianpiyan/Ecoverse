@@ -85,7 +85,7 @@ export default function TrackingBibit() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#e9fbee] to-[#f8fdf8] pt-10 pb-20">
+    <div className="mt-8 min-h-screen bg-white pt-10 pb-20">
       <div className="max-w-5xl mx-auto px-5">
         <div className="text-center mb-12">
           <h2 className="text-2xl font-bold text-green-800 mb-2">

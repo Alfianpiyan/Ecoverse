@@ -41,6 +41,7 @@ export default function AcaraHijau() {
   return (
     // 🌿 Section utama dengan animasi dua arah (scroll ke bawah & ke atas)
     <motion.section
+      id="acara-section"
       initial={{ opacity: 0, y: 80 }}
       whileInView={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 80 }}

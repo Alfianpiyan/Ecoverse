@@ -3,9 +3,12 @@
 import { supabase } from "@/lib/Supabaseclient";
 import { hash } from "bcryptjs";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { ArrowLeft } from "lucide-react"; // ← tambahkan icon panah
 
 export default function DaftarPage() {
+  const router = useRouter();
   const [gender, setGender] = useState("");
   const [userRole, setUserRole] = useState("");
 
@@ -24,8 +27,6 @@ export default function DaftarPage() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-
-    // --- 1️⃣ Register akun di Supabase Auth ---
     const { data, error } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
@@ -42,7 +43,6 @@ export default function DaftarPage() {
       return;
     }
 
-    // --- 2️⃣ Simpan data ke tabel `users` ---
     const { error: insertError } = await supabase.from("users").insert([
       {
         id: user.id,
@@ -51,7 +51,7 @@ export default function DaftarPage() {
         password: form.password,
         email: form.email,
         jenis_kelamin: gender,
-        jenis_akun: userRole, // enum donatur / penanam
+        jenis_akun: userRole,
         no_telepon: form.no_telepon,
       },
     ]);
@@ -64,7 +64,6 @@ export default function DaftarPage() {
     alert("✅ Register berhasil! Silakan konfirmasi email Anda.");
   };
 
-  // Style tombol aktif/pasif
   const getButtonClass = (type, currentType, base = "bg-[#059669]") =>
     currentType === type
       ? `${base} text-white shadow-md font-semibold focus:ring-[#059669] focus:ring focus:ring-opacity-50`
@@ -112,9 +111,9 @@ export default function DaftarPage() {
       className="flex justify-center items-center min-h-screen py-10 px-4 sm:px-8 font-sans"
       style={backgroundStyle}
     >
-      <section className="bg-white shadow-2xl rounded-2xl overflow-hidden w-full max-w-6xl">
+      <section className="bg-white shadow-2xl rounded-2xl overflow-hidden w-full max-w-6xl relative">
         <div className="flex flex-col lg:flex-row">
-          {/* Panel kiri */}
+          {/* PANEL KIRI */}
           <div
             className="hidden lg:flex flex-col justify-center items-center p-8 lg:w-2/5 text-white text-center relative"
             style={imagePanelStyle}
@@ -155,10 +154,20 @@ export default function DaftarPage() {
             </div>
           </div>
 
-          {/* Form kanan */}
-          <div className="flex items-center bg-white justify-center w-full py-8 px-6 lg:px-8 lg:w-3/5">
-            <div className="w-full">
-              <div className="flex justify-center mb-2 -mt-4">
+          {/* FORM KANAN */}
+          <div className="flex items-center bg-white justify-center w-full py-8 px-6 lg:px-8 lg:w-3/5 relative">
+            {/* 🔙 Tombol back di pojok kiri atas form */}
+            <button
+              type="button"
+              onClick={() => router.push("/Masuk")}
+              className="absolute top-4 left-4 text-gray-600 hover:text-[#059669] flex items-center gap-1 transition"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              <span className="text-sm font-medium">Kembali</span>
+            </button>
+
+            <div className="w-full mt-6">
+              <div className="flex justify-center mb-2 -mt-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-20 h-20 text-[#047857]"
