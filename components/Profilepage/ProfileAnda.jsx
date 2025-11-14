@@ -9,9 +9,9 @@ import {
   X,
   Camera,
   Shield,
-  User,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import Swal from "sweetalert2";
 import { supabase } from "@/lib/Supabaseclient";
 
 export default function ProfileAndaPremium() {
@@ -19,15 +19,6 @@ export default function ProfileAndaPremium() {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🎨 Colors centralized
-  const COLORS = {
-    primary: "#1B4332",
-    accent: "#40916C",
-    lightBg: "#F6FFF8",
-    cardBg: "white",
-  };
-
-  // User Data
   const [data, setData] = useState({
     id: "",
     nama_pic: "",
@@ -42,9 +33,8 @@ export default function ProfileAndaPremium() {
   const [tempData, setTempData] = useState(data);
 
   const inputStyle =
-    "w-full bg-white border border-gray-300 focus:border-green-500 focus:ring-1 focus:ring-green-500 rounded-lg px-4 py-2 text-gray-700 transition duration-200 shadow-inner";
+    "w-full bg-white border border-green-200 focus:border-green-500 focus:ring-2 focus:ring-green-300 rounded-xl px-4 py-2 text-gray-700 transition duration-200";
 
-  // 🔥 Ambil session
   useEffect(() => {
     async function getSession() {
       const { data: sessionData } = await supabase.auth.getSession();
@@ -59,7 +49,6 @@ export default function ProfileAndaPremium() {
     getSession();
   }, []);
 
-  // 🔥 Ambil user dari DB
   async function fetchUser(email) {
     const { data: user, error } = await supabase
       .from("users")
@@ -72,25 +61,51 @@ export default function ProfileAndaPremium() {
     const fixed = {
       ...user,
       deskripsi_organisasi:
-        user.deskripsi_organisasi ||
-        "Belum ada deskripsi organisasi ditambahkan.",
+        user.deskripsi_organisasi || "Belum ada deskripsi organisasi.",
     };
 
     setData(fixed);
     setTempData(fixed);
   }
 
-  // 🔥 Simpan
   async function handleSave() {
-    const { error } = await supabase
-      .from("users")
-      .update(tempData)
-      .eq("id", data.id);
+    try {
+      // Hanya kirim field yang ada di Supabase
+      const updatedData = {
+        nama_pic: tempData.nama_pic || "",
+        nama_instansi: tempData.nama_instansi || "",
+        no_telepon: tempData.no_telepon || "",
+        jenis_akun: tempData.jenis_akun || "",
+      };
 
-    if (error) return console.log("Gagal update:", error);
+      const { data: updatedUser, error } = await supabase
+        .from("users")
+        .update(updatedData)
+        .eq("id", data.id)
+        .select("*")
+        .single();
 
-    setData(tempData);
-    setEditMode(false);
+      if (error) throw error;
+
+      setData({
+        ...updatedUser,
+        deskripsi_organisasi: tempData.deskripsi_organisasi, // tetap lokal
+      });
+
+      setEditMode(false);
+
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil!",
+        text: "Profil berhasil diperbarui.",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+
+    } catch (error) {
+      console.error("❌ Gagal update:", error.message || error);
+      Swal.fire("Gagal!", "Perubahan tidak tersimpan. Cek console.", "error");
+    }
   }
 
   const handleCancel = () => {
@@ -102,98 +117,78 @@ export default function ProfileAndaPremium() {
   if (!session) return <div className="p-10">Silakan login dulu</div>;
 
   return (
-    <div
-      className={`min-h-screen ${COLORS.lightBg} flex flex-col items-center py-12 px-4`}
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="mt-14 max-w-4xl mx-auto p-6 md:p-10 rounded-3xl shadow-xl border border-green-50 bg-white"
     >
-      {/* HEADER */}
-      <motion.div
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        className={`bg-[${COLORS.accent}] text-white font-bold text-xl px-10 py-3 rounded-xl shadow-lg mb-12`}
-      >
-        🌿 Profile Anda
-      </motion.div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-green-900 font-extrabold text-3xl">Profil Anda</h2>
 
-      {/* CARD */}
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        className={`bg-[${COLORS.cardBg}] rounded-xl shadow-2xl border-t-4 border-[${COLORS.accent}] w-full max-w-4xl p-8 flex flex-col gap-6`}
-      >
-        {/* TOP SECTION */}
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-8 border-b pb-6">
-          {/* FOTO */}
-          <div className="relative">
-            <div className="w-32 h-32 bg-gray-200 rounded-full shadow-lg flex items-center justify-center">
-              <User className="w-16 h-16 text-gray-500" />
-            </div>
+        {!editMode ? (
+          <button
+            onClick={() => setEditMode(true)}
+            className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-full transition"
+          >
+            <Edit2 size={18} className="inline mr-2" />
+            Edit Profil
+          </button>
+        ) : (
+          <div className="flex gap-3">
             <button
-              className={`absolute bottom-0 right-1 bg-white border p-2 rounded-full text-[${COLORS.accent}]`}
+              onClick={handleSave}
+              className="bg-green-600 text-white px-5 py-2 rounded-full hover:bg-green-700 transition"
             >
-              <Camera className="w-4 h-4" />
+              <Save size={18} className="inline mr-2" />
+              Simpan
+            </button>
+            <button
+              onClick={handleCancel}
+              className="bg-gray-200 text-gray-700 px-5 py-2 rounded-full hover:bg-gray-300 transition"
+            >
+              <X size={18} className="inline mr-2" />
+              Batal
             </button>
           </div>
+        )}
+      </div>
 
-          {/* INFO */}
-          <div className="flex-1 w-full">
-            {/* BADGE */}
-            <div className="flex justify-between items-start">
-              <div className="flex items-center gap-2 bg-[#D8F3DC] text-[${COLORS.primary}] text-sm font-semibold px-4 py-1.5 rounded-full shadow-md">
-                <Shield className="w-4 h-4 text-green-700" />
-                {data.jenis_akun || "Tanpa Akun"}
-              </div>
+      <div className="flex flex-col md:flex-row items-start gap-8 border-t border-green-100 pt-6">
 
-              {!editMode ? (
-                <button
-                  onClick={() => setEditMode(true)}
-                  className={`text-[${COLORS.accent}] font-semibold px-3 py-1 rounded-full hover:bg-[#D8F3DC]`}
-                >
-                  <Edit2 className="w-4 h-4 inline" /> Edit Profil
-                </button>
-              ) : (
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleSave}
-                    className={`bg-[${COLORS.accent}] text-white px-4 py-2 rounded-full`}
-                  >
-                    <Save className="w-4 h-4 inline" /> Simpan
-                  </button>
-                  <button
-                    onClick={handleCancel}
-                    className="bg-gray-300 px-4 py-2 rounded-full"
-                  >
-                    <X className="w-4 h-4 inline" /> Batal
-                  </button>
-                </div>
-              )}
-            </div>
+        <div className="relative mx-auto md:mx-0">
+          <div className="w-32 h-32 rounded-full bg-green-50 flex items-center justify-center border-4 border-white shadow-inner text-3xl font-bold text-green-700">
+            {data.nama_pic ? data.nama_pic.charAt(0).toUpperCase() : "U"}
+          </div>
+          <button className="absolute bottom-0 right-1 p-2 rounded-full bg-white border shadow text-green-600">
+            <Camera size={16} />
+          </button>
+        </div>
 
-            {/* NAMA & INSTANSI */}
+        {/* Info Section */}
+        <div className="flex-1 w-full">
+          <div className="mb-4">
+            <span className="inline-flex w-fit px-3 py-1 text-sm bg-green-100 text-green-700 rounded-full shadow-sm items-center gap-1">
+              <Shield size={14} /> {data.jenis_akun || "Tanpa Akun"}
+            </span>
+
             {!editMode ? (
               <>
-                <h2 className={`text-2xl font-bold text-[${COLORS.primary}] mt-3`}>
+                <h3 className="text-2xl font-bold text-green-900 mt-3">
                   {data.nama_pic}
-                </h2>
-                <p className="text-gray-700 italic">{data.nama_instansi}</p>
+                </h3>
+                <p className="text-gray-500 text-sm">{data.nama_instansi}</p>
               </>
             ) : (
-              <>
+              <div className="space-y-3 mt-4">
                 <input
                   value={tempData.nama_pic}
-                  onChange={(e) =>
-                    setTempData({ ...tempData, nama_pic: e.target.value })
-                  }
+                  onChange={(e) => setTempData({ ...tempData, nama_pic: e.target.value })}
                   className={inputStyle}
                 />
-
                 <input
                   value={tempData.nama_instansi}
-                  onChange={(e) =>
-                    setTempData({
-                      ...tempData,
-                      nama_instansi: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setTempData({ ...tempData, nama_instansi: e.target.value })}
                   className={inputStyle}
                 />
 
@@ -206,85 +201,60 @@ export default function ProfileAndaPremium() {
                 >
                   <option value="">Pilih Jenis Akun</option>
                   <option value="PIC Organisasi">PIC Organisasi</option>
-                  <option value="Admin">Admin</option>
                   <option value="User">User</option>
                 </select>
-              </>
+              </div>
             )}
           </div>
-        </div>
 
-        {/* DETAIL SECTION */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+            
+            <div className="bg-white border border-green-100 p-5 rounded-xl shadow-sm">
+              <h4 className="font-bold text-green-700">Informasi Kontak</h4>
 
-          {/* INFORMASI KONTAK */}
-          <div className="bg-gray-50 p-6 rounded-lg shadow-inner border">
-            <h3 className="text-lg font-bold text-green-700 mb-4">
-              Informasi Kontak
-            </h3>
+              <div className="mt-3 space-y-3 text-sm text-gray-600">
+                <p className="flex items-center gap-2">
+                  <Mail size={16} /> 
+                  <input className={inputStyle + " opacity-50"} value={tempData.email} disabled />
+                </p>
 
-            {/* Email */}
-            <div className="flex items-center gap-3 mb-4">
-              <Mail className={`w-5 h-5 text-[${COLORS.accent}]`} />
+                <p className="flex items-center gap-2">
+                  <Phone size={16} />
+                  {!editMode ? (
+                    data.no_telepon
+                  ) : (
+                    <input
+                      className={inputStyle}
+                      value={tempData.no_telepon}
+                      onChange={(e) =>
+                        setTempData({ ...tempData, no_telepon: e.target.value })
+                      }
+                    />
+                  )}
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white border border-green-100 p-5 rounded-xl shadow-sm">
+              <h4 className="font-bold text-green-700">Deskripsi Organisasi</h4>
+
               {!editMode ? (
-                <span>{data.email}</span>
+                <p className="mt-2 text-gray-600">{data.deskripsi_organisasi}</p>
               ) : (
-                <input
-                  value={tempData.email}
+                <textarea
+                  className={inputStyle + " resize-none mt-2"}
+                  rows={5}
+                  value={tempData.deskripsi_organisasi}
                   onChange={(e) =>
-                    setTempData({ ...tempData, email: e.target.value })
+                    setTempData({ ...tempData, deskripsi_organisasi: e.target.value })
                   }
-                  className={inputStyle}
-                />
+                ></textarea>
               )}
             </div>
 
-            {/* Telepon */}
-            <div className="flex items-center gap-3">
-              <Phone className={`w-5 h-5 text-[${COLORS.accent}]`} />
-              {!editMode ? (
-                <span>{data.no_telepon}</span>
-              ) : (
-                <input
-                  value={tempData.no_telepon}
-                  onChange={(e) =>
-                    setTempData({
-                      ...tempData,
-                      no_telepon: e.target.value,
-                    })
-                  }
-                  className={inputStyle}
-                />
-              )}
-            </div>
-          </div>
-
-          {/* DESKRIPSI ORGANISASI */}
-          <div className="bg-gray-50 p-6 rounded-lg shadow-inner border">
-            <h3 className="text-lg font-bold text-green-700 mb-4">
-              Deskripsi Organisasi
-            </h3>
-
-            {!editMode ? (
-              <p className="text-gray-700 leading-relaxed">
-                {data.deskripsi_organisasi}
-              </p>
-            ) : (
-              <textarea
-                value={tempData.deskripsi_organisasi}
-                onChange={(e) =>
-                  setTempData({
-                    ...tempData,
-                    deskripsi_organisasi: e.target.value,
-                  })
-                }
-                rows={6}
-                className={inputStyle + " resize-none"}
-              />
-            )}
           </div>
         </div>
-      </motion.div>
-    </div>
+      </div>
+    </motion.div>
   );
 }
