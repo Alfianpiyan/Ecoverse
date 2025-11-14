@@ -1,14 +1,14 @@
-import LanggananSection from "@/components/HomePage/LanggananSection"
 import KenapaLangganan from "@/components/langgananpage/KenapaLangganan"
-import HalamanLangganan from "@/components/langgananpage/LanggananPage"
 import NavbarPnanam from "@/components/NavbarPenanam/navbarpenanam"
+import LanggananSection from "../../../components/langgananpage/LanggananPage";
+
 
 export default function Langganan () {
     return (
         <>
         <NavbarPnanam/>
         <KenapaLangganan/>
-       <LanggananSection/>
+        <LanggananSection/>
         </>
 
     )
