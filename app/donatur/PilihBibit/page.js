@@ -1,99 +1,160 @@
 "use client";
-import TanamPohonPage from "@/components/pilihBibitpage/pilihBibit";
-import Footer from "@/components/landing/Footer";
-import Image from "next/image";
-import { useRef, useState, useEffect } from "react";
-import { ChevronDown, User } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { CheckCircle2, Sprout, Clock4, List, Calendar, MapPin } from "lucide-react"; // Menggunakan icon lucide-react
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function HalPilihBibit() {
-    const dropdownRef = useRef(null);
-    const [isOpen, setIsOpen] = useState(false);
-    const [user, setUser] = useState({
-        name: "User",
-        photo: "/profil.png", 
-    });
+export default function TrackingBibit() {
+  const router = useRouter();
+  const [filter, setFilter] = useState("semua");
+  const [data, setData] = useState([]);
 
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-            setIsOpen(false);
-        }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+  // Fetch data dari localStorage dan filter
+  useEffect(() => {
+    try {
+      const riwayat = JSON.parse(localStorage.getItem("riwayatBibit")) || [];
 
+      const kegiatan = riwayat
+        .filter((item) => item.type === "DONASI_BIBIT")
+        .map((item) => ({
+          id: item.id,
+          title: item.bibit.acara_nama,
+          date: item.bibit.tanggal,
+          location: item.bibit.lokasi,
+          image: item.bibit.gambar_acara || "/default.jpg", // Pastikan gambar acara tersimpan dengan benar
+          status: "menunggu",
+          documentation: [],
+        }));
+
+      setData(kegiatan);
+    } catch (e) {
+      console.error("Gagal ambil riwayat:", e);
+    }
+  }, []);
+
+  // Filter berdasarkan status
+  const filteredData = filter === "semua" ? data : data.filter((item) => item.status === filter);
+
+  // Menentukan langkah-langkah status
+  const steps = [
+    { key: "semua", label: "Semua", icon: <List size={18} /> },
+    { key: "menunggu", label: "Menunggu Acara", icon: <Clock4 size={18} /> },
+    { key: "ditanam", label: "Sedang Ditanam", icon: <Sprout size={18} /> },
+    { key: "selesai", label: "Sudah Ditanam", icon: <CheckCircle2 size={18} /> },
+  ];
+
+  // Fungsi untuk render icon status
+  const renderStatusIcon = (step) => {
+    const active = filter === step.key;
     return (
-        <>
-        <nav className="w-full flex justify-center mt-6">
-            <div className="flex items-center justify-between w-[90%] max-w-3xl px-6 py-2 rounded-full bg-white shadow-[0_3px_10px_rgba(0,0,0,0.06)] border border-gray-100">
-                <div className="flex items-center gap-2">
-                    <Link
-                        href="/donatur/Home"
-                        className="flex items-center gap-2 hover:opacity-80 transition"
-                    >
-                        <Image
-                        src="/eco.png"
-                        alt="Logo Ecoverse"
-                        width={28}
-                        height={28}
-                        className="object-contain"
-                        />
-                        <span className="font-semibold text-green-700 text-lg tracking-tight">
-                        Ecoverse
-                        </span>
-                    </Link>
-                </div>
+      <div
+        onClick={() => setFilter(step.key)}
+        className={`flex flex-col items-center cursor-pointer transition-all ${
+          active ? "text-green-700" : "text-gray-400 hover:text-green-500"
+        }`}
+      >
+        <motion.div
+          whileTap={{ scale: 0.9 }}
+          className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 shadow-md transition-all ${
+            active
+              ? "bg-gradient-to-br from-green-500 to-green-700 text-white shadow-lg"
+              : "bg-white border border-gray-300"
+          }`}
+        >
+          {step.icon}
+        </motion.div>
+        <span
+          className={`text-xs font-semibold ${
+            active ? "text-green-700" : "text-gray-500"
+          }`}
+        >
+          {step.label}
+        </span>
+      </div>
+    );
+  };
 
-                <h1 className="text-green-800 font-bold text-lg">Nama Acara</h1>
+  return (
+    <div className="mt-8 min-h-screen bg-white pt-10 pb-20">
+      <div className="max-w-5xl mx-auto px-5">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl font-bold text-green-800 mb-2">
+            Kegiatan Anda
+          </h2>
+          <p className="text-gray-600 text-sm">
+            Lihat perkembangan kegiatan penanaman pohon Anda
+          </p>
+        </div>
 
-                {/* dropdown */}
-                <div className="relative" ref={dropdownRef}>
-                <div
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="flex items-center gap-2 cursor-pointer hover:bg-green-50 px-3 py-1.5 rounded-full transition-all"
-                >
-                    {user?.photo ? (
-                    <img
-                        src={user.photo}
-                        alt="Avatar"
-                        className="w-6 h-6 rounded-full object-cover"
-                    />
-                    ) : (
-                    <User className="text-green-700 w-5 h-5" />
-                    )}
-                    <ChevronDown
-                    className={`text-green-700 w-4 h-4 transition-transform ${
-                        isOpen ? "rotate-180" : ""
-                    }`}
-                    />
-                </div>
-
-                <AnimatePresence>
-                    {isOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9, y: -10 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.9, y: -10 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute right-0 mt-2 w-44 bg-white border border-gray-100 rounded-xl shadow-lg overflow-hidden z-50"
-                    >
-                        <button
-                        onClick={handleLogout}
-                        className="w-full text-left px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition font-medium"
-                        >
-                        Logout
-                        </button>
-                    </motion.div>
-                    )}
-                </AnimatePresence>
-                </div>
+        <div className="flex justify-between items-center max-w-3xl mx-auto relative mb-10">
+          <div className="absolute top-5 left-0 w-full h-[2px] bg-gray-200 z-0"></div>
+          {steps.map((step, i) => (
+            <div key={i} className="relative z-10 flex-1 flex justify-center">
+              {renderStatusIcon(step)}
             </div>
-        </nav>
-        <TanamPohonPage/>
-        
-        <Footer/>
-        </>
-    )
+          ))}
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={filter}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-6"
+          >
+            {filteredData.length > 0 ? (
+              filteredData.map((item) => (
+                <motion.div
+                  key={item.id}
+                  whileHover={{ scale: 1.02 }}
+                  className="bg-white/70 backdrop-blur-md border border-green-100 rounded-2xl shadow-md p-5 flex flex-col md:flex-row items-start justify-between transition-all"
+                >
+                  <div className="flex flex-col flex-1">
+                    <h3 className="font-semibold text-green-900 text-lg mb-1">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-2">
+                      <Calendar size={16} /> {item.date}
+                      <br />
+                      <MapPin size={16} /> {item.location}
+                    </p>
+                    <p className="text-sm text-gray-700">
+                      Penanaman bibit untuk mendukung kelestarian lingkungan 🌿
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col items-center md:items-end mt-4 md:mt-0">
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      className="w-28 h-28 rounded-xl overflow-hidden shadow-md mb-3"
+                    >
+                      <img
+                        src={item.image} // Gunakan gambar yang sudah benar
+                        alt={item.title}
+                        className="object-cover w-full h-full"
+                      />
+                    </motion.div>
+                    <button
+                      onClick={() =>
+                        router.push(`/donatur/detailStatusAcara/${item.id}`)
+                      }
+                      className="bg-gradient-to-r from-green-700 to-green-900 text-white text-sm px-5 py-2 rounded-lg hover:opacity-90 transition-all shadow-sm"
+                    >
+                      Lihat Detail
+                    </button>
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              <p className="text-center text-gray-500 py-10">
+                Tidak ada kegiatan dengan status ini 🌾
+              </p>
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
+  );
 }

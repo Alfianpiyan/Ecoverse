@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { CheckCircle2, Sprout, Clock4, List } from "lucide-react";
+import { CheckCircle2, Sprout, Clock4, List, Calendar, MapPin } from "lucide-react"; // Import icon baru
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function TrackingBibit() {
@@ -10,29 +10,27 @@ export default function TrackingBibit() {
 
   const [data, setData] = useState([]);
 
-useEffect(() => {
-  try {
-    const riwayat = JSON.parse(localStorage.getItem("riwayatBibit")) || [];
+  useEffect(() => {
+    try {
+      const riwayat = JSON.parse(localStorage.getItem("riwayatBibit")) || [];
 
-    // Filter hanya transaksi donasi bibit
-    const kegiatan = riwayat
-      .filter((item) => item.type === "DONASI_BIBIT")
-      .map((item) => ({
-        id: item.id,
-        title: item.bibit.acara_nama,
-        date: item.bibit.tanggal,
-        location: item.bibit.lokasi,
-        image: item.bibit?.detail_bibit?.[0]?.image || "/default.jpg", 
-        status: "menunggu", 
-        documentation: [],  
-      }));
+      const kegiatan = riwayat
+        .filter((item) => item.type === "DONASI_BIBIT")
+        .map((item) => ({
+          id: item.id,
+          title: item.bibit.acara_nama,
+          date: item.bibit.tanggal,
+          location: item.bibit.lokasi,
+          image: item.bibit.image || "/default.jpg", // PERBAIKAN DISINI 🔥
+          status: "menunggu",
+          documentation: [],
+        }));
 
-    setData(kegiatan);
-  } catch (e) {
-    console.error("Gagal ambil riwayat:", e);
-  }
-}, []);
-
+      setData(kegiatan);
+    } catch (e) {
+      console.error("Gagal ambil riwayat:", e);
+    }
+  }, []);
 
   const filteredData =
     filter === "semua" ? data : data.filter((item) => item.status === filter);
@@ -79,7 +77,7 @@ useEffect(() => {
       <div className="max-w-5xl mx-auto px-5">
         <div className="text-center mb-12">
           <h2 className="text-2xl font-bold text-green-800 mb-2">
-            🌱 Kegiatan Anda
+            Kegiatan Anda
           </h2>
           <p className="text-gray-600 text-sm">
             Lihat perkembangan kegiatan penanaman pohon Anda
@@ -116,8 +114,9 @@ useEffect(() => {
                       {item.title}
                     </h3>
                     <p className="text-sm text-gray-600 mb-2">
-                      📅 {item.date}
-                      <br />📍 {item.location}
+                      <Calendar size={16} /> {item.date}
+                      <br />
+                      <MapPin size={16} /> {item.location}
                     </p>
                     <p className="text-sm text-gray-700">
                       Penanaman bibit untuk mendukung kelestarian lingkungan 🌿

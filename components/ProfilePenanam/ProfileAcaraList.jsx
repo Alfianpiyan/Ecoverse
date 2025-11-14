@@ -35,6 +35,9 @@ export default function AcaraCard() {
     load();
   }, []);
 
+  console.log(acara.gambar_acara);
+
+
   if (loading) {
     return <div className="p-5 border rounded-xl animate-pulse text-gray-500">Memuat data acara...</div>;
   }

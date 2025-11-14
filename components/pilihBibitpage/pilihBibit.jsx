@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import { supabase } from "../../lib/Supabaseclient";
+import Link from "next/link";
 
 export default function TanamPohonPage() {
   const [acara, setAcara] = useState(null);
@@ -158,8 +159,10 @@ export default function TanamPohonPage() {
           type: "DONASI_BIBIT",
           acara_id: acara.id,
           acara_nama: acara.judul_acara,
+          gambar_acara: acara.gambar,
           lokasi: acara.lokasi,
           total_bibit: totalBibit,
+          total_harga: totalHarga,
           total_harga: totalHarga,
           detail_bibit: Object.values(keranjang),
           tanggal: new Date().toLocaleString("id-ID"),
