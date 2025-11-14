@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import Swal from "sweetalert2";
 
 export function UpDokumentasi({ onSubmitDocumentation, currentStatus }) {
     const [file, setFile] = useState(null);
@@ -21,18 +22,24 @@ export function UpDokumentasi({ onSubmitDocumentation, currentStatus }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         if (!file) {
-            alert('Harap pilih foto!');
+            Swal.fire({
+                title: "Foto belum dipilih!",
+                text: "Harap pilih foto sebelum mengunggah.",
+                icon: "warning",
+                confirmButtonColor: "#f59e0b",
+            });
             return;
         }
 
         setIsUploading(true);
-        
+
         const dummyUrl = `/dokumentasi/${currentStatus}_${Date.now()}.jpg`;
 
         setTimeout(() => {
             onSubmitDocumentation({
-                url: dummyUrl, 
+                url: dummyUrl,
                 catatan: catatan,
             });
 
@@ -40,13 +47,20 @@ export function UpDokumentasi({ onSubmitDocumentation, currentStatus }) {
             setCatatan('');
             setFileName("Tidak ada file dipilih");
             setIsUploading(false);
-            alert("Dokumentasi berhasil diunggah! (Simulasi)");
+
+            Swal.fire({
+                title: "Berhasil!",
+                text: "Dokumentasi berhasil diunggah! (Simulasi)",
+                icon: "success",
+                confirmButtonColor: "#10B981",
+            });
         }, 1000);
     };
 
-    const title = currentStatus === 'Sedang Berlangsung' 
-        ? 'Upload Dokumentasi Penanaman'
-        : 'Upload Dokumentasi Hasil';
+    const title =
+        currentStatus === "Sedang Berlangsung"
+            ? "Upload Dokumentasi Penanaman"
+            : "Upload Dokumentasi Hasil";
 
     return (
         <div className="bg-white p-6 rounded-xl shadow-lg space-y-4">
@@ -56,8 +70,9 @@ export function UpDokumentasi({ onSubmitDocumentation, currentStatus }) {
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Upload File */}
                 <div>
-                    <div className="relative w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-500 overflow-hidden"> 
+                    <div className="relative w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-500 overflow-hidden">
                         <input
                             type="file"
                             id="upload-foto"
@@ -68,18 +83,22 @@ export function UpDokumentasi({ onSubmitDocumentation, currentStatus }) {
                             disabled={isUploading}
                         />
                         <div className="flex items-center justify-start">
-                            <span className="bg-emerald-700 text-white px-3 py-1 text-sm font-medium rounded-md pointer-events-none"> 
+                            <span className="bg-emerald-700 text-white px-3 py-1 text-sm font-medium rounded-md pointer-events-none">
                                 Pilih Foto
                             </span>
-                            <span className="truncate ml-3 text-sm text-gray-600"> 
+                            <span className="truncate ml-3 text-sm text-gray-600">
                                 {fileName}
                             </span>
                         </div>
                     </div>
                 </div>
 
+                {/* Catatan */}
                 <div>
-                    <label htmlFor="catatan" className="block text-sm font-semibold text-[#064E3B] mb-2">
+                    <label
+                        htmlFor="catatan"
+                        className="block text-sm font-semibold text-[#064E3B] mb-2"
+                    >
                         Catatan Kegiatan
                     </label>
                     <textarea
@@ -93,12 +112,15 @@ export function UpDokumentasi({ onSubmitDocumentation, currentStatus }) {
                     />
                 </div>
 
+                {/* Tombol Submit */}
                 <button
                     type="submit"
                     disabled={isUploading || !file}
-                    className={`w-full bg-[#064E3B] hover:bg-[#047857] text-white font-bold py-3 rounded-lg transition duration-200 ease-in-out text-base ${isUploading || !file ? 'opacity-75 cursor-not-allowed' : ''}`}
+                    className={`w-full bg-[#064E3B] hover:bg-[#047857] text-white font-bold py-3 rounded-lg transition duration-200 ease-in-out text-base ${
+                        isUploading || !file ? "opacity-75 cursor-not-allowed" : ""
+                    }`}
                 >
-                    {isUploading ? 'Mengunggah...' : 'Kirim Dokumentasi'}
+                    {isUploading ? "Mengunggah..." : "Kirim Dokumentasi"}
                 </button>
             </form>
         </div>

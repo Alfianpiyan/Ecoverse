@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import Swal from "sweetalert2";
 import { supabase } from "@/lib/Supabaseclient";
 import { BibitTagInput } from "./BibitTagInput/BibitTagInput";
 
@@ -9,7 +10,7 @@ export default function FormAcara() {
     judul_acara: "",
     lokasi: "",
     tanggal: "",
-    waktu: "", // 🔹 Tambahan waktu
+    waktu: "", 
     jenis_bibit: [],
     jumlah_bibit: "",
     deskripsi: "",
@@ -35,6 +36,7 @@ export default function FormAcara() {
     if (file) {
       setForm((prev) => ({ ...prev, gambar: file }));
       setFileName(file.name);
+
       const reader = new FileReader();
       reader.onloadend = () => setPreview(reader.result);
       reader.readAsDataURL(file);
@@ -47,7 +49,11 @@ export default function FormAcara() {
 
   const handlePenanggungJawabChange = (e) => {
     const { value } = e.target;
-    const namaArray = value.split(",").map((n) => n.trim()).filter(Boolean);
+    const namaArray = value
+      .split(",")
+      .map((n) => n.trim())
+      .filter(Boolean);
+
     setForm((prev) => ({ ...prev, penanggung_jawab: namaArray }));
   };
 
@@ -56,10 +62,16 @@ export default function FormAcara() {
     setIsSubmitting(true);
 
     try {
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
-      if (userError || !user) throw new Error("Gagal ambil data user");
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user)
+        throw new Error("Gagal mengambil data user. Coba login ulang.");
 
       let imageUrl = null;
+
       if (form.gambar) {
         const fileExt = form.gambar.name.split(".").pop();
         const uploadFileName = `${Date.now()}.${fileExt}`;
@@ -82,7 +94,7 @@ export default function FormAcara() {
         judul_acara: form.judul_acara,
         lokasi: form.lokasi,
         tanggal: form.tanggal,
-        waktu: form.waktu, // 🔹 waktu disimpan
+        waktu: form.waktu,
         jumlah_bibit:
           form.jumlah_bibit !== "" ? parseInt(form.jumlah_bibit, 10) : null,
         jenis_bibit: form.jenis_bibit,
@@ -100,8 +112,14 @@ export default function FormAcara() {
 
       if (insertError) throw insertError;
 
-      alert("✅ Acara berhasil disimpan ke Supabase!");
+      await Swal.fire({
+        title: "Berhasil!",
+        text: "Acara berhasil disimpan ke Supabase!",
+        icon: "success",
+        confirmButtonColor: "#059669",
+      });
 
+      // Reset form
       setForm({
         judul_acara: "",
         lokasi: "",
@@ -117,14 +135,20 @@ export default function FormAcara() {
       setFileName("Tidak ada gambar yang dipilih");
     } catch (error) {
       console.error("Gagal menyimpan acara:", error.message);
-      alert("❌ Gagal menyimpan acara: " + error.message);
+
+      Swal.fire({
+        title: "Gagal!",
+        text: "Gagal menyimpan acara: " + error.message,
+        icon: "error",
+        confirmButtonColor: "#dc2626",
+      });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="h-screen  py-8 flex mt-36 pt-24 items-center justify-center px-4 mb-48">
+    <div className="h-screen py-8 flex mt-36 pt-24 items-center justify-center px-4 mb-48">
       <div className="w-[1100px] mx-auto">
         <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-xl space-y-5">
           <div className="text-center mb-2">
@@ -137,7 +161,7 @@ export default function FormAcara() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* nama acaranya */}
+            {/* Nama Acara */}
             <div>
               <label
                 htmlFor="judul_acara"
@@ -284,6 +308,7 @@ export default function FormAcara() {
               </div>
             </div>
 
+            {/* Submit */}
             <button
               type="submit"
               className={`w-full bg-[#064E3B] hover:bg-[#047857] text-white font-bold py-3 rounded-lg transition duration-200 ease-in-out text-base ${

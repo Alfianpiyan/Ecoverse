@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from 'react';
+import Swal from "sweetalert2";
 import { AcaraCard } from './AcaraCard';
 import { BagianStatus } from './BagianStatus';
 import { UpDokumentasi } from './UpDokumentasi';
@@ -64,12 +65,23 @@ export default function DetailAcaraPage({ acaraId }) {
             ...prev, 
             dokumentasi: [...(prev?.dokumentasi || []), newDokumentasiItem] 
         }));
+
+        Swal.fire({
+            title: "Berhasil!",
+            text: "Dokumentasi berhasil ditambahkan.",
+            icon: "success",
+            confirmButtonColor: "#16a34a",
+        });
     };
 
     const handleUpdateAcara = useCallback(() => {
-        alert('Detail Acara berhasil diupdate! (Simulasi)');
+        Swal.fire({
+            title: "Berhasil!",
+            text: "Detail Acara berhasil diupdate! (Simulasi)",
+            icon: "success",
+            confirmButtonColor: "#16a34a",
+        });
     }, []);
-
 
     if (isLoading) {
         return (
