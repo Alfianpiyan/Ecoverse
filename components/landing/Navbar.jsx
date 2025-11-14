@@ -25,9 +25,9 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { name: "Beranda", scrollTo: "Herosection" },
-    { name: "Acara", scrollTo: "Acarahijau" },
-    { name: "Contact Us", scrollTo: "contactus-section" },
+    { name: "Beranda", scrollTo: "herosection" },
+    { name: "Acara", scrollTo: "acara-section" },
+    { name: "Contact Us", scrollTo: "contact-sec" },
   ];
 
   return (
