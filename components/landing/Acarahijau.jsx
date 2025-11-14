@@ -157,7 +157,7 @@ export default function AcaraHijau() {
               className="flex justify-end mt-10 pr-4"
             >
               <Link
-                href="/user/acara"
+                href="/Masuk"
                 className="bg-[#059669] hover:bg-[#047857] text-white font-semibold px-6 py-2 rounded-full shadow-md transition"
               >
                 Selengkapnya
