@@ -112,14 +112,14 @@ export default function Navbar() {
 
           <div className="flex flex-col w-full gap-3 mt-3">
             <Link
-              href="/user/register"
+              href="/Daftar"
               onClick={() => setIsOpen(false)}
               className="w-full text-center px-5 py-2 text-sm font-medium rounded-full border border-[#047857] text-[#047857] hover:bg-[#047857] hover:text-white transition-all duration-300"
             >
               Daftar
             </Link>
             <Link
-              href="/user/login"
+              href="/Masuk"
               onClick={() => setIsOpen(false)}
               className="w-full text-center px-5 py-2 text-sm font-medium rounded-full bg-[#047857] text-white hover:bg-[#036b4f] transition-all duration-300 shadow-sm"
             >

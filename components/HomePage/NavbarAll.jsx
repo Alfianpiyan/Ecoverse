@@ -25,7 +25,7 @@ export default function NavbarAll({ user }) {
   const profileItems = [
     { name: "Profile", path: "/user/home/profile" },
     { name: "Riwayat", path: "/user/home/riwayat" },
-    { name: "Setting", path: "/user/home/setting" },
+    { name: "Setting", path: "/settings" },
     { name: "Logout", path: "/" },
   ];
 
