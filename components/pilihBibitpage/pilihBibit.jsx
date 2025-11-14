@@ -61,18 +61,31 @@ export default function TanamPohonPage() {
           try {
             const parsed = JSON.parse(acaraDetail.jenis_bibit);
             if (Array.isArray(parsed)) jenisBibitIds = parsed;
-            else jenisBibitIds = acaraDetail.jenis_bibit.split(",").map((x) => parseInt(x.trim()));
+            else jenisBibitIds = acaraDetail.jenis_bibit.split(",").map((x) => x.trim());
           } catch {
-            jenisBibitIds = acaraDetail.jenis_bibit.split(",").map((x) => parseInt(x.trim()));
+            jenisBibitIds = acaraDetail.jenis_bibit.split(",").map((x) => x.trim());
           }
         }
 
-        // 🔹 Ambil data bibit pohon
+        // 🔹 Ambil ID pohon berdasarkan nama jenis_bibit
+        if (jenisBibitIds.length > 0) {
+          const { data: pohonData, error: pohonError } = await supabase
+            .from("pohon")
+            .select("id, nama")
+            .in("nama", jenisBibitIds);
+
+          if (pohonError) throw pohonError;
+
+          // Ambil ID bibit dari nama pohon
+          jenisBibitIds = pohonData.map((p) => p.id);
+        }
+
+        // 🔹 Ambil data pohon
         let pohonQuery = supabase.from("pohon").select("id, nama, harga, gambar").order("id");
         if (jenisBibitIds.length > 0) pohonQuery = pohonQuery.in("id", jenisBibitIds);
 
-        const { data: pohonData, error: pohonError } = await pohonQuery;
-        if (pohonError) throw pohonError;
+        const { data: pohonData, error: pohonError2 } = await pohonQuery;
+        if (pohonError2) throw pohonError2;
 
         setAcara(acaraDetail);
         setPohonList(pohonData || []);

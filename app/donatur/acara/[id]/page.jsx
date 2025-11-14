@@ -263,26 +263,60 @@ export default function AcaraDetail() {
             </div>
 
             {/* Penanggung Jawab */}
-            <div className="bg-white p-8 rounded-2xl border shadow-sm">
-              <h2 className="text-2xl font-bold text-[#065F46] mb-4 flex items-center gap-2">
-                <Users size={22} className="text-green-600" /> Penanggung Jawab
-              </h2>
-              {pjList.length ? (
-                <div className="grid sm:grid-cols-2 gap-4">
-                  {pjList.map((p, i) => (
-                    <div
-                      key={i}
-                      className="p-4 bg-green-50 border border-green-300 rounded-xl"
-                    >
-                      <p className="font-bold text-[#064E3B]">{p.name}</p>
-                      <p className="text-sm text-gray-600">{p.role || ""}</p>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-gray-500">Belum ada penanggung jawab.</p>
-              )}
-            </div>
+<div className="bg-white p-8 rounded-2xl border shadow-sm">
+  <h2 className="text-2xl font-bold text-[#065F46] mb-4 flex items-center gap-2">
+    <Users size={22} className="text-green-600" /> Penanggung Jawab
+  </h2>
+
+  {(() => {
+    let list = [];
+
+    // 1. Jika data string dipisah koma: "Budi, Siti"
+    if (typeof penanggung_jawab === "string") {
+      try {
+        // Coba parse dulu (kalau ternyata JSON)
+        const parsed = JSON.parse(penanggung_jawab);
+        if (Array.isArray(parsed)) list = parsed;
+      } catch {
+        // Kalau bukan JSON → split by comma
+        list = penanggung_jawab.split(",").map((v) => v.trim());
+      }
+    }
+
+    // 2. Jika array (langsung)
+    else if (Array.isArray(penanggung_jawab)) {
+      list = penanggung_jawab;
+    }
+
+    return list.length ? (
+      <div className="grid sm:grid-cols-2 gap-4">
+        {list.map((item, i) => (
+          <div
+            key={i}
+            className="p-4 bg-green-50 border border-green-300 rounded-xl"
+          >
+            {/* Jika item adalah string → tampilkan langsung */}
+            {typeof item === "string" ? (
+              <p className="font-bold text-[#064E3B]">{item}</p>
+            ) : (
+              <>
+                <p className="font-bold text-[#064E3B]">
+                  {item.name || "Tanpa Nama"}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {item.role || ""}
+                </p>
+              </>
+            )}
+          </div>
+        ))}
+      </div>
+    ) : (
+      <p className="text-gray-500">Belum ada penanggung jawab.</p>
+    );
+  })()}
+</div>
+
 
             {/* Galeri */}
             <div className="bg-white p-8 rounded-2xl border shadow-sm">

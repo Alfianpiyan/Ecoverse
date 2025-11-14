@@ -6,6 +6,7 @@ const nextConfig = {
       "www.static-src.com",
       "img.lazcdn.com",
       "down-id.img.susercontent.com",
+       "ackcmovpibecjfiqmirg.supabase.co",
     ],
   },
 };

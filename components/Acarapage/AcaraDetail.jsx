@@ -26,7 +26,7 @@ export default function PilihBibitPage() {
 
   useEffect(() => {
     const fetchBibit = async () => {
-      const { data, error } = await supabase.from("bibit").select("*");
+      const { data, error } = await supabase.from("pohon").select("*");
       if (!error) setBibitList(data);
     };
     fetchBibit();
