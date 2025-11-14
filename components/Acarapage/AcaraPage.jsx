@@ -114,7 +114,7 @@ export default function AcaraPage() {
 
               {/* Tombol Selengkapnya */}
               <Link
-                href={`/user/acara/${index}`}
+                href={`/Masuk/${index}`}
                 className="bg-[#059669] hover:bg-[#047857] text-white text-center font-medium py-2 rounded-full mt-4 transition"
               >
                 Selengkapnya
