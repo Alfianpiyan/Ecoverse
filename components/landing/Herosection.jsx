@@ -187,31 +187,115 @@ const HeroSection = () => {
   ];
 
   return (
-    <section class="relative h-screen flex items-center justify-center px-6 bg-gradient-to-b from-green-900 via-green-800 to-green-900 overflow-hidden">
+    <section id='herosection' className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-white">
+      
+      <motion.div 
+        className="absolute inset-0 z-0 bg-no-repeat bg-cover bg-center"
+        style={{ 
+          backgroundImage: `url(${MAP_IMAGE_URL})`, 
+          filter: 'blur(8px) brightness(1.4)',
+          opacity: 0.35,
+          transform: 'scale(1.15)',
+        }}
+        initial="move" 
+        animate="move"
+        variants={backgroundMoveVariants}
+      />
 
-  <div class="absolute inset-0 bg-gradient-radial from-green-400/30 via-transparent to-transparent blur-3xl"></div>
+      <motion.div 
+        className="absolute inset-0 bg-emerald-50 mix-blend-multiply"
+        variants={overlayPulseVariants}
+        initial="pulse"
+        animate="pulse"
+      ></motion.div>
 
+      <div className="absolute inset-0 z-20 pointer-events-none">
+        {particles.map((p, i) => (
+          <Particle key={i} {...p} index={i} />
+        ))}
+      </div>
 
-  <div class="absolute inset-0">
-    <div class="absolute w-2 h-2 bg-green-300/40 rounded-full top-1/4 left-1/3 blur-sm animate-pulse"></div>
-    <div class="absolute w-3 h-3 bg-green-200/40 rounded-full top-2/3 left-2/3 blur-md animate-ping"></div>
-  </div>
+      <motion.div 
+        className="relative z-30 px-6 max-w-4xl mx-auto"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        
+        {/* kepala */}
+        <motion.h1 
+          className="mt-4 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-gray-800"
+        >
+          <div className="mb-4">
+            <AnimatedText 
+              text="Saatnya Ambil " 
+              className="inline-block"
+            />
+            <motion.span
+              variants={highlightVariants}
+              initial="hidden"
+              animate="visible"
+              whileHover="hover"
+              className="text-emerald-600 cursor-default inline-block mx-1"
+            >
+              Aksi Nyata
+            </motion.span>
+          </div>
+          
+          <div>
+            <AnimatedText 
+              text="untuk Melawan " 
+              className="inline-block"
+              delay={1}
+            />
+            <motion.span
+              variants={highlightVariants}
+              initial="hidden"
+              animate="visible"
+              whileHover="hover"
+              className="text-emerald-600 cursor-default inline-block mx-1"
+            >
+              Perubahan Iklim
+            </motion.span>
+          </div>
+        </motion.h1>
+        
+        {/* sub */}
+        <motion.div
+          variants={lineVariants}
+          initial="hidden"
+          animate="visible"
+          custom={2}
+        >
+          <p className="text-base md:text-lg text-gray-700 mb-10 max-w-3xl mx-auto leading-relaxed">
+            <strong>Ecoverse</strong> menghubungkan Anda langsung dengan komunitas reboisasi di seluruh dunia. Bergabung, tanam pohon, dan jadilah bagian dari solusi besar untuk masa depan bumi.
+          </p>
+        </motion.div>
+        
+        <motion.div 
+          className="flex justify-center"
+          variants={lineVariants}
+          initial="hidden"
+          animate="visible"
+          custom={3}
+        >
+          <motion.div
+            whileHover={{ 
+              scale: 1.05,
+            }} 
+            whileTap={{ scale: 0.95 }}
+          >
+            <Link 
+              href="/Daftar" 
+              className="inline-block border-2 border-emerald-600 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 cursor-pointer"
+            >
+              Mulai Penghijauan
+            </Link>
+          </motion.div>
+        </motion.div>
 
-  <div class="relative z-10 text-center max-w-3xl px-4">
-    <h1 class="text-4xl md:text-6xl font-extrabold text-green-100 drop-shadow-[0_0_25px_rgba(34,197,94,0.9)]">
-      Selamatkan Bumi Bersama Ecoverse
-    </h1>
-
-    <p class="mt-4 text-lg md:text-xl text-green-200 drop-shadow-[0_0_12px_rgba(34,197,94,0.5)]">
-      Ayo tanam pohon, kurangi jejak karbon, dan bangun masa depan hijau untuk generasi berikutnya.
-    </p>
-
-    <button class="mt-8 px-10 py-3 bg-green-500 text-white rounded-full font-semibold shadow-lg hover:bg-green-600 transition">
-      Mulai Menanam
-    </button>
-  </div>
-</section>
-
+      </motion.div>
+    </section>
   );
 };
 
