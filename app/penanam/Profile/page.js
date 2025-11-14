@@ -1,5 +1,5 @@
 import ProfileHeader from "@/components/ProfilePenanam/ProfileHeader";
-import ProfileAcaraList from "@/components/ProfilePenanam/ProfileAcaraList";
+import AcaraCard from "@/components/ProfilePenanam/ProfileAcaraList";
 import Footer from "@/components/landing/Footer";
 import NavbarPnanam from "@/components/NavbarPenanam/navbarpenanam";
 
@@ -10,7 +10,7 @@ export default function ProfilePage() {
         <div className="grid grid-cols-1 gap-12">
           <NavbarPnanam/>
           <ProfileHeader />
-          <ProfileAcaraList />
+          <AcaraCard/>
         </div>
       </main>
       <Footer />
