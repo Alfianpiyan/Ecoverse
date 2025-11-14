@@ -74,7 +74,7 @@
                 className="object-contain"
               />
               <span className="font-semibold text-green-700 text-lg tracking-tight">
-                reforesta
+                Ecoverse
               </span>
             </div>
           </Link>

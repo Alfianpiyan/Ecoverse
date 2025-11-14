@@ -28,9 +28,9 @@ export default function BuatAcaraTanam({ user }) {
 
 
   const profileItems = [
-    { name: "Profile", path: "/user/home/profile" },
-    { name: "Riwayat", path: "/user/home/riwayat" },
-    { name: "Setting", path: "/user/home/setting" },
+    { name: "Profile", path: "/penanam/Profile" },
+    { name: "Riwayat", path: "/penanam/riwayat" },
+    { name: "Setting", path: "/penanam/setting" },
   ];
 
   useEffect(() => {

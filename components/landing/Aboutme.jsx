@@ -69,7 +69,7 @@ export default function AboutSection() {
           >
             <Image
               src="/AcaraHijau2.png"
-              alt="Reforesta - Alam Hijau"
+              alt="Ecoverse - Alam Hijau"
               fill
               className="object-cover"
             />

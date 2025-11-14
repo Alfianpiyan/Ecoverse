@@ -78,7 +78,7 @@ export default function PengaturanAkun() {
 
       <footer className="text-gray-400 text-xs text-center pt-8">
         <p>Versi: v1.0.0</p>
-        <p className="mt-1">© 2025 Bibit Reforest. Semua hak cipta dilindungi.</p>
+        <p className="mt-1">© 2025 Bibit Ecoverse. Semua hak cipta dilindungi.</p>
       </footer>
     </div>
   );

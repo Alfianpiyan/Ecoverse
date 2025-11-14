@@ -29,14 +29,21 @@ export default function HalPilihBibit() {
         <nav className="w-full flex justify-center mt-6">
             <div className="flex items-center justify-between w-[90%] max-w-3xl px-6 py-2 rounded-full bg-white shadow-[0_3px_10px_rgba(0,0,0,0.06)] border border-gray-100">
                 <div className="flex items-center gap-2">
-                <Image
-                    src="/Logo.png"
-                    alt="Logo Reforesta"
-                    width={28}
-                    height={28}
-                    className="object-contain"
-                />
-                <span className="font-semibold text-green-700 text-lg">reforesta</span>
+                    <Link
+                        href="/donatur/Home"
+                        className="flex items-center gap-2 hover:opacity-80 transition"
+                    >
+                        <Image
+                        src="/eco.png"
+                        alt="Logo Ecoverse"
+                        width={28}
+                        height={28}
+                        className="object-contain"
+                        />
+                        <span className="font-semibold text-green-700 text-lg tracking-tight">
+                        Ecoverse
+                        </span>
+                    </Link>
                 </div>
 
                 <h1 className="text-green-800 font-bold text-lg">Nama Acara</h1>

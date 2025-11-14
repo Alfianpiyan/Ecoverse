@@ -66,16 +66,21 @@ export default function NavbarAll({ user }) {
 
         {/* === LOGO === */}
         <div className="flex items-center gap-2">
-          <Image
-            src="/Logo.png"
-            alt="Logo Reforesta"
-            width={28}
-            height={28}
-            className="object-contain"
-          />
-          <span className="font-semibold text-green-700 text-lg tracking-tight">
-            reforesta
-          </span>
+          <Link
+            href="/donatur/Home"
+            className="flex items-center gap-2 hover:opacity-80 transition"
+          >
+            <Image
+              src="/eco.png"
+              alt="Logo Ecoverse"
+              width={28}
+              height={28}
+              className="object-contain"
+            />
+            <span className="font-semibold text-green-700 text-lg tracking-tight">
+              Ecoverse
+            </span>
+          </Link>
         </div>
 
         {/* === MENU DESKTOP === */}
