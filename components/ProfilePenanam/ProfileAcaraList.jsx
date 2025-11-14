@@ -35,7 +35,6 @@ export default function AcaraCard() {
     load();
   }, []);
 
-  console.log(acara.gambar_acara);
 
 
   if (loading) {
