@@ -34,7 +34,7 @@
     const profileItems = [
       { name: "Profile", path: "/donatur/profile" },
       { name: "Riwayat", path: "/donatur/tracking-bibit" },
-      { name: "Setting", path: "/user/home/setting" },
+      { name: "Setting", path: "/settings" },
     ];
 
     useEffect(() => {
