@@ -1,14 +1,14 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import HeaderCard from "@/components/DetailAcaraPian/HeaderCard";
-import StatusSection from "@/components/DetailAcaraPian/StatusSection";
-import PaymentSection from "@/components/DetailAcaraPian/PaymentSection";
-import CommentSection from "@/components/DetailAcaraPian/CommentSection";
-import DocumentationSection from "@/components/DetailAcaraPian/DocumentationSection";
-import LightboxModal from "@/components/DetailAcaraPian/LightboxModal";
+import HeaderCard from "@/components/TrackingDetailAcara/HeaderCard";
+import StatusSection from "@/components/TrackingDetailAcara/StatusSection";
+import PaymentSection from "@/components/TrackingDetailAcara/PaymentSection";
+import CommentSection from "@/components/TrackingDetailAcara/CommentSection";
+import DocumentationSection from "@/components/TrackingDetailAcara/DocumentationSection";
+import LightboxModal from "@/components/TrackingDetailAcara/LightboxModal";
 import { motion, AnimatePresence } from "framer-motion";
+import { useParams } from "next/navigation";
+import { useState, useEffect } from "react";
 
 export default function DetailStatusAcaraPage() {
   const { id } = useParams();

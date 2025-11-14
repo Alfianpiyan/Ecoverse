@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CheckCircle2, Sprout, Clock4, List } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -8,41 +8,31 @@ export default function TrackingBibit() {
   const router = useRouter();
   const [filter, setFilter] = useState("semua");
 
-  const [data] = useState([
-    {
-      id: 1,
-      title: "Penanaman 100 Bibit di Bogor",
-      date: "12 Oktober 2025",
-      location: "Bogor, Jawa Barat",
-      image: "https://i.ibb.co/sP7CqYz/forest.jpg",
-      status: "menunggu",
-      documentation: [],
-    },
-    {
-      id: 2,
-      title: "Aksi Tanam Mangrove",
-      date: "20 Oktober 2025",
-      location: "Taman Nasional Ujung Kulon",
-      image: "https://i.ibb.co/34JYQ3t/mangrove.jpg",
-      status: "ditanam",
-      documentation: [
-        "https://i.ibb.co/34JYQ3t/mangrove.jpg",
-        "https://i.ibb.co/sP7CqYz/forest.jpg",
-      ],
-    },
-    {
-      id: 3,
-      title: "Bumi Bogor",
-      date: "25 Oktober 2025",
-      location: "Bogor, Jawa Barat",
-      image: "https://i.ibb.co/jZ2QvDn/tree.jpg",
-      status: "selesai",
-      documentation: [
-        "https://i.ibb.co/jZ2QvDn/tree.jpg",
-        "https://i.ibb.co/sP7CqYz/forest.jpg",
-      ],
-    },
-  ]);
+  const [data, setData] = useState([]);
+
+useEffect(() => {
+  try {
+    const riwayat = JSON.parse(localStorage.getItem("riwayatBibit")) || [];
+
+    // Filter hanya transaksi donasi bibit
+    const kegiatan = riwayat
+      .filter((item) => item.type === "DONASI_BIBIT")
+      .map((item) => ({
+        id: item.id,
+        title: item.bibit.acara_nama,
+        date: item.bibit.tanggal,
+        location: item.bibit.lokasi,
+        image: item.bibit?.detail_bibit?.[0]?.image || "/default.jpg", 
+        status: "menunggu", 
+        documentation: [],  
+      }));
+
+    setData(kegiatan);
+  } catch (e) {
+    console.error("Gagal ambil riwayat:", e);
+  }
+}, []);
+
 
   const filteredData =
     filter === "semua" ? data : data.filter((item) => item.status === filter);

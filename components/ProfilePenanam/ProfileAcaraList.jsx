@@ -1,50 +1,26 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Calendar, MapPin, Info, Clock } from "lucide-react";
+import Link from "next/link";
 import { supabase } from "@/lib/Supabaseclient";
-import AcaraCard from "./ProfileCard";
 
-export default function ProfileAcaraList() {
-  const [acaraList, setAcaraList] = useState([]);
+export default function AcaraCard({ id }) {
+  const [acara, setAcara] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
 
-  // 🔹 ambil session user (biar gak null pas refresh)
-  useEffect(() => {
-    const getSession = async () => {
-      const { data, error } = await supabase.auth.getSession();
-      if (error) console.error("Gagal ambil session:", error.message);
-      setUser(data?.session?.user || null);
-    };
-
-    getSession();
-
-    // listener untuk update kalau login/logout
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-    });
-
-    return () => listener.subscription.unsubscribe();
-  }, []);
-
-  // 🔹 ambil data acara user
+  // 🔹 Ambil data acara langsung dari Supabase
   useEffect(() => {
     const fetchAcara = async () => {
-      if (!user) {
-        setAcaraList([]);
-        setLoading(false);
-        return;
-      }
-
       try {
         const { data, error } = await supabase
           .from("acara_penanaman")
           .select("*")
-          .eq("id_user", user.id)
-          .order("tanggal", { ascending: false });
+          .eq("id", id)
+          .single();
 
         if (error) throw error;
-        setAcaraList(data || []);
+        setAcara(data);
       } catch (err) {
         console.error("Gagal ambil acara:", err.message);
       } finally {
@@ -52,37 +28,76 @@ export default function ProfileAcaraList() {
       }
     };
 
-    fetchAcara();
-  }, [user]);
+    if (id) fetchAcara();
+  }, [id]);
 
-  // 🔹 UI
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case "selesai":
+        return "bg-green-100 text-green-700";
+      case "berjalan":
+        return "bg-yellow-100 text-yellow-700";
+      default:
+        return "bg-blue-100 text-blue-700";
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="p-5 border rounded-xl animate-pulse text-gray-500">
+        Memuat data acara...
+      </div>
+    );
+  }
+
+  if (!acara) {
+    return (
+      <div className="p-5 border rounded-xl text-red-500">
+        Gagal memuat data acara.
+      </div>
+    );
+  }
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.1 }}
-      className="bg-white p-6 md:p-10 rounded-3xl shadow-xl shadow-green-100/50 border border-green-50"
+      transition={{ duration: 0.4 }}
+      className="p-5 rounded-2xl border border-green-100 shadow-md hover:shadow-lg transition cursor-pointer"
     >
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-        <h2 className="text-green-900 font-extrabold text-3xl tracking-tight">
-          Aktivitas Anda
-        </h2>
-        <button className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2.5 rounded-full shadow-lg shadow-green-300/50 transition-all text-sm whitespace-nowrap">
-          + Buat Acara Baru
-        </button>
+      <div className="flex justify-between items-start mb-3">
+        <h3 className="font-bold text-xl text-green-900">{acara.judul_acara}</h3>
+
+        <span className={`px-3 py-1 text-xs rounded-full ${getStatusBadge(acara.status)}`}>
+          {acara.status === "selesai"
+            ? "Selesai"
+            : acara.status === "berjalan"
+            ? "Sedang Berjalan"
+            : "Akan Datang"}
+        </span>
       </div>
 
-      {loading ? (
-        <p className="text-gray-500 text-sm animate-pulse">Memuat data acara...</p>
-      ) : acaraList.length > 0 ? (
-        <div className="flex flex-col gap-6">
-          {acaraList.map((item, index) => (
-            <AcaraCard key={index} {...item} />
-          ))}
-        </div>
-      ) : (
-        <p className="text-gray-500 text-sm">Belum ada acara yang dibuat.</p>
-      )}
+      <div className="text-sm space-y-2 text-green-800">
+        <p className="flex items-center gap-2">
+          <Calendar size={16} /> {acara.tanggal}
+        </p>
+        <p className="flex items-center gap-2">
+          <MapPin size={16} /> {acara.lokasi ?? "Lokasi belum diatur"}
+        </p>
+        <p className="flex items-center gap-2">
+          <Info size={16} /> {acara.deskripsi?.slice(0, 80) || "Tidak ada deskripsi"}...
+        </p>
+      </div>
+
+      <div className="mt-4">
+        <Link
+          href={`/acara/${acara.id}`}
+          className="inline-flex items-center gap-2 text-green-700 font-semibold hover:text-green-900 text-sm"
+        >
+          <Clock size={15} />
+          Lihat Detail Acara
+        </Link>
+      </div>
     </motion.div>
   );
 }
