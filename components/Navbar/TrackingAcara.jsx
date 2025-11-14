@@ -28,9 +28,9 @@ export default function TrackingAcara({ user }) {
 
 
   const profileItems = [
-    { name: "Profile", path: "/user/home/profile" },
-    { name: "Riwayat", path: "/user/home/riwayat" },
-    { name: "Setting", path: "/user/home/setting" },
+    { name: "Profile", path: "/donatur/profile" },
+    { name: "Riwayat", path: "/donatur/tracking-bibit" },
+    { name: "Setting", path: "/settings" },
   ];
 
   useEffect(() => {
