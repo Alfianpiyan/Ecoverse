@@ -137,7 +137,7 @@ export default function FormAcara() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Nama Acara */}
+            {/* nama acaranya */}
             <div>
               <label
                 htmlFor="judul_acara"

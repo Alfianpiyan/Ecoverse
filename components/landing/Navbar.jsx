@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
@@ -43,20 +44,13 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-1 group">
           <div className="p-1.5 rounded-full">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6 text-[#047857]"
-              viewBox="0 0 48 48"
-            >
-              <path
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="4"
-                d="M24 42V26m17.942-15.993c-.776 13.024-9.13 17.236-15.946 17.896C24.896 28.009 24 27.104 24 26v-8.372c0-.233.04-.468.125-.684C27.117 9.199 34.283 8.155 40 8.02c1.105-.027 2.006.884 1.94 1.987M7.998 6.072c9.329.685 14.197 6.091 15.836 9.558c.115.242.166.508.166.776v7.504c0 1.14-.96 2.055-2.094 1.94C7.337 24.384 6.11 14.786 6.009 8C5.993 6.894 6.897 5.99 8 6.072"
-              />
-            </svg>
+            <Image
+              src="/eco.png"
+              alt="Logo Ecoverse"
+              width={28}
+              height={28}
+              className="object-contain"
+            />
           </div>
           <span className="text-lg font-semibold text-[#047857] tracking-tight">
             Ecoverse
@@ -105,7 +99,7 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* === Drawer Menu (Non-blocking) === */}
+      {/* Drawer Mobile */}
       <div
         className={`fixed top-20 right-4 w-34 max-h-[75vh] overflow-y-auto bg-white z-40 shadow-2xl border border-gray-200
         flex flex-col items-center justify-start py-6 gap-5 rounded-2xl transition-transform duration-300 ease-in-out md:hidden
