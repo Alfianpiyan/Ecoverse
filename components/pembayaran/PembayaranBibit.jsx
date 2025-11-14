@@ -5,19 +5,19 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/Supabaseclient";
 import Swal from "sweetalert2";
 
-export default function PembayaranBibit() {
-  const [planData, setPlanData] = useState(null);
+export default function TransaksiBibit() {
+  const [bibitData, setBibitData] = useState(null);
   const [userData, setUserData] = useState(null);
   const [metode, setMetode] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // 🔹 Ambil data paket dari localStorage
+  // 🔹 Ambil data bibit dari localStorage
   useEffect(() => {
     try {
-      const storedPlan = localStorage.getItem("selectedPlan");
-      if (storedPlan) setPlanData(JSON.parse(storedPlan));
+      const stored = localStorage.getItem("selectedBibit");
+      if (stored) setBibitData(JSON.parse(stored));
     } catch (error) {
-      console.error("Gagal parsing plan:", error);
+      console.error("Gagal parsing bibit:", error);
     }
   }, []);
 
@@ -25,66 +25,59 @@ export default function PembayaranBibit() {
   useEffect(() => {
     (async () => {
       try {
-        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
-        if (sessionError) throw sessionError;
-
+        const { data: sessionData } = await supabase.auth.getSession();
         const email = sessionData?.session?.user?.email;
         if (!email) return setLoading(false);
 
-        const { data: user, error } = await supabase
+        const { data: user } = await supabase
           .from("users")
           .select("nama_pic, email, no_telepon")
           .eq("email", email)
           .single();
 
-        if (error) throw error;
-        setUserData(user);
+        setUserData(user || null);
       } catch (err) {
-        console.error("Gagal ambil data user:", err.message);
+        console.error("Gagal ambil user:", err.message);
       } finally {
         setLoading(false);
       }
     })();
   }, []);
 
-  // 🔹 Jika belum ada plan data
-  if (!planData) {
+  // 🔹 Jika belum ada data bibit
+  if (!bibitData) {
     return (
       <div className="min-h-screen flex items-center justify-center text-gray-600">
-        Memuat detail langganan...
+        Memuat detail bibit...
       </div>
     );
   }
 
   const TRANSACTION = {
-    title: planData.title,
-    desc: planData.desc,
-    per: planData.per,
-    price: planData.price,
-    details: [
-      { label: "Paket", value: planData.title },
-      { label: "Harga", value: planData.price },
-      { label: "Periode", value: planData.per },
-    ],
+    title: bibitData.acara_nama,
+    lokasi: bibitData.lokasi,
+    date: bibitData.tanggal,
+    price: bibitData.total_harga,
+    detailList: bibitData.detail_bibit || [],
   };
 
-  // 🔹 Simpan transaksi
+  // 🔹 Simpan transaksi donasi bibit
   const handlePayment = async () => {
     if (!metode) {
       return Swal.fire({
         icon: "error",
         title: "Metode belum dipilih",
-        text: "Pilih salah satu metode pembayaran sebelum lanjut ya!",
+        text: "Pilih metode pembayaran dulu ya!",
         confirmButtonColor: "#16a34a",
       });
     }
 
     const confirm = await Swal.fire({
       title: "Konfirmasi Pembayaran",
-      text: `Bayar ${TRANSACTION.price} untuk paket ${TRANSACTION.title}?`,
+      text: `Bayar total ${TRANSACTION.price}?`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Ya, bayar sekarang",
+      confirmButtonText: "Bayar Sekarang",
       cancelButtonText: "Batal",
       confirmButtonColor: "#16a34a",
       cancelButtonColor: "#d33",
@@ -94,20 +87,21 @@ export default function PembayaranBibit() {
 
     const transaksi = {
       id: Date.now(),
-      plan: TRANSACTION.title,
-      total: TRANSACTION.price,
+      type: "DONASI_BIBIT",
       metode,
       tanggal: new Date().toLocaleString("id-ID"),
       user: userData,
+      bibit: bibitData,
+      total: TRANSACTION.price,
     };
 
-    const history = JSON.parse(localStorage.getItem("riwayatLangganan")) || [];
-    localStorage.setItem("riwayatLangganan", JSON.stringify([...history, transaksi]));
+    const history = JSON.parse(localStorage.getItem("riwayatBibit")) || [];
+    localStorage.setItem("riwayatBibit", JSON.stringify([...history, transaksi]));
 
     Swal.fire({
       icon: "success",
       title: "Pembayaran Berhasil!",
-      text: `Transaksi kamu untuk paket ${TRANSACTION.title} sudah disimpan.`,
+      text: "Transaksi donasi bibit kamu telah disimpan.",
       confirmButtonColor: "#16a34a",
     });
   };
@@ -122,19 +116,31 @@ export default function PembayaranBibit() {
   return (
     <section className="min-h-screen bg-white flex items-start justify-center py-16 px-10">
       <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl">
-        {/* === KIRI === */}
+        
+        {/* === KIRI DETAIL ACARA === */}
         <div className="flex flex-col gap-6">
-          {/* Detail Paket */}
-          <Card title="💎 Detail Paket">
-            <div className="w-full h-40 bg-gray-100 rounded-xl mb-4 flex items-center justify-center text-emerald-700 font-semibold">
-              Logo {TRANSACTION.title}
-            </div>
-            <p className="text-gray-700 leading-relaxed text-justify">
-              {TRANSACTION.desc}
+          <Card title="🌱 Detail Donasi Bibit">
+            <p className="text-gray-700">
+              <b>Acara:</b> {TRANSACTION.title}
             </p>
+            <p className="text-gray-700">
+              <b>Lokasi:</b> {TRANSACTION.lokasi}
+            </p>
+            <p className="text-gray-700">
+              <b>Tanggal:</b> {TRANSACTION.date}
+            </p>
+
+            <div className="mt-4 border-t pt-3">
+              <h4 className="font-semibold text-emerald-800 mb-2">Detail Bibit:</h4>
+              {TRANSACTION.detailList.map((item, i) => (
+                <p key={i} className="text-gray-700">
+                  • {item.nama} — Rp{item.harga}
+                </p>
+              ))}
+            </div>
           </Card>
 
-          {/* Data Anda */}
+          {/* Data pengguna */}
           <Card title="👤 Data Anda">
             {loading ? (
               <p className="text-gray-500">Memuat data pengguna...</p>
@@ -150,55 +156,41 @@ export default function PembayaranBibit() {
           </Card>
         </div>
 
-        {/* === KANAN === */}
+        {/* === KANAN PEMBAYARAN === */}
         <div className="flex flex-col gap-6">
-          {/* Detail Langganan */}
-          <Card title="Detail Langganan">
-            <div className="space-y-2 text-gray-700 pb-3 border-b border-gray-100">
-              {TRANSACTION.details.map((d, i) => (
-                <p key={i}>
-                  <span className="font-medium text-emerald-800">{d.label}:</span> {d.value}
-                </p>
-              ))}
-            </div>
-            <div className="pt-3 flex justify-between items-center">
-              <span className="font-medium text-emerald-800">Total:</span>
-              <span className="text-emerald-700 font-bold text-xl">{TRANSACTION.price}</span>
-            </div>
+          <Card title="Total Pembayaran">
+            <p className="text-xl font-bold text-emerald-700">Rp {TRANSACTION.price}</p>
           </Card>
 
-          {/* Pilih Metode */}
           <Card title="Pilih Metode Pembayaran">
             <div className="space-y-3">
-              {PAYMENT_METHODS.map((item) => (
+              {PAYMENT_METHODS.map((m) => (
                 <label
-                  key={item.id}
-                  className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
-                    metode === item.id
+                  key={m.id}
+                  className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition ${
+                    metode === m.id
                       ? "border-emerald-600 bg-emerald-50 shadow-md scale-[1.02]"
-                      : "border-gray-200 hover:bg-gray-50 hover:shadow-sm"
+                      : "border-gray-200 hover:bg-gray-50"
                   }`}
-                  onClick={() => setMetode(item.id)}
+                  onClick={() => setMetode(m.id)}
                 >
                   <input
                     type="radio"
-                    checked={metode === item.id}
-                    onChange={() => setMetode(item.id)}
+                    checked={metode === m.id}
+                    onChange={() => setMetode(m.id)}
                     className="accent-emerald-700"
                   />
-                  <div className="flex items-center gap-2">
-                    <Image src={item.logo} alt={item.name} width={32} height={32} className="rounded-md" />
-                    <span className="text-gray-800 font-medium">{item.name}</span>
-                  </div>
+                  <Image src={m.logo} alt={m.name} width={32} height={32} />
+                  <span className="font-medium text-gray-800">{m.name}</span>
                 </label>
               ))}
             </div>
 
             <button
               onClick={handlePayment}
-              className="w-full mt-8 bg-green-600 text-white font-semibold py-3 rounded-full hover:bg-emerald-700 shadow-lg transition-all active:scale-95"
+              className="w-full mt-8 bg-green-600 text-white font-semibold py-3 rounded-full hover:bg-emerald-700"
             >
-              Bayar {TRANSACTION.price}
+              Bayar Sekarang
             </button>
           </Card>
         </div>
@@ -207,13 +199,12 @@ export default function PembayaranBibit() {
   );
 }
 
-/* === COMPONENT MINI === */
+/* === Sub Components === */
+
 function Card({ title, children }) {
   return (
     <div className="bg-white rounded-2xl p-8 shadow-md border border-emerald-100 hover:shadow-lg transition">
-      <h2 className="text-lg font-semibold mb-4 text-emerald-800 flex items-center gap-2">
-        {title}
-      </h2>
+      <h2 className="text-lg font-semibold mb-4 text-emerald-800">{title}</h2>
       {children}
     </div>
   );
