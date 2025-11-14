@@ -47,7 +47,6 @@ export default function AcarahHijau() {
       viewport={{ once: false, amount: 0.3 }}
       className="relative py-32 md:py-40 overflow-hidden bg-white"
     >
-      {/* 🌍 Background peta */}
       <motion.div
         initial={{ opacity: 0, scale: 1.1 }}
         whileInView={{ opacity: 0.7, scale: 1 }}
@@ -64,7 +63,6 @@ export default function AcarahHijau() {
         />
       </motion.div>
 
-      {/* 🧑‍🌾 Gambar orang nanem */}
       <motion.div
         initial={{ y: 100, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
@@ -81,7 +79,6 @@ export default function AcarahHijau() {
         />
       </motion.div>
 
-      {/* 🌱 Konten utama */}
       <div className="relative z-10 container mx-auto px-6 md:px-12">
         <motion.h2
           initial={{ opacity: 0, y: 50 }}
@@ -93,14 +90,12 @@ export default function AcarahHijau() {
           Acara Hijau
         </motion.h2>
 
-        {/* 🔄 State loading dan kosong */}
         {loading ? (
           <p className="text-center text-gray-500">Memuat acara...</p>
         ) : events.length === 0 ? (
           <p className="text-center text-gray-500">Belum ada acara.</p>
         ) : (
           <>
-            {/* 🪴 Grid list acara */}
             <motion.div
               initial="hidden"
               whileInView="visible"
@@ -149,7 +144,6 @@ export default function AcarahHijau() {
               </div>
             </motion.div>
 
-            {/* 🔗 Tombol Selengkapnya */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}

@@ -39,17 +39,15 @@ export default function AcaraHijau() {
   }, []);
 
   return (
-    // 🌿 Section utama dengan animasi dua arah (scroll ke bawah & ke atas)
     <motion.section
       id="acara-section"
       initial={{ opacity: 0, y: 80 }}
       whileInView={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 80 }}
       transition={{ duration: 0.9, ease: "easeOut" }}
-      viewport={{ once: false, amount: 0.3 }} // 🔥 aktif setiap kali muncul di layar
+      viewport={{ once: false, amount: 0.3 }} 
       className="relative py-32 md:py-40 overflow-hidden bg-white"
     >
-      {/* Background peta */}
       <motion.div
         initial={{ opacity: 0, scale: 1.1 }}
         whileInView={{ opacity: 0.7, scale: 1 }}
@@ -66,7 +64,6 @@ export default function AcaraHijau() {
         />
       </motion.div>
 
-      {/* Gambar orang nanem */}
       <motion.div
         initial={{ y: 100, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
@@ -83,7 +80,6 @@ export default function AcaraHijau() {
         />
       </motion.div>
 
-      {/* Konten utama */}
       <div className="relative z-10 container mx-auto px-6 md:px-12">
         <motion.h2
           initial={{ opacity: 0, y: 50 }}
@@ -101,7 +97,7 @@ export default function AcaraHijau() {
           <p className="text-center text-gray-500">Belum ada acara.</p>
         ) : (
           <>
-            {/* Grid acara muncul setiap kali di-scroll */}
+      
             <motion.div
               initial="hidden"
               whileInView="visible"
@@ -153,7 +149,6 @@ export default function AcaraHijau() {
               </div>
             </motion.div>
 
-            {/* Tombol selengkapnya */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}

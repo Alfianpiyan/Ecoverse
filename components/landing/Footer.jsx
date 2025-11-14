@@ -1,4 +1,3 @@
-// components/Footer.jsx
 "use client";
 import { FaInstagram, FaFacebook, FaGithub, FaLinkedin } from "react-icons/fa";
 import { motion } from "framer-motion";
@@ -6,10 +5,7 @@ import { motion } from "framer-motion";
 export default function Footer() {
   return (
     <footer id="contact-sec" className="relative bg-[#047857] text-white overflow-hidden">
-      {/* background gradien halus */}
       <div className="absolute inset-0 bg-gradient-to-t from-[#065f46] to-[#047857]/90"></div>
-
-      {/* efek blur lembut */}
       <motion.div
         className="absolute -bottom-20 left-20 w-[400px] h-[400px] bg-white/10 rounded-full blur-[120px]"
         animate={{ scale: [1, 1.05, 1] }}
@@ -17,7 +13,6 @@ export default function Footer() {
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 py-16 grid grid-cols-1 md:grid-cols-3 gap-12">
-        {/* Kolom 1 */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -31,7 +26,6 @@ export default function Footer() {
           </p>
         </motion.div>
 
-        {/* Kolom 2 */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -58,7 +52,6 @@ export default function Footer() {
           </ul>
         </motion.div>
 
-        {/* Kolom 3 */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -86,8 +79,7 @@ export default function Footer() {
           </div>
         </motion.div>
       </div>
-
-      {/* Garis bawah */}
+      
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

@@ -222,7 +222,6 @@ const HeroSection = () => {
         animate="visible"
       >
         
-        {/* kepala */}
         <motion.h1 
           className="mt-4 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-gray-800"
         >
@@ -260,7 +259,6 @@ const HeroSection = () => {
           </div>
         </motion.h1>
         
-        {/* sub */}
         <motion.div
           variants={lineVariants}
           initial="hidden"

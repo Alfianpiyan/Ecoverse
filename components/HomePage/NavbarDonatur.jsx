@@ -63,7 +63,7 @@
             scrolled ? "bg-white/60 backdrop-blur-md" : "bg-white"
           }`}
         >
-          {/* LOGO */}
+      
           <Link href="/donatur/home" className="flex items-center gap-2 cursor-pointer">
             <div className="flex items-center gap-2">
               <Image
@@ -79,7 +79,6 @@
             </div>
           </Link>
 
-          {/* burger mobile */}
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -93,7 +92,6 @@
             </button>
           </div>
 
-          {/* nav desktop */}
           <ul className="hidden md:flex items-center gap-12 font-medium relative">
             {navItems.map((item) => {
               const isActive = pathname === item.path;
@@ -122,7 +120,6 @@
             })}
           </ul>
 
-          {/* dropdown profile */}
           <div className="relative hidden md:block" ref={dropdownRef}>
             <div
               className="flex items-center gap-2 cursor-pointer px-3 py-1 hover:bg-green-50 rounded-full transition"
@@ -184,7 +181,6 @@
           </div>
         </div>
 
-        {/* mobile menu */}
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div

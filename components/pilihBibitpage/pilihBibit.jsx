@@ -19,7 +19,6 @@ export default function TanamPohonPage() {
   const router = useRouter();
   const acaraId = searchParams.get("id_acara");
 
-  // === Fetch data acara & pohon ===
   useEffect(() => {
     if (!acaraId || acaraId === "null") {
       Swal.fire({
@@ -36,25 +35,22 @@ export default function TanamPohonPage() {
       try {
         console.log("🔍 ID Acara dari URL:", acaraId);
 
-        // 🔹 Deteksi otomatis apakah ID berupa UUID atau integer
         let query = supabase.from("acara_penanaman").select(
           "id, judul_acara, lokasi, tanggal, waktu, deskripsi, gambar, jenis_bibit, jumlah_bibit"
         );
 
         if (acaraId.includes("-")) {
-          query = query.eq("id", acaraId); // UUID
+          query = query.eq("id", acaraId); 
         } else if (!isNaN(parseInt(acaraId))) {
-          query = query.eq("id", parseInt(acaraId)); // integer
+          query = query.eq("id", parseInt(acaraId)); 
         } else {
           throw new Error("Format ID acara tidak valid.");
         }
 
-        // 🔹 Ambil data acara
         const { data: acaraDetail, error: acaraError } = await query.single();
         if (acaraError) throw acaraError;
         if (!acaraDetail) throw new Error("Data acara tidak ditemukan.");
 
-        // 🔹 Parse jenis_bibit dari string/array
         let jenisBibitIds = [];
         if (Array.isArray(acaraDetail.jenis_bibit)) {
           jenisBibitIds = acaraDetail.jenis_bibit;
@@ -68,7 +64,6 @@ export default function TanamPohonPage() {
           }
         }
 
-        // 🔹 Ambil ID pohon berdasarkan nama jenis_bibit
         if (jenisBibitIds.length > 0) {
           const { data: pohonData, error: pohonError } = await supabase
             .from("pohon")
@@ -77,11 +72,9 @@ export default function TanamPohonPage() {
 
           if (pohonError) throw pohonError;
 
-          // Ambil ID bibit dari nama pohon
           jenisBibitIds = pohonData.map((p) => p.id);
         }
 
-        // 🔹 Ambil data pohon
         let pohonQuery = supabase.from("pohon").select("id, nama, harga, gambar").order("id");
         if (jenisBibitIds.length > 0) pohonQuery = pohonQuery.in("id", jenisBibitIds);
 
@@ -105,7 +98,6 @@ export default function TanamPohonPage() {
     fetchData();
   }, [acaraId]);
 
-  // === Fungsi Tambah / Kurang Bibit ===
   const tambah = (item) => {
     setKeranjang((prev) => ({
       ...prev,

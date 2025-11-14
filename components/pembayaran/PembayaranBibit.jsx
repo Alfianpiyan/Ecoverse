@@ -11,7 +11,6 @@ export default function TransaksiBibit() {
   const [metode, setMetode] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // 🔹 Ambil data bibit dari localStorage
   useEffect(() => {
     try {
       const stored = localStorage.getItem("selectedBibit");
@@ -21,7 +20,6 @@ export default function TransaksiBibit() {
     }
   }, []);
 
-  // 🔹 Ambil data user dari Supabase
   useEffect(() => {
     (async () => {
       try {
@@ -44,7 +42,6 @@ export default function TransaksiBibit() {
     })();
   }, []);
 
-  // 🔹 Jika belum ada data bibit
   if (!bibitData) {
     return (
       <div className="min-h-screen flex items-center justify-center text-gray-600">
@@ -61,7 +58,6 @@ export default function TransaksiBibit() {
     detailList: bibitData.detail_bibit || [],
   };
 
-  // 🔹 Simpan transaksi donasi bibit
   const handlePayment = async () => {
     if (!metode) {
       return Swal.fire({
@@ -117,7 +113,6 @@ export default function TransaksiBibit() {
     <section className="min-h-screen bg-white flex items-start justify-center py-16 px-10">
       <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl">
         
-        {/* === KIRI DETAIL ACARA === */}
         <div className="flex flex-col gap-6">
           <Card title="🌱 Detail Donasi Bibit">
             <p className="text-gray-700">
@@ -140,7 +135,6 @@ export default function TransaksiBibit() {
             </div>
           </Card>
 
-          {/* Data pengguna */}
           <Card title="👤 Data Anda">
             {loading ? (
               <p className="text-gray-500">Memuat data pengguna...</p>
@@ -156,7 +150,6 @@ export default function TransaksiBibit() {
           </Card>
         </div>
 
-        {/* === KANAN PEMBAYARAN === */}
         <div className="flex flex-col gap-6">
           <Card title="Total Pembayaran">
             <p className="text-xl font-bold text-emerald-700">Rp {TRANSACTION.price}</p>
@@ -199,7 +192,6 @@ export default function TransaksiBibit() {
   );
 }
 
-/* === Sub Components === */
 
 function Card({ title, children }) {
   return (

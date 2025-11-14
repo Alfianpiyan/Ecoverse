@@ -62,7 +62,7 @@ export default function CaraKerja() {
 
   return (
     <section className="relative py-28 bg-gradient-to-br from-green-50 via-white to-emerald-50 overflow-hidden">
-      {/* Background soft blobs */}
+
       <div className="absolute top-0 left-0 w-[380px] h-[380px] bg-green-200/30 blur-[120px] rounded-full -z-10"></div>
       <div className="absolute bottom-0 right-0 w-[380px] h-[380px] bg-emerald-300/20 blur-[140px] rounded-full -z-10"></div>
 
@@ -73,7 +73,6 @@ export default function CaraKerja() {
           </h2>
         </ScrollAnimate>
 
-        {/* TIMELINE TANPA GARIS */}
         <div className="relative flex flex-col md:flex-row md:justify-center md:items-center md:space-x-16 space-y-14 md:space-y-0">
           {langkah.map((item, index) => (
             <ScrollAnimate key={index} delay={index * 0.2}>
@@ -89,7 +88,6 @@ export default function CaraKerja() {
                   p-7 w-full md:w-[230px] flex flex-col items-center text-center transition-all duration-300
                   ${index % 2 === 0 ? "md:translate-y-8" : "md:-translate-y-8"}`}
               >
-                {/* Floating Icon */}
                 <motion.div
                   animate={{ y: [0, -6, 0] }}
                   transition={{
@@ -116,13 +114,10 @@ export default function CaraKerja() {
                   {item.deskripsi}
                 </p>
 
-                {/* ✅ DOT CONNECTOR SAJA (tanpa garis) */}
                 {index !== langkah.length - 1 && (
                   <>
-                    {/* Desktop: dot di kanan */}
                     <div className="hidden md:block absolute top-1/2 -translate-y-1/2 -right-[34px] w-[14px] h-[14px] bg-emerald-600 rounded-full shadow-md z-10"></div>
 
-                    {/* Mobile: dot di bawah */}
                     <div className="md:hidden flex flex-col items-center mt-6">
                       <div className="w-[12px] h-[12px] bg-emerald-600 rounded-full mt-2"></div>
                     </div>

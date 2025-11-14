@@ -11,7 +11,6 @@ export default function PembayaranLangganan() {
   const [metode, setMetode] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // 🔹 Ambil data paket dari localStorage
   useEffect(() => {
     try {
       const storedPlan = localStorage.getItem("selectedPlan");
@@ -21,7 +20,6 @@ export default function PembayaranLangganan() {
     }
   }, []);
 
-  // 🔹 Ambil data user dari Supabase
   useEffect(() => {
     (async () => {
       try {
@@ -47,7 +45,6 @@ export default function PembayaranLangganan() {
     })();
   }, []);
 
-  // 🔹 Jika belum ada plan data
   if (!planData) {
     return (
       <div className="min-h-screen flex items-center justify-center text-gray-600">
@@ -68,7 +65,6 @@ export default function PembayaranLangganan() {
     ],
   };
 
-  // 🔹 Simpan transaksi
   const handlePayment = async () => {
     if (!metode) {
       return Swal.fire({
@@ -122,9 +118,7 @@ export default function PembayaranLangganan() {
   return (
     <section className="min-h-screen bg-white flex items-start justify-center py-16 px-10">
       <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl">
-        {/* === KIRI === */}
         <div className="flex flex-col gap-6">
-          {/* Detail Paket */}
           <Card title="💎 Detail Paket">
             <div className="w-full h-40 bg-gray-100 rounded-xl mb-4 flex items-center justify-center text-emerald-700 font-semibold">
               Logo {TRANSACTION.title}
@@ -134,7 +128,6 @@ export default function PembayaranLangganan() {
             </p>
           </Card>
 
-          {/* Data Anda */}
           <Card title="👤 Data Anda">
             {loading ? (
               <p className="text-gray-500">Memuat data pengguna...</p>
@@ -150,9 +143,7 @@ export default function PembayaranLangganan() {
           </Card>
         </div>
 
-        {/* === KANAN === */}
         <div className="flex flex-col gap-6">
-          {/* Detail Langganan */}
           <Card title="Detail Langganan">
             <div className="space-y-2 text-gray-700 pb-3 border-b border-gray-100">
               {TRANSACTION.details.map((d, i) => (
@@ -207,7 +198,6 @@ export default function PembayaranLangganan() {
   );
 }
 
-/* === COMPONENT MINI === */
 function Card({ title, children }) {
   return (
     <div className="bg-white rounded-2xl p-8 shadow-md border border-emerald-100 hover:shadow-lg transition">

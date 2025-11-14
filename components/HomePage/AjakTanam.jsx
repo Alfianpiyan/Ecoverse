@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 export default function AjakTanam() {
   return (
     <section className="flex flex-col md:flex-row items-center justify-between px-6 md:px-16 py-10 bg-white">
-      {/* Bagian kiri: Teks */}
       <motion.div
         initial={{ opacity: 0, x: -50 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -32,7 +31,6 @@ export default function AjakTanam() {
         </motion.button>
       </motion.div>
 
-      {/* Bagian kanan: Gambar */}
       <motion.div
         initial={{ opacity: 0, x: 50 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -42,7 +40,7 @@ export default function AjakTanam() {
       >
         <div className="w-[320px] h-[220px] md:w-[420px] md:h-[280px] overflow-hidden">
           <img
-            src="https://images.forestdigest.com/upload/2020/20200706161932.jpg" // ganti sesuai lokasi gambar kamu
+            src="https://images.forestdigest.com/upload/2020/20200706161932.jpg"
             alt="Kegiatan penghijauan"
             width={420}
             height={280}

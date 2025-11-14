@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import bcrypt from "bcryptjs";
-import { ArrowLeft, Eye, EyeOff } from "lucide-react"; // ← icon back + show/hide password
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 
 async function fetchUserRoleAndDetail(email) {
   const { data, error } = await supabase
@@ -54,7 +54,6 @@ export default function MasukPage() {
     setLoading(true);
 
     try {
-      // Admin manual login
       const { data: adminData } = await supabase
         .from("admin")
         .select("*")
@@ -87,7 +86,6 @@ export default function MasukPage() {
         return;
       }
 
-      // Supabase Auth
       const { data, error: authError } = await supabase.auth.signInWithPassword({
         email: form.email,
         password: form.password,
@@ -138,11 +136,7 @@ export default function MasukPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg lg:max-w-4xl">
-
-        {/* LEFT PANEL */}
         <div className="relative w-full px-6 py-8 md:px-8 lg:w-1/2">
-
-          {/* Back Button */}
           <button
             type="button"
             onClick={() => router.push("/")}
@@ -152,7 +146,6 @@ export default function MasukPage() {
             <span className="text-sm font-medium">Kembali</span>
           </button>
 
-          {/* Logo */}
           <div className="flex justify-center mb-2 mt-6">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -174,9 +167,7 @@ export default function MasukPage() {
             Selamat Datang Kembali!
           </p>
 
-          {/* FORM LOGIN */}
           <form onSubmit={handleLogin}>
-            {/* Email */}
             <div className="mt-4">
               <label className="block mb-2 text-sm font-medium text-gray-600">
                 Email
@@ -191,7 +182,6 @@ export default function MasukPage() {
               />
             </div>
 
-            {/* Password */}
             <div className="mt-4">
               <div className="flex justify-between">
                 <label className="block mb-2 text-sm font-medium text-gray-600">
@@ -229,7 +219,6 @@ export default function MasukPage() {
               </div>
             </div>
 
-            {/* Button Login */}
             <div className="mt-6">
               <button
                 type="submit"
@@ -241,7 +230,6 @@ export default function MasukPage() {
             </div>
           </form>
 
-          {/* BUAT AKUN */}
           <div className="flex items-center justify-between mt-4">
             <span className="w-1/5 border-b md:w-1/4"></span>
             <Link

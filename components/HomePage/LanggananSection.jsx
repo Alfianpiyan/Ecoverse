@@ -64,7 +64,6 @@ export default function LanggananSection() {
     }
   };
 
-  // === ANIMASI SCROLL TANPA FILE TAMBAHAN ===
   const controls = useAnimation();
   const ref = useRef(null);
 
@@ -113,7 +112,6 @@ export default function LanggananSection() {
       className="relative py-16 -mt-10 bg-gray-50 overflow-hidden"
     >
       <div className="max-w-6xl mx-auto px-4 relative z-10">
-        {/* === Judul === */}
         <motion.div
           initial={{ opacity: 0, y: -50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -129,14 +127,13 @@ export default function LanggananSection() {
           </p>
         </motion.div>
 
-        {/* === Kartu Paket === */}
         <div className="flex flex-col lg:flex-row justify-center items-center lg:items-stretch gap-6">
           {plans.map((plan, index) => (
             <motion.div
               key={index}
               initial={{
                 opacity: 0,
-                y: index % 2 === 0 ? 50 : -50, // kiri-kanan beda arah
+                y: index % 2 === 0 ? 50 : -50,
               }}
               whileInView={{
                 opacity: 1,
