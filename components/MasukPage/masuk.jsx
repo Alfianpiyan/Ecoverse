@@ -234,7 +234,7 @@ export default function MasukPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full px-6 py-3 text-sm bg-emerald-700 text-white hover:bg-emerald-600 font-semibold rounded-full transition duration-300 shadow-md"
+                className="outline-none w-full px-6 py-3 text-sm bg-emerald-700 text-white hover:bg-emerald-600 font-semibold rounded-full transition duration-300 shadow-md"
               >
                 {loading ? "Memproses..." : "Masuk"}
               </button>

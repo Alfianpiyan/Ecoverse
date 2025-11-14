@@ -47,7 +47,7 @@ export default function SekarangSection() {
             transition={{ delay: 0.6, duration: 0.7 }}
           >
             <Link
-              href="/tanam"
+              href="/donatur/daftar-acara"
               className="inline-block bg-[#047857] text-white px-10 py-4 rounded-full font-semibold text-lg
               shadow-[0_10px_40px_rgba(4,120,87,0.3)] transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_50px_rgba(4,120,87,0.45)]"
             >

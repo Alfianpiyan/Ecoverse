@@ -67,7 +67,7 @@ const dummyEvents = [
 
 export default function DaftarAcara() {
   return (
-    <div className=" mt-8 min-h-screen flex flex-col items-center bg-gradient-to-br from-[#f0fff4] to-[#e6fffa] pb-24">
+    <div className="min-h-screen flex flex-col items-center bg-white pb-24">
       {/* header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -75,7 +75,7 @@ export default function DaftarAcara() {
         transition={{ duration: 0.6 }}
         className="w-full flex justify-center mt-6"
       >
-        <div className="bg-[#1B8F5A] w-[90%] md:w-[75%] py-6 rounded-full shadow-lg flex justify-center">
+        <div className="bg-[#1B8F5A] mt-8 w-[90%] md:w-[75%] py-6 rounded-full shadow-lg flex justify-center">
           <h1 className="text-3xl md:text-4xl font-bold text-white">
             Daftar Acara
           </h1>
