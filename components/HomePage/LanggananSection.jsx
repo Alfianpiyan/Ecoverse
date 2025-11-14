@@ -58,7 +58,7 @@ export default function LanggananSection() {
         isPopular: plan.isPopular,
       };
       localStorage.setItem("selectedPlan", JSON.stringify(planData));
-      window.location.href = "/user/langganan";
+      window.location.href = "/penanam/PembayaranLangganan";
     } catch (error) {
       console.error("Gagal menyimpan paket:", error);
     }
