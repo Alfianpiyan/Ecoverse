@@ -57,14 +57,12 @@ export default function NavbarAll({ user }) {
 
   return (
     <nav className="w-full flex justify-center mt-10 z-50 sticky top-0 left-0 bg-transparent">
-      {/* Container utama navbar */}
       <div className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center justify-between
         px-6 py-3 rounded-full border border-gray-200 shadow-lg w-[90%] max-w-6xl
         transition-all duration-300 ${
           scrolled ? "bg-white/60 backdrop-blur-md" : "bg-white"
         }`}>
 
-        {/* === LOGO === */}
         <div className="flex items-center gap-2">
           <Link
             href="/donatur/Home"
@@ -83,7 +81,6 @@ export default function NavbarAll({ user }) {
           </Link>
         </div>
 
-        {/* === MENU DESKTOP === */}
         <ul className="hidden md:flex items-center gap-6 font-medium relative">
           {navItems.map((item) => {
             const isActive = pathname === item.path;
@@ -112,7 +109,6 @@ export default function NavbarAll({ user }) {
           })}
         </ul>
 
-        {/* === DROPDOWN PROFILE (DESKTOP) === */}
         <div className="hidden md:block relative" ref={dropdownRef}>
           <div
             className="flex items-center gap-2 cursor-pointer px-3 py-1 hover:bg-green-50 rounded-full transition"
@@ -174,7 +170,6 @@ export default function NavbarAll({ user }) {
           </AnimatePresence>
         </div>
 
-        {/* === TOGGLE MENU (MOBILE) === */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="md:hidden p-2 rounded-full hover:bg-green-50 transition"
@@ -187,7 +182,6 @@ export default function NavbarAll({ user }) {
         </button>
       </div>
 
-      {/* === MOBILE MENU === */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div

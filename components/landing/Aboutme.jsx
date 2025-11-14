@@ -64,7 +64,7 @@ export default function AboutSection() {
         >
           <motion.div 
             className="relative w-[350px] h-[370px] rounded-3xl overflow-hidden shadow-xl"
-            whileHover={{ scale: 1.03, rotate: -1 }} // Efek Interaktif
+            whileHover={{ scale: 1.03, rotate: -1 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
             <Image

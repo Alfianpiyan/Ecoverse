@@ -33,7 +33,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* === NAVBAR === */}
       <nav
         className={`fixed overflow-x-hidden top-4 left-1/2 -translate-x-1/2 z-50 flex items-center justify-between
         px-6 py-3 rounded-full border border-gray-200 shadow-lg w-[80%] max-w-6xl
@@ -41,7 +40,6 @@ export default function Navbar() {
           scrolled ? "bg-white/90 backdrop-blur-md" : "bg-white"
         }`}
       >
-        {/* Logo */}
         <Link href="/" className="flex items-center gap-1 group">
           <div className="p-1.5 rounded-full">
             <Image
@@ -57,7 +55,6 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Menu Desktop */}
         <div className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
             <button
@@ -70,7 +67,6 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Buttons Desktop */}
         <div className="hidden md:flex gap-3">
           <Link
             href="/Daftar"
@@ -86,7 +82,6 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Toggle Mobile */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="md:hidden p-2 rounded-full hover:bg-[#047857]/10 transition"
@@ -99,13 +94,11 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* Drawer Mobile */}
       <div
         className={`fixed top-20 right-4 w-34 max-h-[75vh] overflow-y-auto bg-white z-40 shadow-2xl border border-gray-200
         flex flex-col items-center justify-start py-6 gap-5 rounded-2xl transition-transform duration-300 ease-in-out md:hidden
         ${isOpen ? "translate-x-0" : "translate-x-[110%]"}`}
       >
-        {/* Scrollable Content */}
         <div className="flex flex-col items-center w-full px-4">
           {navLinks.map((link) => (
             <button

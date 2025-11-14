@@ -7,12 +7,8 @@ import { motion } from "framer-motion";
 export default function SekarangSection() {
   return (
     <section className="relative min-h-screen -mt-25 mb-16 flex items-center justify-center bg-white overflow-hidden pt-24 md:pt-28">
-      {/* Latar gradasi lembut */}
       <div className="absolute inset-0 bg-gradient-to-b from-white via-green-50/30 to-white" />
-
-      {/* Konten utama */}
       <div className="relative z-10 flex flex-col md:flex-row items-center justify-between w-full max-w-7xl px-6 md:px-12 gap-12">
-        {/* Kiri - Teks */}
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -63,7 +59,7 @@ export default function SekarangSection() {
           transition={{ duration: 0.9, ease: "easeOut" }}
           className="flex-1 relative flex justify-center"
         >
-          {/* Gambar utama (diperbesar) */}
+
           <div className="relative w-[450px] h-[450px] md:w-[550px] md:h-[550px]">
             <Image
               src="/Tanaman1.png"
@@ -74,7 +70,6 @@ export default function SekarangSection() {
             />
           </div>
 
-          {/* Depth tambahan */}
           <div className="absolute -bottom-10 -right-8 w-28 h-28 bg-[#047857]/10 rounded-full blur-2xl" />
           <div className="absolute -top-8 -left-10 w-20 h-20 bg-[#047857]/10 rounded-full blur-2xl" />
         </motion.div>

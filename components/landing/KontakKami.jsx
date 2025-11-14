@@ -7,7 +7,6 @@ export default function HubungiKami() {
   const controls = useAnimation();
   const ref = useRef(null);
 
-  // Animasi muncul saat komponen terlihat di layar
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -68,7 +67,6 @@ export default function HubungiKami() {
         </h2>
 
         <div className="flex flex-col md:flex-row items-start justify-center gap-10">
-          {/* Map + Info */}
           <motion.div
             initial={{ opacity: 0, x: -80 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -107,7 +105,6 @@ export default function HubungiKami() {
             </div>
           </motion.div>
 
-          {/* Form */}
           <motion.div
             initial={{ opacity: 0, x: 80 }}
             whileInView={{ opacity: 1, x: 0 }}
