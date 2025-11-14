@@ -198,7 +198,7 @@ export default function DaftarPage() {
                     value={form.pic}
                     onChange={handleChange}
                     placeholder="Masukkan Nama PIC"
-                    className="block w-full px-4 py-2 text-black border border-[#059669] rounded-lg focus:border-[#059669] focus:ring-0 hover:border-2 transition-all"
+                    className="outline-none block w-full px-4 py-2 text-black border border-[#059669] rounded-lg focus:border-[#059669] focus:ring-0 hover:border-2 transition-all"
                     required
                   />
                 </div>
@@ -213,7 +213,7 @@ export default function DaftarPage() {
                     value={form.nama_instansi}
                     onChange={handleChange}
                     placeholder="Masukkan Nama Instansi"
-                    className="block w-full px-4 py-2 text-black border border-[#059669] rounded-lg focus:border-[#059669] focus:ring-0 hover:border-2 transition-all"
+                    className="outline-none block w-full px-4 py-2 text-black border border-[#059669] rounded-lg focus:border-[#059669] focus:ring-0 hover:border-2 transition-all"
                     required
                   />
                 </div>
@@ -228,7 +228,7 @@ export default function DaftarPage() {
                     value={form.email}
                     onChange={handleChange}
                     placeholder="Masukkan Email"
-                    className="block w-full px-4 py-2 text-black border border-[#059669] rounded-lg focus:border-[#059669] focus:ring-0 hover:border-2 transition-all"
+                    className="outline-none block w-full px-4 py-2 text-black border border-[#059669] rounded-lg focus:border-[#059669] focus:ring-0 hover:border-2 transition-all"
                     required
                   />
                 </div>
@@ -243,7 +243,7 @@ export default function DaftarPage() {
                     value={form.password}
                     onChange={handleChange}
                     placeholder="Masukkan Password"
-                    className="block w-full px-4 py-2 text-black border border-[#059669] rounded-lg focus:border-[#059669] focus:ring-0 hover:border-2 transition-all"
+                    className="outline-none block w-full px-4 py-2 text-black border border-[#059669] rounded-lg focus:border-[#059669] focus:ring-0 hover:border-2 transition-all"
                     required
                   />
                 </div>
@@ -258,7 +258,7 @@ export default function DaftarPage() {
                     value={form.no_telepon}
                     onChange={handleChange}
                     placeholder="Masukkan No. Telepon"
-                    className="block w-full px-4 py-2 text-black border border-[#059669] rounded-lg focus:border-[#059669] focus:ring-0 hover:border-2 transition-all"
+                    className="outline-none block w-full px-4 py-2 text-black border border-[#059669] rounded-lg focus:border-[#059669] focus:ring-0 hover:border-2 transition-all"
                     required
                   />
                 </div>

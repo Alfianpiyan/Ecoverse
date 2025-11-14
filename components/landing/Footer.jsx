@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export default function Footer() {
   return (
-    <footer className="relative bg-[#047857] text-white overflow-hidden">
+    <footer id="contact-sec" className="relative bg-[#047857] text-white overflow-hidden">
       {/* background gradien halus */}
       <div className="absolute inset-0 bg-gradient-to-t from-[#065f46] to-[#047857]/90"></div>
 

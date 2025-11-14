@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import bcrypt from "bcryptjs";
-import { ArrowLeft } from "lucide-react"; // ← tambah ikon back dari lucide-react
+import { ArrowLeft, Eye, EyeOff } from "lucide-react"; // ← icon back + show/hide password
 
 async function fetchUserRoleAndDetail(email) {
   const { data, error } = await supabase
@@ -93,7 +93,8 @@ export default function MasukPage() {
         password: form.password,
       });
 
-      if (authError || !data?.user) throw new Error("Email atau password salah!");
+      if (authError || !data?.user)
+        throw new Error("Email atau password salah!");
 
       const sessionUser = data.user;
       const userDetail = await fetchUserRoleAndDetail(sessionUser.email);
@@ -137,9 +138,11 @@ export default function MasukPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg lg:max-w-4xl">
+
         {/* LEFT PANEL */}
         <div className="relative w-full px-6 py-8 md:px-8 lg:w-1/2">
-          {/* 🔙 Tombol Back di pojok kiri atas form */}
+
+          {/* Back Button */}
           <button
             type="button"
             onClick={() => router.push("/")}
@@ -149,6 +152,7 @@ export default function MasukPage() {
             <span className="text-sm font-medium">Kembali</span>
           </button>
 
+          {/* Logo */}
           <div className="flex justify-center mb-2 mt-6">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +174,9 @@ export default function MasukPage() {
             Selamat Datang Kembali!
           </p>
 
+          {/* FORM LOGIN */}
           <form onSubmit={handleLogin}>
+            {/* Email */}
             <div className="mt-4">
               <label className="block mb-2 text-sm font-medium text-gray-600">
                 Email
@@ -180,11 +186,12 @@ export default function MasukPage() {
                 type="email"
                 value={form.email}
                 onChange={handleChange}
-                className="block w-full px-4 py-2 border border-[#059669] rounded-lg focus:ring-0 focus:border-[#059669] text-black"
+                className="outline-none block w-full px-4 py-2 border border-[#059669] rounded-lg focus:ring-0 focus:border-[#059669] text-black"
                 placeholder="Masukkan email"
               />
             </div>
 
+            {/* Password */}
             <div className="mt-4">
               <div className="flex justify-between">
                 <label className="block mb-2 text-sm font-medium text-gray-600">
@@ -204,20 +211,25 @@ export default function MasukPage() {
                   type={showPassword ? "text" : "password"}
                   value={form.password}
                   onChange={handleChange}
-                  className="block w-full px-4 py-2 border border-[#059669] rounded-lg pr-10 focus:ring-0 focus:border-[#059669] text-black"
+                  className="outline block w-full px-4 py-2 border border-[#059669] rounded-lg pr-12 focus:ring-0 focus:border-[#059669] text-black"
                   placeholder="Masukkan password"
                 />
 
                 <button
                   type="button"
                   onClick={togglePasswordVisibility}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600 hover:text-[#059669]"
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600 hover:text-[#059669] transition"
                 >
-                  {showPassword ? "🙈" : "👁️"}
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
             </div>
 
+            {/* Button Login */}
             <div className="mt-6">
               <button
                 type="submit"
@@ -229,10 +241,11 @@ export default function MasukPage() {
             </div>
           </form>
 
+          {/* BUAT AKUN */}
           <div className="flex items-center justify-between mt-4">
             <span className="w-1/5 border-b md:w-1/4"></span>
             <Link
-              href="/user/register"
+              href="/Daftar"
               className="text-xs text-gray-500 hover:underline"
             >
               Belum punya akun?
@@ -262,6 +275,7 @@ export default function MasukPage() {
             </Link>
           </div>
         </div>
+
       </div>
     </div>
   );

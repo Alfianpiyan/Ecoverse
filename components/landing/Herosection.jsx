@@ -187,7 +187,7 @@ const HeroSection = () => {
   ];
 
   return (
-    <section className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-white">
+    <section id='herosection' className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-white">
       
       <motion.div 
         className="absolute inset-0 z-0 bg-no-repeat bg-cover bg-center"
@@ -224,7 +224,7 @@ const HeroSection = () => {
         
         {/* kepala */}
         <motion.h1 
-          className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-gray-800"
+          className="mt-4 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-gray-800"
         >
           <div className="mb-4">
             <AnimatedText 
