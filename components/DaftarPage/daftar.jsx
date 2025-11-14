@@ -5,7 +5,8 @@ import { hash } from "bcryptjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { ArrowLeft } from "lucide-react"; // ← tambahkan icon panah
+import { ArrowLeft } from "lucide-react";
+import Swal from "sweetalert2"; // ← Tambah Swal
 
 export default function DaftarPage() {
   const router = useRouter();
@@ -33,13 +34,22 @@ export default function DaftarPage() {
     });
 
     if (error) {
-      alert("Gagal register: " + error.message);
+      Swal.fire({
+        title: "Gagal Registrasi",
+        text: error.message,
+        icon: "error",
+        confirmButtonColor: "#dc2626",
+      });
       return;
     }
 
     const user = data.user;
     if (!user) {
-      alert("Gagal mendapatkan data user dari Supabase Auth");
+      Swal.fire({
+        title: "Gagal",
+        text: "Gagal mendapatkan data user dari Supabase Auth",
+        icon: "warning",
+      });
       return;
     }
 
@@ -57,11 +67,20 @@ export default function DaftarPage() {
     ]);
 
     if (insertError) {
-      alert("Gagal menyimpan data user: " + insertError.message);
+      Swal.fire({
+        title: "Gagal Menyimpan",
+        text: insertError.message,
+        icon: "error",
+      });
       return;
     }
 
-    alert("✅ Register berhasil! Silakan konfirmasi email Anda.");
+    Swal.fire({
+      title: "Berhasil!",
+      text: "Register berhasil! Silakan konfirmasi email Anda.",
+      icon: "success",
+      confirmButtonColor: "#059669",
+    });
   };
 
   const getButtonClass = (type, currentType, base = "bg-[#059669]") =>
@@ -156,7 +175,7 @@ export default function DaftarPage() {
 
           {/* FORM KANAN */}
           <div className="flex items-center bg-white justify-center w-full py-8 px-6 lg:px-8 lg:w-3/5 relative">
-            {/* 🔙 Tombol back di pojok kiri atas form */}
+            {/* 🔙 Tombol back */}
             <button
               type="button"
               onClick={() => router.push("/Masuk")}
