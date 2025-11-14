@@ -63,7 +63,7 @@ export default function AcaraDetail() {
           {errorMsg || "Acara tidak ditemukan 😢"}
         </p>
         <button
-          onClick={() => router.push("/user/acara")}
+          onClick={() => router.push("/Masuk")}
           className="mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-xl"
         >
           Kembali ke Daftar Acara
