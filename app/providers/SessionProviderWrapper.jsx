@@ -5,7 +5,7 @@ import { supabase } from "@/lib/Supabaseclient";
 
 export function SessionProviderWrapper({ children, session }) {
   return (
-    <SessionContextProvider supabaseClient={supabase} initialSession={session}>
+    <SessionContextProvider supabaseclient={supabase} initialSession={session}>
       {children}
     </SessionContextProvider>
   );
