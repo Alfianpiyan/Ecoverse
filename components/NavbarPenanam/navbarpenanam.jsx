@@ -13,7 +13,24 @@ export default function NavbarPnanam() {
   const router = useRouter();
   const dropdownRef = useRef(null);
 
-  const { data: session } = useSession();
+  const [session, setSession] = useState(null);
+
+useEffect(() => {
+  const getSession = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    setSession(session);
+  };
+
+  getSession();
+
+  // Realtime update (login/logout)
+  const { data: listener } = supabase.auth.onAuthStateChange((_event, newSession) => {
+    setSession(newSession);
+  });
+
+  return () => listener.subscription.unsubscribe();
+}, []);
+
 
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
