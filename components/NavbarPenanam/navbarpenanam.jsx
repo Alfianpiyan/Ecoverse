@@ -7,7 +7,6 @@ import { User, ChevronDown, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { supabase } from "../../lib/Supabaseclient";
-import { useSession } from "next-auth/react";
 
 export default function NavbarPnanam() {
   const pathname = usePathname();
